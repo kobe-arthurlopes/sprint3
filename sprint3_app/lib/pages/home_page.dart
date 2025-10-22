@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Foo"),
+        title: const Text("Notícias"),
       ),
       body: FutureBuilder(
         future: futurePosts, 
@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
                 final post = posts[index];
                 return ListTile(
                   title: Text(post.fields?.title ?? "empty"),
+                  subtitle: Text(post.fields?.body ?? "empty"),
                 );
               },
             );

@@ -17,7 +17,10 @@ Map<String, dynamic> _$BlogPostToJson(BlogPost instance) => <String, dynamic>{
 };
 
 BlogPostFields _$BlogPostFieldsFromJson(Map<String, dynamic> json) =>
-    BlogPostFields(title: json['title'] as String?);
+    BlogPostFields(
+      title: json['title'] as String?,
+      body: json['body'] as String?,
+    );
 
 Map<String, dynamic> _$BlogPostFieldsToJson(BlogPostFields instance) =>
-    <String, dynamic>{'title': instance.title};
+    <String, dynamic>{'title': instance.title, 'body': instance.body};
