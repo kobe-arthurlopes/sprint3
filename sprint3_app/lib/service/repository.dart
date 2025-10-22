@@ -3,9 +3,9 @@ import 'package:sprint3_app/models/blog_post.dart';
 
 class Repository {
   final Client contentful = Client(
-    BearerTokenHTTPClient('IGj4UOLG5NbhMUw5ozI-fK7XmZ3Ukad6tG-TlS9vNXU'),
-    spaceId: 'zd1g1rj11jqo',
-    environment: 'master'
+    BearerTokenHTTPClient('ACCESS_TOKEN'),
+    spaceId: 'SPACE_ID',
+    environment: 'ENVIRONMENT'
   );
 
   Future<List<BlogPost>> findAll() async {
