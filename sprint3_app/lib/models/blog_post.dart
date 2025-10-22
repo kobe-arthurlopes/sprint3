@@ -20,9 +20,8 @@ class BlogPost extends Entry<BlogPostFields> {
 @JsonSerializable()
 class BlogPostFields extends Equatable {
   final String? title;
-  final String? body;
 
-  const BlogPostFields({this.title, this.body}) : super();
+  const BlogPostFields({this.title}) : super();
 
   static BlogPostFields fromJson(Map<String, dynamic> json) =>
       _$BlogPostFieldsFromJson(json);
@@ -30,5 +29,5 @@ class BlogPostFields extends Equatable {
   Map<String, dynamic> toJson() => _$BlogPostFieldsToJson(this);
 
   @override
-  List<Object?> get props => [title, body];
+  List<Object?> get props => [title];
 }
