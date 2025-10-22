@@ -10,14 +10,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final Repository repository = Repository();
-
+  late final Future<Repository> futureRepository;
   late Future<List<BlogPost>> futurePosts;
 
   @override
   void initState() {
     super.initState();
-    futurePosts = repository.findAll();
+    
+    futureRepository = Repository.create();
+    futurePosts = futureRepository.then((repo) => repo.findAll());
   }
 
   @override
