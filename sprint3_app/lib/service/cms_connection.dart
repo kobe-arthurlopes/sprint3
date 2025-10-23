@@ -1,5 +1,5 @@
 import 'package:contentful/contentful.dart';
-import 'package:sprint3_app/models/blog_post.dart';
+import 'package:sprint3_app/models/news_source.dart';
 
 class CmsConnection {
   final String? accessToken;
@@ -7,7 +7,7 @@ class CmsConnection {
 
   CmsConnection({required this.accessToken, required this.spaceId});
 
-  Future<List<BlogPost>> findAll() async {
+  Future<List<NewsSource>> findAll() async {
     if (accessToken == null) {
       return [];
     }
@@ -23,10 +23,10 @@ class CmsConnection {
     );
 
     try {
-      final collection = await contentful.getEntries<BlogPost>({
-        'content_type': 'blogPost',
+      final collection = await contentful.getEntries<NewsSource>({
+        'content_type': NewsSource.contentType,
         'include': '10',
-      }, BlogPost.fromJson);
+      }, NewsSource.fromJson);
 
       return collection.items;
     } catch (e) {
