@@ -19,7 +19,7 @@ class ArticleResponse {
 class Article {
   final String name;
   final String description;
-  final String url;
+  final String? url;
 
   Article({
     required this.name,
@@ -29,8 +29,8 @@ class Article {
 
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
-      name: json['source']['name'], 
-      description: json['description'], 
+      name: json['source']['name'] ?? 'undefined', 
+      description: json['description'] ?? 'undefined', 
       url: json['url']
     );
   }
