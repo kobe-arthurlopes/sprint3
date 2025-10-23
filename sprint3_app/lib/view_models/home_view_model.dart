@@ -1,18 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sprint3_app/models/article.dart';
+import 'package:sprint3_app/models/news_source.dart';
 import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
 
 class HomeData {
   List<Article> articles;
+  List<NewsSource> newsSources;
 
-  HomeData({required this.articles});
+  HomeData({required this.articles, required this.newsSources});
 
   HomeData copyWith({
-    List<Article>? articles
+    List<Article>? articles,
+    List<NewsSource>? newsSources
   }) {
-    return HomeData(articles: articles ?? this.articles);
+    return HomeData(
+      articles: articles ?? this.articles,
+      newsSources: newsSources ?? this.newsSources
+    );
   }
 }
 
@@ -22,7 +28,10 @@ class HomeViewModel {
   late final ApiService _apiService;
 
   ValueNotifier<HomeData> homeData = ValueNotifier(
-    HomeData(articles: [])
+    HomeData(
+      articles: [],
+      newsSources: []
+    )
   );
 
   Future<void> start() async {
@@ -39,10 +48,16 @@ class HomeViewModel {
   Future<void> fetchArticles() async {
     try {
       final articleResponse = await _apiService.fetchArticles();
-      final articles = articleResponse.articles;
+      homeData.value = homeData.value.copyWith(articles: articleResponse.articles);
+    } on Exception {
+      rethrow;
+    }
+  }
 
-
-      homeData.value = homeData.value.copyWith(articles: articles);
+  Future<void> fetchNewsSources() async {
+    try {
+      final newsSources = await _cmsConnection.findAll();
+      homeData.value = homeData.value.copyWith(newsSources: newsSources);
     } on Exception {
       rethrow;
     }
