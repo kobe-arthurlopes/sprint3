@@ -1,6 +1,4 @@
 import 'package:contentful/contentful.dart';
-import 'package:contentful/models/entry.dart';
-import 'package:contentful/models/system_fields.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
