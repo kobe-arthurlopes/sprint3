@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/blog_post.dart';
-import 'package:sprint3_app/service/repository.dart';
+import 'package:sprint3_app/view_models/home_view_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,44 +9,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final Future<Repository> futureRepository;
-  late Future<List<BlogPost>> futurePosts;
+  final HomeViewModel _viewModel = HomeViewModel();
 
   @override
   void initState() {
     super.initState();
-    
-    futureRepository = Repository.create();
-    futurePosts = futureRepository.then((repo) => repo.findAll());
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    await _viewModel.start();
+    await _viewModel.fetchArticles();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Notícias"),
-      ),
-      body: FutureBuilder(
-        future: futurePosts, 
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            final posts = snapshot.data!;
+    return ValueListenableBuilder<HomeData>(
+      valueListenable: _viewModel.homeData,
+      builder: (_, data, _) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Articles"),
+          ),
+          body: ListView.builder(
+            itemCount: data.articles.length,
+            itemBuilder: (context, index) {
+              final article = data.articles[index];
 
-            return ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                final post = posts[index];
-                return ListTile(
-                  title: Text(post.fields?.title ?? "empty"),
-                  subtitle: Text(post.fields?.body ?? "empty"),
-                );
-              },
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        }
-      ),
+              return ListTile(
+                title: Text(article.name),
+                subtitle: Text(article.description),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
