@@ -19,31 +19,61 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _initialize() async {
     await _viewModel.start();
-    await _viewModel.fetchArticles();
+    await _viewModel.fetchNewsSources();
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<HomeData>(
-      valueListenable: _viewModel.homeData,
+      valueListenable: _viewModel.homeData, 
       builder: (_, data, _) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text("Articles"),
+            title: const Text("News"),
           ),
           body: ListView.builder(
-            itemCount: data.articles.length,
+            itemCount: data.newsSources.length,
             itemBuilder: (context, index) {
-              final article = data.articles[index];
+              final newsSource = data.newsSources[index];
 
-              return ListTile(
-                title: Text(article.name),
-                subtitle: Text(article.description),
+              return Container(
+                color: Colors.greenAccent,
+                margin: const EdgeInsets.only(
+                  top: 10,
+                  left: 10,
+                  right: 10
+                ),
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: Image.network(
+                        newsSource.fields?.logoUrl ?? '',
+                        filterQuality: FilterQuality.high,
+                        fit: BoxFit.cover,
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                
+                    Text(
+                      newsSource.fields?.name ?? 'none',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 40
+                      ),
+                    )
+                  ],
+                ),
               );
             },
           ),
         );
-      },
+      }
     );
   }
 }
