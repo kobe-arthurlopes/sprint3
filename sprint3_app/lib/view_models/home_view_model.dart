@@ -34,6 +34,8 @@ class HomeViewModel {
     )
   );
 
+  (String, dynamic)? _queryParameterTuple;
+
   Future<void> start() async {
     _tokens = await TokenProvider.create();
 
@@ -47,7 +49,7 @@ class HomeViewModel {
 
   Future<void> fetchArticles() async {
     try {
-      final articleResponse = await _apiService.fetchArticles();
+      final articleResponse = await _apiService.fetchArticles(_queryParameterTuple);
       homeData.value = homeData.value.copyWith(articles: articleResponse.articles);
     } on Exception {
       rethrow;
@@ -60,6 +62,12 @@ class HomeViewModel {
       homeData.value = homeData.value.copyWith(newsSources: newsSources);
     } on Exception {
       rethrow;
+    }
+  }
+
+  void updateQueryParameterTuple(dynamic value) {
+    if (value != null) {
+      _queryParameterTuple = ('sources', value);
     }
   }
 }
