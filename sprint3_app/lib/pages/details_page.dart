@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
+import 'package:sprint3_app/widgets/article_item.dart';
 
 class DetailsPage extends StatefulWidget {
   static const routeId = '/details';
@@ -38,10 +39,7 @@ class _DetailsPageState extends State<DetailsPage> {
             itemBuilder: (context, index) {
               final Article article = data.articles[index];
 
-              return ListTile(
-                title: Text(article.title),
-                subtitle: Text(article.description),
-              );
+              return ArticleItem(article: article);
             },
           ),
         );
