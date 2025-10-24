@@ -4,8 +4,13 @@ import 'package:sprint3_app/widgets/news_source_item.dart';
 
 class NewsSourcesList extends StatefulWidget {
   final List<NewsSource> newsSources;
+  final void Function(String?)? onTap;
 
-  const NewsSourcesList({super.key, required this.newsSources});
+  const NewsSourcesList({
+    super.key, 
+    required this.newsSources,
+    this.onTap
+  });
 
   @override
   State<StatefulWidget> createState() => _NewsSourcesListState();
@@ -37,7 +42,14 @@ class _NewsSourcesListState extends State<NewsSourcesList> {
             itemBuilder: (context, index) {
               final newsSource = widget.newsSources[index];
         
-              return NewsSourceItem(newsSource: newsSource);
+              return NewsSourceItem(
+                newsSource: newsSource,
+                onTap: () {
+                  if (widget.onTap != null) {
+                    widget.onTap!(newsSource.fields?.sourceId);
+                  }
+                },
+              );
             }
           ),
         ),
