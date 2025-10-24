@@ -22,21 +22,24 @@ class NewsSource extends Entry<NewsSourceFields> {
 class NewsSourceFields extends Equatable {
   final String? name;
   final String? logoUrl;
+  final String? sourceId;
   
-  const NewsSourceFields({this.name, this.logoUrl}) : super();
+  const NewsSourceFields({this.name, this.logoUrl, this.sourceId}) : super();
 
   static NewsSourceFields fromJson(Map<String, dynamic> json) {
     final String? jsonName = json['name'] as String?;
     final String? jsonLogoUrl = json['logo'] == null ? null : Asset.fromJson(json['logo']).fields?.file?.url;
+    final String? sourceId = json['sourceId'] as String?;
 
     return NewsSourceFields(
       name: jsonName,
       logoUrl: 'https:${jsonLogoUrl!}',
+      sourceId: sourceId
     );
   }
 
   Map<String, dynamic> toJson() => _$NewsSourceFieldsToJson(this);
 
   @override
-  List<Object?> get props => [name, logoUrl];
+  List<Object?> get props => [name, logoUrl, sourceId];
 }
