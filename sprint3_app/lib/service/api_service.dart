@@ -8,12 +8,16 @@ class ApiService {
 
   final _dio = Dio(BaseOptions(baseUrl: 'https://newsapi.org/v2/'));
 
-  Future<ArticleResponse> fetchArticles() async {
+  Future<ArticleResponse> fetchArticles((String, dynamic)? property) async {
     if (apiKey == null) {
       throw Exception;
     }
 
     Map<String, dynamic> queryParameters = {'apiKey': apiKey!, 'country': 'us'};
+
+    if (property != null) {
+      queryParameters[property.$1] = property.$2;
+    }
 
     try {
       final response = await _dio.get(
