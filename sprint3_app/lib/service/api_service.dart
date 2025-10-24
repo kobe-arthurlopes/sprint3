@@ -13,7 +13,7 @@ class ApiService {
       throw Exception;
     }
 
-    Map<String, dynamic> queryParameters = {'apiKey': apiKey!, 'country': 'us'};
+    Map<String, dynamic> queryParameters = {'apiKey': apiKey!};
 
     if (property != null) {
       queryParameters[property.$1] = property.$2;
