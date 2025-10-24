@@ -32,7 +32,12 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             title: const Text('News'),
           ),
-          body: NewsSourcesList(newsSources: data.newsSources),
+          body: NewsSourcesList(
+            newsSources: data.newsSources,
+            onTap: (sourceId) {
+              _viewModel.updateQueryParameterTuple(sourceId);
+            },
+          ),
         );
       }
     );
