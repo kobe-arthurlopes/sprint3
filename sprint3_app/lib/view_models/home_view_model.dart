@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sprint3_app/models/article.dart';
-import 'package:sprint3_app/models/news_source.dart';
+import 'package:sprint3_app/models/news_source_model.dart';
 import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
 
 class HomeData {
   List<Article> articles;
-  List<NewsSource> newsSources;
-  NewsSource? selectedNewsSource;
+  List<NewsSourceModel> newsSources;
+  NewsSourceModel? selectedNewsSource;
 
   HomeData({
     required this.articles, 
@@ -18,8 +18,8 @@ class HomeData {
 
   HomeData copyWith({
     List<Article>? articles,
-    List<NewsSource>? newsSources,
-    NewsSource? selectedNewsSource,
+    List<NewsSourceModel>? newsSources,
+    NewsSourceModel? selectedNewsSource,
   }) {
     return HomeData(
       articles: articles ?? this.articles,
@@ -66,8 +66,9 @@ class HomeViewModel {
 
   Future<void> fetchNewsSources() async {
     try {
-      final newsSources = await _cmsConnection.findAll();
-      homeData.value = homeData.value.copyWith(newsSources: newsSources);
+      await _cmsConnection.findAll();
+      // final newsSources = await _cmsConnection.findAll();
+      // homeData.value = homeData.value.copyWith(newsSources: newsSources);
     } on Exception {
       rethrow;
     }
@@ -79,7 +80,7 @@ class HomeViewModel {
     }
   }
 
-  void updateSelectedNewsSource(NewsSource newsSource) {
+  void updateSelectedNewsSource(NewsSourceModel newsSource) {
     homeData.value = homeData.value.copyWith(selectedNewsSource: newsSource);
     _updateQueryParameterTuple(newsSource.fields?.sourceId);
   }

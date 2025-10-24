@@ -12,7 +12,9 @@
 .swiftpm/
 migrate_working_dir/
 *.env
-/lib/models/news_source.g.dart
+/lib/models/news_source_model.g.dart
+/lib/models/carousel_model.g.dart
+/lib/models/home_model.g.dart
 
 # IntelliJ related
 *.iml

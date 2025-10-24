@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/news_source.dart';
+import 'package:sprint3_app/models/news_source_model.dart';
 
 class NewsSourceItem extends StatelessWidget {
-  final NewsSource newsSource;
+  final NewsSourceModel newsSource;
   final VoidCallback? onTap;
 
   const NewsSourceItem({super.key, required this.newsSource, this.onTap});

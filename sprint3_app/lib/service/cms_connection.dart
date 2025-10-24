@@ -1,5 +1,7 @@
 import 'package:contentful/contentful.dart';
-import 'package:sprint3_app/models/news_source.dart';
+import 'package:sprint3_app/models/carousel_model.dart';
+import 'package:sprint3_app/models/home_model.dart';
+import 'package:sprint3_app/models/news_source_model.dart';
 
 class CmsConnection {
   final String? accessToken;
@@ -7,13 +9,13 @@ class CmsConnection {
 
   CmsConnection({required this.accessToken, required this.spaceId});
 
-  Future<List<NewsSource>> findAll() async {
+  Future<void> findAll() async {
     if (accessToken == null) {
-      return [];
+      return;
     }
 
     if (spaceId == null) {
-      return [];
+      return;
     }
 
     final Client contentful = Client(
@@ -23,16 +25,29 @@ class CmsConnection {
     );
 
     try {
-      final collection = await contentful.getEntries<NewsSource>({
-        'content_type': NewsSource.contentType,
-        'include': '10',
-      }, NewsSource.fromJson);
+      // final collection = await contentful.getEntries<HomeModel>({
+      //   'content_type': HomeModel.contentType,
+      // }, HomeModel.fromJson);
 
-      return collection.items;
+      // print(collection.items);
+
+
+      final collection = await contentful.getEntries<CarouselModel>({
+        'content_type': CarouselModel.contentType,
+      }, CarouselModel.fromJson);
+
+      final List<List<NewsSourceModel>?> listNewsSources = collection.items.map((element) => element.fields?.newsSources).toList();
+
+      final List<NewsSourceModel> allNewsSources = listNewsSources
+          .where((list) => list != null)
+          .expand((list) => list!)
+          .toList();
+
+      final List<String?> names = allNewsSources.map((element) => element.fields?.name).toList();
+
+      print(names);
     } catch (e) {
       print(e);
-
-      return [];
     }
   }
 }
