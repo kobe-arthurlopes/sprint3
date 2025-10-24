@@ -5,16 +5,16 @@ class NewsSourceItem extends StatelessWidget {
   final NewsSource newsSource;
   final VoidCallback? onTap;
 
-  const NewsSourceItem({
-    super.key, 
-    required this.newsSource,
-    this.onTap
-  });
+  const NewsSourceItem({super.key, required this.newsSource, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if (onTap != null) {
+          onTap!();
+        }
+      },
       child: Padding(
         padding: const EdgeInsets.only(
           top: 10,

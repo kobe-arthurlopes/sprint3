@@ -8,16 +8,23 @@ import 'package:sprint3_app/service/token_provider.dart';
 class HomeData {
   List<Article> articles;
   List<NewsSource> newsSources;
+  NewsSource? selectedNewsSource;
 
-  HomeData({required this.articles, required this.newsSources});
+  HomeData({
+    required this.articles, 
+    required this.newsSources,
+    required this.selectedNewsSource
+  });
 
   HomeData copyWith({
     List<Article>? articles,
-    List<NewsSource>? newsSources
+    List<NewsSource>? newsSources,
+    NewsSource? selectedNewsSource,
   }) {
     return HomeData(
       articles: articles ?? this.articles,
-      newsSources: newsSources ?? this.newsSources
+      newsSources: newsSources ?? this.newsSources,
+      selectedNewsSource: selectedNewsSource ?? this.selectedNewsSource
     );
   }
 }
@@ -30,7 +37,8 @@ class HomeViewModel {
   ValueNotifier<HomeData> homeData = ValueNotifier(
     HomeData(
       articles: [],
-      newsSources: []
+      newsSources: [],
+      selectedNewsSource: null
     )
   );
 
@@ -69,5 +77,9 @@ class HomeViewModel {
     if (value != null) {
       _queryParameterTuple = ('sources', value);
     }
+  }
+
+  void updateSelectedNewsSource(NewsSource newsSource) {
+    homeData.value = homeData.value.copyWith(selectedNewsSource: newsSource);
   }
 }

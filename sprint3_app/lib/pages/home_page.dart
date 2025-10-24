@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/pages/details_page.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
 import 'package:sprint3_app/widgets/news_sources_list.dart';
 
 class HomePage extends StatefulWidget {
+  static const routeId = '/home';
+
   const HomePage({super.key});
 
   @override
@@ -34,8 +37,10 @@ class _HomePageState extends State<HomePage> {
           ),
           body: NewsSourcesList(
             newsSources: data.newsSources,
-            onTap: (sourceId) {
-              _viewModel.updateQueryParameterTuple(sourceId);
+            onTap: (newsSource) {
+              _viewModel.updateSelectedNewsSource(newsSource);
+
+              Navigator.of(context).pushNamed(DetailsPage.routeId, arguments: _viewModel);
             },
           ),
         );
