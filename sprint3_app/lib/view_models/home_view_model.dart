@@ -73,7 +73,7 @@ class HomeViewModel {
     }
   }
 
-  void updateQueryParameterTuple(dynamic value) {
+  void _updateQueryParameterTuple(dynamic value) {
     if (value != null) {
       _queryParameterTuple = ('sources', value);
     }
@@ -81,5 +81,6 @@ class HomeViewModel {
 
   void updateSelectedNewsSource(NewsSource newsSource) {
     homeData.value = homeData.value.copyWith(selectedNewsSource: newsSource);
+    _updateQueryParameterTuple(newsSource.fields?.sourceId);
   }
 }
