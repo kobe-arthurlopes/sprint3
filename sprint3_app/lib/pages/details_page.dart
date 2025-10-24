@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/models/article.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -14,6 +15,16 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   @override
+  void initState() {
+    super.initState();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    await widget.viewModel.fetchArticles();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<HomeData>(
       valueListenable: widget.viewModel.homeData,
@@ -25,7 +36,12 @@ class _DetailsPageState extends State<DetailsPage> {
           body: ListView.builder(
             itemCount: data.articles.length,
             itemBuilder: (context, index) {
+              final Article article = data.articles[index];
 
+              return ListTile(
+                title: Text(article.title),
+                subtitle: Text(article.description),
+              );
             },
           ),
         );
