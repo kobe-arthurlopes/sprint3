@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:sprint3_app/models/article.dart';
+import 'package:sprint3_app/models/article_model.dart';
 
 class ApiService {
   final String? apiKey;
@@ -8,24 +8,21 @@ class ApiService {
 
   final _dio = Dio(BaseOptions(baseUrl: 'https://newsapi.org/v2/'));
 
-  Future<ArticleResponse> fetchArticles((String, dynamic)? property) async {
+  Future<List<ArticleModel>> fetchArticles(Map<String, dynamic>? properties) async {
     if (apiKey == null) {
       throw Exception;
     }
 
-    Map<String, dynamic> queryParameters = {'apiKey': apiKey!};
-
-    if (property != null) {
-      queryParameters[property.$1] = property.$2;
-    }
+    properties?['apiKey'] = apiKey!;
 
     try {
       final response = await _dio.get(
         'top-headlines',
-        queryParameters: queryParameters,
+        queryParameters: properties,
       );
 
-      return ArticleResponse.fromJson(response.data);
+      final ArticleResponse articleResponse = ArticleResponse.fromJson(response.data);
+      return articleResponse.articles;
     } on DioException {
       rethrow;
     }
