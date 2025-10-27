@@ -21,18 +21,20 @@ class HomeModel extends Entry<HomeModelFields> {
 
 @JsonSerializable()
 class HomeModelFields extends Equatable {
-  final CarouselModel? carouselModel;
+  final CarouselModel? carousel;
+  final String? title;
 
-  const HomeModelFields({this.carouselModel});
+  const HomeModelFields({this.carousel, this.title});
 
   static HomeModelFields fromJson(Map<String, dynamic> json) {
     return HomeModelFields(
-      carouselModel: CarouselModel.fromJson(json['carousel'] as Map<String, dynamic>)
+      title: json['title'] as String?,
+      carousel: CarouselModel.fromJson(json['carousel'] as Map<String, dynamic>)
     );
   }
 
   Map<String, dynamic> toJson() => _$HomeModelFieldsToJson(this);
 
   @override
-  List<Object?> get props => [carouselModel];
+  List<Object?> get props => [carousel, title];
 }
