@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
 import 'package:sprint3_app/widgets/all_articles_list.dart';
 

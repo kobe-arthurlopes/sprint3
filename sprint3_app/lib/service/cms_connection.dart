@@ -38,5 +38,6 @@ class CmsConnection {
     } catch (e) {
       print(e);
     }
+    return null;
   }
 }
