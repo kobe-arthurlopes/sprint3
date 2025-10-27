@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/article.dart';
+import 'package:sprint3_app/models/article_model.dart';
 
 class ArticleItem extends StatelessWidget {
-  final Article article;
+  final ArticleModel article;
 
   const ArticleItem({super.key, required this.article});
 
