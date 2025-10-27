@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sprint3_app/models/article.dart';
+import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/models/news_source_model.dart';
 import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
 
 class HomeData {
-  List<Article> articles;
+  List<ArticleModel> articles;
   List<NewsSourceModel> newsSources;
   NewsSourceModel? selectedNewsSource;
 
@@ -17,7 +17,7 @@ class HomeData {
   });
 
   HomeData copyWith({
-    List<Article>? articles,
+    List<ArticleModel>? articles,
     List<NewsSourceModel>? newsSources,
     NewsSourceModel? selectedNewsSource,
   }) {
@@ -42,7 +42,7 @@ class HomeViewModel {
     )
   );
 
-  (String, dynamic)? _queryParameterTuple;
+  Map<String, dynamic>? _requestProperties;
 
   Future<void> start() async {
     _tokens = await TokenProvider.create();
@@ -55,10 +55,15 @@ class HomeViewModel {
     _apiService = ApiService(apiKey: _tokens.apiKey);
   }
 
-  Future<void> fetchArticles() async {
+  Future<void> fetchAllArticles() async {
+    _requestProperties = {'category': 'general'};
+    await _fetchArticles();
+  }
+
+  Future<void> _fetchArticles() async {
     try {
-      final articleResponse = await _apiService.fetchArticles(_queryParameterTuple);
-      homeData.value = homeData.value.copyWith(articles: articleResponse.articles);
+      final articles = await _apiService.fetchArticles(_requestProperties);
+      homeData.value = homeData.value.copyWith(articles: articles);
     } on Exception {
       rethrow;
     }
@@ -73,14 +78,9 @@ class HomeViewModel {
     }
   }
 
-  void _updateQueryParameterTuple(dynamic value) {
-    if (value != null) {
-      _queryParameterTuple = ('sources', value);
-    }
-  }
-
   void updateSelectedNewsSource(NewsSourceModel newsSource) {
     homeData.value = homeData.value.copyWith(selectedNewsSource: newsSource);
-    _updateQueryParameterTuple(newsSource.fields?.sourceId);
+    _requestProperties = {'sources': newsSource.fields?.sourceId};
+    _fetchArticles();
   }
 }
