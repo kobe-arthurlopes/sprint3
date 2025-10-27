@@ -66,9 +66,8 @@ class HomeViewModel {
 
   Future<void> fetchNewsSources() async {
     try {
-      await _cmsConnection.findAll();
-      // final newsSources = await _cmsConnection.findAll();
-      // homeData.value = homeData.value.copyWith(newsSources: newsSources);
+      final newsSources = await _cmsConnection.findAll();
+      homeData.value = homeData.value.copyWith(newsSources: newsSources);
     } on Exception {
       rethrow;
     }
