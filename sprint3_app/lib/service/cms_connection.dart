@@ -9,13 +9,13 @@ class CmsConnection {
 
   CmsConnection({required this.accessToken, required this.spaceId});
 
-  Future<void> findAll() async {
+  Future<List<NewsSourceModel>?> findAll() async {
     if (accessToken == null) {
-      return;
+      return null;
     }
 
     if (spaceId == null) {
-      return;
+      return null;
     }
 
     final Client contentful = Client(
@@ -25,27 +25,16 @@ class CmsConnection {
     );
 
     try {
-      // final collection = await contentful.getEntries<HomeModel>({
-      //   'content_type': HomeModel.contentType,
-      // }, HomeModel.fromJson);
+      final homeModelCollection = await contentful.getEntries<HomeModel>({
+        'content_type': HomeModel.contentType,
+        'include': '10',
+      }, HomeModel.fromJson);
 
-      // print(collection.items);
+      final home = homeModelCollection.items.first;
+      final CarouselModel? carousel = home.fields?.carousel;
+      final List<NewsSourceModel>? newsSources = carousel?.fields?.newsSources;
 
-
-      final collection = await contentful.getEntries<CarouselModel>({
-        'content_type': CarouselModel.contentType,
-      }, CarouselModel.fromJson);
-
-      final List<List<NewsSourceModel>?> listNewsSources = collection.items.map((element) => element.fields?.newsSources).toList();
-
-      final List<NewsSourceModel> allNewsSources = listNewsSources
-          .where((list) => list != null)
-          .expand((list) => list!)
-          .toList();
-
-      final List<String?> names = allNewsSources.map((element) => element.fields?.name).toList();
-
-      print(names);
+      return newsSources;
     } catch (e) {
       print(e);
     }
