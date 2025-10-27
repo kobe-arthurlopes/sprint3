@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "605486384693",
+    "project_id": "sprint3-62089",
+    "storage_bucket": "sprint3-62089.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605486384693:android:3d04a5c380f786f3db937c",
+        "android_client_info": {
+          "package_name": "com.example.sprint3_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLw_NN0qA7noulTX7qYFFJV1NTYQEaExE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
