@@ -8,10 +8,10 @@ class AllArticlesList extends StatelessWidget {
   final void Function(ArticleModel)? onTap;
 
   const AllArticlesList({
-    super.key, 
-    required this.articles, 
+    super.key,
+    required this.articles,
     this.isScrollable = true,
-    this.onTap
+    this.onTap,
   });
 
   @override
@@ -19,10 +19,12 @@ class AllArticlesList extends StatelessWidget {
     return ListView.builder(
       itemCount: articles.length,
       shrinkWrap: true,
-      physics: isScrollable ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
+      physics: isScrollable
+          ? AlwaysScrollableScrollPhysics()
+          : NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         final article = articles[index];
-    
+
         return AllArticlesItem(
           article: article,
           onTap: () {

@@ -35,7 +35,7 @@ class ArticleModel {
     return ArticleModel(
       title: json['title'] ?? 'No title', 
       description: json['description'] ?? 'No description',
-      author: json['author'] ?? 'No author', 
+      author: json['author'] ?? 'Unknown author', 
       url: json['url'],
       urlToImage: json['urlToImage']
     );

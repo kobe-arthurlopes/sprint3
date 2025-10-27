@@ -34,9 +34,7 @@ class _HomePageState extends State<HomePage> {
       valueListenable: _viewModel.homeData,
       builder: (_, data, _) {
         return Scaffold(
-          appBar: AppBar(
-            title: const Text('News'),
-          ),
+          appBar: AppBar(title: const Text('News')),
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,9 +43,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
                     'Top News Sources',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    )
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
 
@@ -55,13 +51,16 @@ class _HomePageState extends State<HomePage> {
                   newsSources: data.newsSources,
                   onTap: (newsSource) {
                     _viewModel.updateSelectedNewsSource(newsSource);
-          
-                    Navigator.of(context).pushNamed(NewsSourceDetailsPage.routeId, arguments: _viewModel);
-                  }
+
+                    Navigator.of(context).pushNamed(
+                      NewsSourceDetailsPage.routeId,
+                      arguments: _viewModel,
+                    );
+                  },
                 ),
-          
+
                 const SizedBox(height: 16),
-          
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
@@ -69,13 +68,11 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         'Top Headlines',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold
-                        ),
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                            
+
                       SizedBox(height: 8),
-                            
+
                       AllArticlesList(
                         articles: data.articles,
                         isScrollable: false,
@@ -85,12 +82,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
         );
-      } 
+      },
     );
   }
 }
