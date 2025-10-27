@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/pages/details_page.dart';
+import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
 import 'package:sprint3_app/widgets/all_articles_list.dart';
 import 'package:sprint3_app/widgets/news_sources_list.dart';
@@ -35,35 +35,58 @@ class _HomePageState extends State<HomePage> {
       builder: (_, data, _) {
         return Scaffold(
           appBar: AppBar(
-            // title: const Text('News'),
+            title: const Text('News'),
           ),
-          body: Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  NewsSourcesList(
-                    newsSources: data.newsSources,
-                    onTap: (newsSource) {
-                      _viewModel.updateSelectedNewsSource(newsSource);
-            
-                      Navigator.of(context).pushNamed(DetailsPage.routeId, arguments: _viewModel);
-                    }
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    'Top News Sources',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    )
                   ),
-            
-                  const SizedBox(height: 16),
-            
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: AllArticlesList(
-                      articles: data.articles,
-                      onTap: (article) {
-                        
-                      },
-                    ),
-                  )
-                ],
-              ),
+                ),
+
+                NewsSourcesList(
+                  newsSources: data.newsSources,
+                  onTap: (newsSource) {
+                    _viewModel.updateSelectedNewsSource(newsSource);
+          
+                    Navigator.of(context).pushNamed(NewsSourceDetailsPage.routeId, arguments: _viewModel);
+                  }
+                ),
+          
+                const SizedBox(height: 16),
+          
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Top Headlines',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                            
+                      SizedBox(height: 8),
+                            
+                      AllArticlesList(
+                        articles: data.articles,
+                        isScrollable: false,
+                        onTap: (article) {
+                          
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         );

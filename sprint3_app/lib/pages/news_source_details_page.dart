@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
-import 'package:sprint3_app/widgets/article_item.dart';
+import 'package:sprint3_app/widgets/all_articles_list.dart';
 
-class DetailsPage extends StatefulWidget {
-  static const routeId = '/details';
+class NewsSourceDetailsPage extends StatefulWidget {
+  static const routeId = '/news_source_details';
 
   final HomeViewModel viewModel;
 
-  const DetailsPage({super.key, required this.viewModel});
+  const NewsSourceDetailsPage({super.key, required this.viewModel});
 
   @override
-  State<StatefulWidget> createState() => _DetailsPageState();
+  State<StatefulWidget> createState() => _NewsSourceDetailsPageState();
 }
 
-class _DetailsPageState extends State<DetailsPage> {
+class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<HomeData>(
@@ -36,13 +36,17 @@ class _DetailsPageState extends State<DetailsPage> {
               ),
             ),
           ),
-          body: ListView.builder(
-            itemCount: data.articles.length,
-            itemBuilder: (context, index) {
-              final ArticleModel article = data.articles[index];
-
-              return ArticleItem(article: article);
-            },
+          body: Padding(
+            padding: const EdgeInsets.only(
+              left: 10,
+              right: 10
+            ),
+            child: AllArticlesList(
+              articles: data.articles,
+              onTap: (article) {
+                print(article.title);
+              },
+            ),
           ),
         );
       },

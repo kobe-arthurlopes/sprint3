@@ -10,36 +10,24 @@ class NewsSourcesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Top News Sources',
-          style: TextStyle(
-            fontWeight: FontWeight.bold
-          ),
-        ),
-
-        SizedBox(
-          height: 160,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: newsSources.length,
-            itemBuilder: (context, index) {
-              final newsSource = newsSources[index];
-        
-              return NewsSourceItem(
-                newsSource: newsSource,
-                onTap: () {
-                  if (onTap != null) {
-                    onTap!(newsSource);
-                  }
-                },
-              );
-            }
-          ),
-        ),
-      ],
+    return SizedBox(
+      height: 160,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: newsSources.length,
+        itemBuilder: (context, index) {
+          final newsSource = newsSources[index];
+    
+          return NewsSourceItem(
+            newsSource: newsSource,
+            onTap: () {
+              if (onTap != null) {
+                onTap!(newsSource);
+              }
+            },
+          );
+        }
+      ),
     );
   }
 }

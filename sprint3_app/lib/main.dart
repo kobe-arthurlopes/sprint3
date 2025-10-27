@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/pages/details_page.dart';
+import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/pages/home_page.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
 
@@ -24,12 +24,12 @@ class MyApp extends StatelessWidget {
               settings: routeSettings,
               builder: (context) => HomePage(),
             );
-          case DetailsPage.routeId:
+          case NewsSourceDetailsPage.routeId:
             final HomeViewModel viewModel = routeSettings.arguments as HomeViewModel;
 
             return MaterialPageRoute(
               settings: routeSettings,
-              builder: (context) => DetailsPage(viewModel: viewModel),
+              builder: (context) => NewsSourceDetailsPage(viewModel: viewModel),
             );
           default:
             return null;

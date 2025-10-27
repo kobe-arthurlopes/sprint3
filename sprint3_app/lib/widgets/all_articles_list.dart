@@ -4,42 +4,34 @@ import 'package:sprint3_app/widgets/all_articles_item.dart';
 
 class AllArticlesList extends StatelessWidget {
   final List<ArticleModel> articles;
+  final bool isScrollable;
   final void Function(ArticleModel)? onTap;
 
-  const AllArticlesList({super.key, required this.articles, this.onTap});
+  const AllArticlesList({
+    super.key, 
+    required this.articles, 
+    this.isScrollable = true,
+    this.onTap
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Top Headlines',
-          style: TextStyle(
-            fontWeight: FontWeight.bold
-          ),
-        ),
-
-        SizedBox(height: 8),
-
-        ListView.builder(
-          itemCount: articles.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            final article = articles[index];
-
-            return AllArticlesItem(
-              article: article,
-              onTap: () {
-                if (onTap != null) {
-                  onTap!(article);
-                }
-              },
-            );
+    return ListView.builder(
+      itemCount: articles.length,
+      shrinkWrap: true,
+      physics: isScrollable ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        final article = articles[index];
+    
+        return AllArticlesItem(
+          article: article,
+          onTap: () {
+            if (onTap != null) {
+              onTap!(article);
+            }
           },
-        )
-      ],
+        );
+      },
     );
   }
 }
