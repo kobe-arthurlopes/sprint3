@@ -13,15 +13,10 @@ class NewsSourcesList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 10
-          ),
-          child: Text(
-            'Top News Sources',
-            style: TextStyle(
-              fontWeight: FontWeight.bold
-            ),
+        Text(
+          'Top News Sources',
+          style: TextStyle(
+            fontWeight: FontWeight.bold
           ),
         ),
 
