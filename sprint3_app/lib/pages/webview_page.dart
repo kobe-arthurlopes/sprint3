@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/widgets/app_bar_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebviewPage extends StatefulWidget {
@@ -27,11 +28,11 @@ class _WebViewPageState extends State<WebviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Webview'),
+      backgroundColor: Color(0xFFF9FAFB),
+      appBar: AppBarWidget(
+        title: 'Webview',
       ),
       body: WebViewWidget(controller: _controller),
-      // body: WebViewWidget(controller: _controller),
     );
   }
 }
