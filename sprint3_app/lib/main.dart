@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
               settings: routeSettings,
               builder: (context) {
-                return WebviewPage(url: routeSettings.arguments as String);
+                return WebviewPage(url: routeSettings.arguments as String?);
               },
             );
           default:
