@@ -41,6 +41,7 @@ dependencies:
   firebase_core: ^4.2.0
   firebase_remote_config: ^6.1.0
   webview_flutter: ^4.13.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   build_runner: ^2.10.0
