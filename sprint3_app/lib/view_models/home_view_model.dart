@@ -11,9 +11,9 @@ class HomeData {
   NewsSourceModel? selectedNewsSource;
 
   HomeData({
-    required this.articles, 
+    required this.articles,
     required this.newsSources,
-    required this.selectedNewsSource
+    required this.selectedNewsSource,
   });
 
   HomeData copyWith({
@@ -24,7 +24,7 @@ class HomeData {
     return HomeData(
       articles: articles ?? this.articles,
       newsSources: newsSources ?? this.newsSources,
-      selectedNewsSource: selectedNewsSource ?? this.selectedNewsSource
+      selectedNewsSource: selectedNewsSource ?? this.selectedNewsSource,
     );
   }
 }
@@ -35,14 +35,10 @@ class HomeViewModel {
   late final ApiService _apiService;
 
   ValueNotifier<HomeData> homeData = ValueNotifier(
-    HomeData(
-      articles: [],
-      newsSources: [],
-      selectedNewsSource: null
-    )
+    HomeData(articles: [], newsSources: [], selectedNewsSource: null),
   );
 
-  Map<String, dynamic>? _requestProperties;
+  Map<String, dynamic>? _requestProperties = {'category': 'general'};
 
   Future<void> start() async {
     _tokens = await TokenProvider.create();
@@ -55,12 +51,7 @@ class HomeViewModel {
     _apiService = ApiService(apiKey: _tokens.apiKey);
   }
 
-  Future<void> fetchAllArticles() async {
-    _requestProperties = {'category': 'general'};
-    await _fetchArticles();
-  }
-
-  Future<void> _fetchArticles() async {
+  Future<void> fetchArticles() async {
     try {
       final articles = await _apiService.fetchArticles(_requestProperties);
       homeData.value = homeData.value.copyWith(articles: articles);
@@ -81,6 +72,10 @@ class HomeViewModel {
   void updateSelectedNewsSource(NewsSourceModel newsSource) {
     homeData.value = homeData.value.copyWith(selectedNewsSource: newsSource);
     _requestProperties = {'sources': newsSource.fields?.sourceId};
-    _fetchArticles();
+  }
+
+  void resetSelectedNewsSource() {
+    homeData.value = homeData.value.copyWith(selectedNewsSource: null);
+    _requestProperties = {'category': 'general'};
   }
 }
