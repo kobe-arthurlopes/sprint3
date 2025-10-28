@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
 import 'package:sprint3_app/widgets/all_articles_list.dart';
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _initialize() async {
     await _viewModel.start();
     await _viewModel.fetchNewsSources();
-    await _viewModel.fetchAllArticles();
+    await _viewModel.fetchArticles();
   }
 
   @override
@@ -49,13 +50,23 @@ class _HomePageState extends State<HomePage> {
 
                 NewsSourcesList(
                   newsSources: data.newsSources,
-                  onTap: (newsSource) {
+                  onTap: (newsSource) async {
                     _viewModel.updateSelectedNewsSource(newsSource);
+                    await _viewModel.fetchArticles();
 
-                    Navigator.of(context).pushNamed(
+                    final List<ArticleModel> articles =
+                        _viewModel.homeData.value.articles;
+
+                    final result = await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
-                      arguments: _viewModel,
+                      arguments: [
+                        newsSource.fields?.name ?? 'empty',
+                        articles,
+                      ],
                     );
+
+                    _viewModel.resetSelectedNewsSource();
+                    await _viewModel.fetchArticles();
                   },
                 ),
 
@@ -76,9 +87,7 @@ class _HomePageState extends State<HomePage> {
                       AllArticlesList(
                         articles: data.articles,
                         isScrollable: false,
-                        onTap: (article) {
-                          
-                        },
+                        onTap: (article) {},
                       ),
                     ],
                   ),
