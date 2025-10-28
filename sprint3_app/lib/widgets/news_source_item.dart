@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/news_source_dto_model.dart';
+import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class NewsSourceItem extends StatelessWidget {
-  final NewsSourceDTOModel newsSource;
+  final NewsSourceDTOModel? newsSource;
   final VoidCallback? onTap;
 
   const NewsSourceItem({super.key, required this.newsSource, this.onTap});
@@ -11,7 +12,7 @@ class NewsSourceItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (onTap != null) {
+        if (onTap != null && newsSource != null) {
           onTap!();
         }
       },
@@ -25,26 +26,40 @@ class NewsSourceItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(
-                newsSource.logoUrl ?? 'none'
+            newsSource == null
+              ? ShimmerWidget.circular(radius: 50)
+              : ClipOval(
+                child: Image.network(
+                  newsSource!.logoUrl ?? '',
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, _, _) {
+                    return Image.asset(
+                      'images/article_img_placeholder.png',
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
               ),
-            ),
-        
+
             SizedBox(
               width: 100,
               height: 40,
-              child: Center(
-                child: Text(
-                  newsSource.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF333333),
-                    fontWeight: FontWeight.w500
-                  ),
-                )
-              )
+              child: newsSource == null
+                ? ShimmerWidget.rectangular()
+                : Center(
+                  child: Text(
+                    newsSource!.name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFF333333),
+                      fontWeight: FontWeight.w500
+                    ),
+                  )
+                ),
             )
           ],
         ),

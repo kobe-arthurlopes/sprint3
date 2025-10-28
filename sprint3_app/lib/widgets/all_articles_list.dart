@@ -14,23 +14,17 @@ class AllArticlesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (articles.isEmpty) {
-      return Text('Empty');
-    } else {
-      return ListView.builder(
-        itemCount: articles.length,
-        shrinkWrap: true,
-        physics: isScrollable
-            ? AlwaysScrollableScrollPhysics()
-            : NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          final article = articles[index];
-
-          return AllArticlesItem(
-            article: article
-          );
-        },
-      );
-    }
+    return ListView.builder(
+      itemCount: articles.isEmpty ? 10 : articles.length,
+      shrinkWrap: true,
+      physics: isScrollable
+          ? AlwaysScrollableScrollPhysics()
+          : NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return AllArticlesItem(
+          article: articles.isEmpty ? null : articles[index]
+        );
+      },
+    );
   }
 }
