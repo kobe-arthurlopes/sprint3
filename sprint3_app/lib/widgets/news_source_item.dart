@@ -39,6 +39,10 @@ class NewsSourceItem extends StatelessWidget {
                 child: Text(
                   newsSource.fields?.name ?? 'none',
                   textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFF333333),
+                    fontWeight: FontWeight.w500
+                  ),
                 )
               )
             )
