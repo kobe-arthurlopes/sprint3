@@ -45,11 +45,11 @@ class HomeViewModel {
     _tokens = await TokenProvider.create();
 
     _cmsConnection = CmsConnection(
-      accessToken: _tokens.contentfulAccessToken,
-      spaceId: _tokens.contentfulSpaceId,
+      accessToken: _tokens.accessTokenCDA,
+      spaceId: _tokens.spaceIdCDA,
     );
 
-    _apiService = ApiService(apiKey: _tokens.apiKey);
+    _apiService = ApiService(apiKey: _tokens.newsApiKey);
   }
 
   Future<void> fetchArticles() async {
