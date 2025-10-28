@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/pages/home_page.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
@@ -25,11 +26,24 @@ class MyApp extends StatelessWidget {
               builder: (context) => HomePage(),
             );
           case NewsSourceDetailsPage.routeId:
-            final HomeViewModel viewModel = routeSettings.arguments as HomeViewModel;
+            final List<dynamic> arguments =
+                routeSettings.arguments as List<dynamic>;
+
+            final String title = arguments[0] as String;
+            List<ArticleModel> articles = [];
+
+            if (arguments[1] is List<ArticleModel>) {
+              articles = arguments[1] as List<ArticleModel>;
+            }
 
             return MaterialPageRoute(
               settings: routeSettings,
-              builder: (context) => NewsSourceDetailsPage(viewModel: viewModel),
+              builder: (context) {
+                return NewsSourceDetailsPage(
+                  title: title,
+                  articles: articles,
+                );
+              },
             );
           default:
             return null;
