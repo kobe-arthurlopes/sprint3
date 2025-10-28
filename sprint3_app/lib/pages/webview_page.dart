@@ -14,15 +14,52 @@ class WebviewPage extends StatefulWidget {
 }
 
 class _WebViewPageState extends State<WebviewPage> {
-  late final WebViewController _controller;
+  WebViewController? _controller;
+  String? _errorMessage;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    _initializeWebview();
+  }
 
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(widget.url!));
+  void _initializeWebview() {
+    final url = widget.url;
+
+    if (url == null || url.isEmpty) {
+      setState(() => _errorMessage = 'URL not provided');
+      return;
+    }
+
+    Uri? uri;
+
+    try {
+      uri = Uri.parse(url);
+
+      if (!uri.hasScheme) {
+        setState(() => _errorMessage = 'Invalid URL');
+        return;
+      }
+    } catch (e) {
+      setState(() => _errorMessage = 'Invalid URL');
+      return;
+    }
+
+    try {
+      _controller = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onPageStarted: (_) { 
+              setState(() => _isLoading = false);
+            },
+          )
+        )
+        ..loadRequest(uri);
+    } catch (e) {
+      setState(() => _errorMessage = 'Error loading Webpage');
+    }
   }
 
   @override
@@ -32,7 +69,39 @@ class _WebViewPageState extends State<WebviewPage> {
       appBar: AppBarWidget(
         title: 'Webview',
       ),
-      body: WebViewWidget(controller: _controller),
+      body: _errorMessage != null
+        ? _buildErrorView(_errorMessage!)
+        : _controller == null || _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : WebViewWidget(controller: _controller!)
+    );
+  }
+
+  Widget _buildErrorView(String message) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, color: Color(0xFFD32F2F), size: 60),
+
+            const SizedBox(height: 16),
+
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16, 
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF333333)
+              ),
+            ),
+
+            const SizedBox(height: 24),
+          ],
+        ),
+      ),
     );
   }
 }
