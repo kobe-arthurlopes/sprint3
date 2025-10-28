@@ -27,9 +27,6 @@ class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: AllArticlesList(
           articles: widget.articles,
-          onTap: (article) {
-            print(article.title);
-          },
         ),
       ),
     );

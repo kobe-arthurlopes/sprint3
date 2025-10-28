@@ -59,10 +59,7 @@ class _HomePageState extends State<HomePage> {
 
                     final result = await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
-                      arguments: [
-                        newsSource.fields?.name ?? 'empty',
-                        articles,
-                      ],
+                      arguments: [newsSource.fields?.name ?? 'empty', articles],
                     );
 
                     _viewModel.resetSelectedNewsSource();
@@ -87,7 +84,6 @@ class _HomePageState extends State<HomePage> {
                       AllArticlesList(
                         articles: data.articles,
                         isScrollable: false,
-                        onTap: (article) {},
                       ),
                     ],
                   ),
