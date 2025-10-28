@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/pages/home_page.dart';
-import 'package:sprint3_app/view_models/home_view_model.dart';
+import 'package:sprint3_app/pages/webview_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,10 +39,14 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
               settings: routeSettings,
               builder: (context) {
-                return NewsSourceDetailsPage(
-                  title: title,
-                  articles: articles,
-                );
+                return NewsSourceDetailsPage(title: title, articles: articles);
+              },
+            );
+          case WebviewPage.routeId:
+            return MaterialPageRoute(
+              settings: routeSettings,
+              builder: (context) {
+                return WebviewPage(url: routeSettings.arguments as String);
               },
             );
           default:
