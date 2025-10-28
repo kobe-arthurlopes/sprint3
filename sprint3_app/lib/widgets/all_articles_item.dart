@@ -5,7 +5,10 @@ import 'package:sprint3_app/pages/webview_page.dart';
 class AllArticlesItem extends StatelessWidget {
   final ArticleModel article;
 
-  const AllArticlesItem({super.key, required this.article});
+  const AllArticlesItem({
+    super.key, 
+    required this.article,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,20 +49,29 @@ class AllArticlesItem extends StatelessWidget {
 
                   Text(
                     article.title,
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 14, 
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF333333)
+                    ),
                     maxLines: 4,
                     textAlign: TextAlign.left,
                   ),
 
                   Text(
                     article.author,
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w300),
+                    style: TextStyle(
+                      fontSize: 10, 
+                      fontWeight: FontWeight.w300,
+                      color: Color(0xFF6B7280)
+                    ),
                     maxLines: 2,
                   ),
 
                   SizedBox(height: 8),
 
                   Material(
+                    type: MaterialType.transparency,
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).pushNamed(
@@ -73,7 +85,7 @@ class AllArticlesItem extends StatelessWidget {
                           Text(
                             'Visit website',
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Color(0xFF1976D2),
                               fontSize: 10,
                               fontWeight: FontWeight.w300,
                             ),
@@ -85,7 +97,7 @@ class AllArticlesItem extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 1),
                             child: Icon(
                               Icons.open_in_new,
-                              color: Colors.blue,
+                              color: Color(0xFF1976D2),
                               size: 8,
                             ),
                           ),
