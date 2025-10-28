@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/cms/news_source_cms_model.dart';
+import 'package:sprint3_app/models/news_source_dto_model.dart';
 
 class NewsSourceItem extends StatelessWidget {
-  final NewsSourceCMSModel newsSource;
+  final NewsSourceDTOModel newsSource;
   final VoidCallback? onTap;
 
   const NewsSourceItem({super.key, required this.newsSource, this.onTap});
@@ -28,7 +28,7 @@ class NewsSourceItem extends StatelessWidget {
             CircleAvatar(
               radius: 50,
               backgroundImage: NetworkImage(
-                newsSource.fields?.logoUrl ?? 'none'
+                newsSource.logoUrl ?? 'none'
               ),
             ),
         
@@ -37,7 +37,7 @@ class NewsSourceItem extends StatelessWidget {
               height: 40,
               child: Center(
                 child: Text(
-                  newsSource.fields?.name ?? 'none',
+                  newsSource.name,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFF333333),

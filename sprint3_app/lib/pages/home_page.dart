@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
 
                     final _ = await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
-                      arguments: [newsSource.fields?.name ?? 'empty', articles],
+                      arguments: [newsSource.name, articles]
                     );
 
                     _viewModel.resetSelectedNewsSource();

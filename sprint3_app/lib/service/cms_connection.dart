@@ -1,43 +1,42 @@
 import 'package:contentful/contentful.dart';
-import 'package:sprint3_app/models/cms/carousel_cms_model.dart';
 import 'package:sprint3_app/models/cms/home_cms_model.dart';
-import 'package:sprint3_app/models/cms/news_source_cms_model.dart';
 
 class CmsConnection {
   final String? accessToken;
   final String? spaceId;
+  final String environment;
 
-  CmsConnection({required this.accessToken, required this.spaceId});
+  CmsConnection({
+    required this.accessToken, 
+    required this.spaceId,
+    this.environment = 'master'
+  });
 
-  Future<List<NewsSourceCMSModel>?> findAll() async {
+  Future<HomeCMSModel> findAll() async {
     if (accessToken == null) {
-      return null;
+      throw Exception();
     }
 
     if (spaceId == null) {
-      return null;
+      throw Exception();
     }
 
     final Client contentful = Client(
       BearerTokenHTTPClient(accessToken!),
       spaceId: spaceId!,
-      environment: 'master'
+      environment: environment
     );
 
     try {
-      final homeModelCollection = await contentful.getEntries<HomeCMSModel>({
+      final homeCMSCollection = await contentful.getEntries<HomeCMSModel>({
         'content_type': HomeCMSModel.contentType,
-        'include': '10',
+        'include': '10'
       }, HomeCMSModel.fromJson);
 
-      final home = homeModelCollection.items.first;
-      final CarouselCMSModel? carousel = home.fields?.carousel;
-      final List<NewsSourceCMSModel>? newsSources = carousel?.fields?.newsSources;
-
-      return newsSources;
+      return homeCMSCollection.items.first;
     } catch (e) {
       print(e);
+      rethrow;
     }
-    return null;
-  }
+  } 
 }

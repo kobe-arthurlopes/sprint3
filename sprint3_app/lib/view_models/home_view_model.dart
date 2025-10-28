@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sprint3_app/models/article_model.dart';
-import 'package:sprint3_app/models/cms/news_source_cms_model.dart';
+import 'package:sprint3_app/models/home_dto_model.dart';
+import 'package:sprint3_app/models/news_source_dto_model.dart';
 import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
 
 class HomeData {
   List<ArticleModel> articles;
-  List<NewsSourceCMSModel> newsSources;
-  NewsSourceCMSModel? selectedNewsSource;
+  List<NewsSourceDTOModel> newsSources;
+  NewsSourceDTOModel? selectedNewsSource;
 
   HomeData({
     required this.articles,
@@ -18,8 +19,8 @@ class HomeData {
 
   HomeData copyWith({
     List<ArticleModel>? articles,
-    List<NewsSourceCMSModel>? newsSources,
-    NewsSourceCMSModel? selectedNewsSource,
+    List<NewsSourceDTOModel>? newsSources,
+    NewsSourceDTOModel? selectedNewsSource,
   }) {
     return HomeData(
       articles: articles ?? this.articles,
@@ -62,16 +63,20 @@ class HomeViewModel {
 
   Future<void> fetchNewsSources() async {
     try {
-      final newsSources = await _cmsConnection.findAll();
-      homeData.value = homeData.value.copyWith(newsSources: newsSources);
+      final homeCMS = await _cmsConnection.findAll();
+      final homeDTO = HomeDTOModel.fromCMS(homeCMS);
+      final carouselDTO = homeDTO.carousel;
+      final newsSourcesDTO = carouselDTO.newsSources;
+
+      homeData.value = homeData.value.copyWith(newsSources: newsSourcesDTO);
     } on Exception {
       rethrow;
     }
   }
 
-  void updateSelectedNewsSource(NewsSourceCMSModel newsSource) {
+  void updateSelectedNewsSource(NewsSourceDTOModel newsSource) {
     homeData.value = homeData.value.copyWith(selectedNewsSource: newsSource);
-    _requestProperties = {'sources': newsSource.fields?.sourceId};
+    _requestProperties = {'sources': newsSource.sourceId};
   }
 
   void resetSelectedNewsSource() {
