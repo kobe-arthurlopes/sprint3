@@ -3,6 +3,7 @@ import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
 import 'package:sprint3_app/widgets/all_articles_list.dart';
+import 'package:sprint3_app/widgets/app_bar_widget.dart';
 import 'package:sprint3_app/widgets/news_sources_list.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,16 +36,26 @@ class _HomePageState extends State<HomePage> {
       valueListenable: _viewModel.homeData,
       builder: (_, data, _) {
         return Scaffold(
-          appBar: AppBar(title: const Text('News')),
+          backgroundColor: Color(0xFFF9FAFB),
+          appBar: AppBarWidget(
+            title: 'News',
+          ),
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    left: 10,
+                    right: 10
+                  ),
                   child: Text(
                     'Top News Sources',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1F1F1F)
+                    ),
                   ),
                 ),
 
@@ -57,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                     final List<ArticleModel> articles =
                         _viewModel.homeData.value.articles;
 
-                    final result = await Navigator.of(context).pushNamed(
+                    final _ = await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
                       arguments: [newsSource.fields?.name ?? 'empty', articles],
                     );
@@ -76,7 +87,10 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         'Top Headlines',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF1F1F1F)
+                        ),
                       ),
 
                       SizedBox(height: 8),
