@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
+import 'package:sprint3_app/pages/webview_page.dart';
 
 class AllArticlesItem extends StatelessWidget {
   final ArticleModel article;
-  final VoidCallback? onTap;
 
-  const AllArticlesItem({super.key, required this.article, this.onTap});
+  const AllArticlesItem({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +62,10 @@ class AllArticlesItem extends StatelessWidget {
                   Material(
                     child: InkWell(
                       onTap: () {
-                        if (onTap != null) {
-                          onTap!();
-                        }
+                        Navigator.of(context).pushNamed(
+                          WebviewPage.routeId,
+                          arguments: article.url,
+                        );
                       },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,13 +88,13 @@ class AllArticlesItem extends StatelessWidget {
                               color: Colors.blue,
                               size: 8,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ),
 
-                  SizedBox(height: 6)
+                  SizedBox(height: 6),
                 ],
               ),
             ),
