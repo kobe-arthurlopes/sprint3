@@ -1,7 +1,7 @@
 import 'package:contentful/contentful.dart';
-import 'package:sprint3_app/models/carousel_model.dart';
-import 'package:sprint3_app/models/home_model.dart';
-import 'package:sprint3_app/models/news_source_model.dart';
+import 'package:sprint3_app/models/cms/carousel_cms_model.dart';
+import 'package:sprint3_app/models/cms/home_cms_model.dart';
+import 'package:sprint3_app/models/cms/news_source_cms_model.dart';
 
 class CmsConnection {
   final String? accessToken;
@@ -9,7 +9,7 @@ class CmsConnection {
 
   CmsConnection({required this.accessToken, required this.spaceId});
 
-  Future<List<NewsSourceModel>?> findAll() async {
+  Future<List<NewsSourceCMSModel>?> findAll() async {
     if (accessToken == null) {
       return null;
     }
@@ -25,14 +25,14 @@ class CmsConnection {
     );
 
     try {
-      final homeModelCollection = await contentful.getEntries<HomeModel>({
-        'content_type': HomeModel.contentType,
+      final homeModelCollection = await contentful.getEntries<HomeCMSModel>({
+        'content_type': HomeCMSModel.contentType,
         'include': '10',
-      }, HomeModel.fromJson);
+      }, HomeCMSModel.fromJson);
 
       final home = homeModelCollection.items.first;
-      final CarouselModel? carousel = home.fields?.carousel;
-      final List<NewsSourceModel>? newsSources = carousel?.fields?.newsSources;
+      final CarouselCMSModel? carousel = home.fields?.carousel;
+      final List<NewsSourceCMSModel>? newsSources = carousel?.fields?.newsSources;
 
       return newsSources;
     } catch (e) {

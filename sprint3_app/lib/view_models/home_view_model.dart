@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sprint3_app/models/article_model.dart';
-import 'package:sprint3_app/models/news_source_model.dart';
+import 'package:sprint3_app/models/cms/news_source_cms_model.dart';
 import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
 
 class HomeData {
   List<ArticleModel> articles;
-  List<NewsSourceModel> newsSources;
-  NewsSourceModel? selectedNewsSource;
+  List<NewsSourceCMSModel> newsSources;
+  NewsSourceCMSModel? selectedNewsSource;
 
   HomeData({
     required this.articles,
@@ -18,8 +18,8 @@ class HomeData {
 
   HomeData copyWith({
     List<ArticleModel>? articles,
-    List<NewsSourceModel>? newsSources,
-    NewsSourceModel? selectedNewsSource,
+    List<NewsSourceCMSModel>? newsSources,
+    NewsSourceCMSModel? selectedNewsSource,
   }) {
     return HomeData(
       articles: articles ?? this.articles,
@@ -69,7 +69,7 @@ class HomeViewModel {
     }
   }
 
-  void updateSelectedNewsSource(NewsSourceModel newsSource) {
+  void updateSelectedNewsSource(NewsSourceCMSModel newsSource) {
     homeData.value = homeData.value.copyWith(selectedNewsSource: newsSource);
     _requestProperties = {'sources': newsSource.fields?.sourceId};
   }
