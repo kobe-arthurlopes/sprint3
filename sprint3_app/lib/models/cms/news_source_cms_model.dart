@@ -1,68 +1,48 @@
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:sprint3_app/models/cms/cms_model.dart';
 
-part 'news_source_cms_model.g.dart';
-
-@JsonSerializable()
-class NewsSourceCMSModel extends Equatable {
+class NewsSourceCMSModel extends AutoRegisterCmsModel<NewsSourceCMSModel> {
   final String? name;
   final String? logoUrl;
   final String? sourceId;
-  static String contentType = 'newsSource';
 
-  const NewsSourceCMSModel({
-    this.name,
-    this.logoUrl,
-    this.sourceId
-  });
+  const NewsSourceCMSModel({this.name, this.logoUrl, this.sourceId}) : super();
 
-  static NewsSourceCMSModel fromJson(Map<String, dynamic> json) {
-    final String? jsonName = json['name'] as String?;
-    final String? jsonLogoUrl = json['logo'] == null
-        ? null
-        : json['logo']['url'] as String;
+  static final register = CmsModel.registerModel<NewsSourceCMSModel>(() => NewsSourceCMSModel());
 
-    final String? sourceId = json['sourceId'] as String?;
+  @override
+  final String contentType = 'newsSource';
 
-    return NewsSourceCMSModel(
-      name: jsonName,
-      logoUrl: jsonLogoUrl,
-      sourceId: sourceId,
-    );
+  @override
+  String fieldsQuery() => '''
+    name
+    sourceId
+    logo {
+      url
+    }
+  ''';
+
+  @override
+  CmsModel fromJson(Map<String, dynamic> json) {
+      final String? jsonName = json['name'] as String?;
+      final String? jsonLogoUrl = json['logo'] == null
+          ? null
+          : json['logo']['url'] as String;
+
+      final String? sourceId = json['sourceId'] as String?;
+
+      return NewsSourceCMSModel(
+        name: jsonName,
+        logoUrl: jsonLogoUrl,
+        sourceId: sourceId,
+      );
   }
 
-  Map<String, dynamic> toJson() => _$NewsSourceCMSModelToJson(this);
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'logoUrl': logoUrl,
+    'sourceId': sourceId
+  };
 
   @override
   List<Object?> get props => [name, logoUrl, sourceId];
 }
-
-// @JsonSerializable()
-// class NewsSourceCMSModelFields extends Equatable {
-//   final String? name;
-//   final String? logoUrl;
-//   final String? sourceId;
-  
-//   const NewsSourceCMSModelFields({this.name, this.logoUrl, this.sourceId}) : super();
-
-//   static NewsSourceCMSModelFields fromJson(Map<String, dynamic> json) {
-//     final String? jsonName = json['name'] as String?;
-//     String? jsonLogoUrl = json['logo'] == null
-//         ? null
-//         : Asset.fromJson(json['logo']).fields?.file?.url;
-//     jsonLogoUrl = jsonLogoUrl != null ? 'https:$jsonLogoUrl' : null;
-
-//     final String? sourceId = json['sourceId'] as String?;
-
-//     return NewsSourceCMSModelFields(
-//       name: jsonName,
-//       logoUrl: jsonLogoUrl,
-//       sourceId: sourceId,
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() => _$NewsSourceCMSModelFieldsToJson(this);
-
-//   @override
-//   List<Object?> get props => [name, logoUrl, sourceId];
-// }

@@ -1,4 +1,5 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:sprint3_app/models/cms/cms_model.dart';
 import 'package:sprint3_app/models/cms/home_cms_model.dart';
 
 class CmsConnection {
@@ -28,28 +29,15 @@ class CmsConnection {
     _client = GraphQLClient(link: httpLink, cache: GraphQLCache());
   }
 
-  Future<HomeCMSModel> findAll() async {
-    const String query = r'''
+  Future<T> findAll<T extends CmsModel>() async {
+    final String contentType = CmsModel.contentTypeOf<T>();
+    final String fieldsQuery = CmsModel.fieldsQueryOf<T>();
+
+    final String query = '''
       query {
-        homeCollection(limit: 1) {
+        ${contentType}Collection(limit: 1) {
           items {
-            title
-            carousel {
-              ... on CarouselNewsSources {
-                name
-                newsSourcesCollection {
-                  items {
-                    ... on NewsSource {
-                      name
-                      sourceId
-                      logo {
-                        url
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            $fieldsQuery
           }
         }
       }
@@ -61,12 +49,12 @@ class CmsConnection {
       throw Exception(result.exception.toString());
     }
 
-    final items = result.data?['homeCollection']?['items'] as List?;
+    final items = result.data?['${contentType}Collection']?['items'] as List?;
 
     if (items == null || items.isEmpty) {
-      throw Exception('No home content found');
+      throw Exception('No $T content found');
     }
 
-    return HomeCMSModel.fromJson(items.first);
+    return CmsModel.fromJsonOf<T>(items.first);
   }
 }
