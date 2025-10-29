@@ -1,4 +1,3 @@
-import 'package:contentful/contentful.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sprint3_app/models/cms/news_source_cms_model.dart';
 
@@ -18,9 +17,9 @@ class NewsSourceDTOModel extends Equatable {
       return NewsSourceDTOModel(name: 'Untitled');
     }
 
-    final String name = cmsModel.fields?.name ?? 'Untitled';
-    final String? logoUrl = cmsModel.fields?.logoUrl;
-    final String? sourceId = cmsModel.fields?.sourceId;
+    final String name = cmsModel.name ?? 'Untitled';
+    final String? logoUrl = cmsModel.logoUrl;
+    final String? sourceId = cmsModel.sourceId;
 
     return NewsSourceDTOModel(
       name: name,
@@ -31,12 +30,9 @@ class NewsSourceDTOModel extends Equatable {
 
   NewsSourceCMSModel toCMS() {
     return NewsSourceCMSModel(
-      sys: SystemFields(id: '', type: 'Entry'), 
-      fields: NewsSourceCMSModelFields(
-        name: name,
-        logoUrl: logoUrl,
-        sourceId: sourceId
-      )
+      name: name,
+      logoUrl: logoUrl,
+      sourceId: sourceId
     );
   }
 

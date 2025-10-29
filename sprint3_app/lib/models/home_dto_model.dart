@@ -1,4 +1,3 @@
-import 'package:contentful/contentful.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sprint3_app/models/carousel_dto_model.dart';
 import 'package:sprint3_app/models/cms/carousel_cms_model.dart';
@@ -14,9 +13,9 @@ class HomeDTOModel extends Equatable {
   });
 
   factory HomeDTOModel.fromCMS(HomeCMSModel cmsModel) {
-    final CarouselCMSModel? carouselCMS = cmsModel.fields?.carousel;
+    final CarouselCMSModel? carouselCMS = cmsModel.carousel;
     final CarouselDTOModel carouselDTO = CarouselDTOModel.fromCMS(carouselCMS);
-    final String title = cmsModel.fields?.title ?? 'No title';
+    final String title = cmsModel.title ?? 'No title';
 
     return HomeDTOModel(
       carousel: carouselDTO, 
@@ -28,11 +27,8 @@ class HomeDTOModel extends Equatable {
     final CarouselCMSModel carouselCMS = carousel.toCMS();
 
     return HomeCMSModel(
-      sys: SystemFields(id: '', type: 'Entry'), 
-      fields: HomeCMSModelFields(
-        carousel: carouselCMS,
-        title: title
-      )
+      carousel: carouselCMS,
+      title: title
     );
   }
 

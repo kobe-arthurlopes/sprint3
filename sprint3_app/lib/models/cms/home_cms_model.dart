@@ -1,4 +1,3 @@
-import 'package:contentful/contentful.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprint3_app/models/cms/carousel_cms_model.dart';
@@ -6,34 +5,23 @@ import 'package:sprint3_app/models/cms/carousel_cms_model.dart';
 part 'home_cms_model.g.dart';
 
 @JsonSerializable()
-class HomeCMSModel extends Entry<HomeCMSModelFields> {
-  HomeCMSModel({
-    required SystemFields sys,
-    required HomeCMSModelFields fields
-  }) : super(sys: sys, fields: fields);
-
+class HomeCMSModel extends Equatable {
+  final String? title;
+  final CarouselCMSModel? carousel;
   static String contentType = 'home';
 
-  static HomeCMSModel fromJson(Map<String, dynamic> json) => _$HomeCMSModelFromJson(json);
+  const HomeCMSModel({this.title, this.carousel});
 
-  Map<String, dynamic> toJson() => _$HomeCMSModelToJson(this);
-}
-
-@JsonSerializable()
-class HomeCMSModelFields extends Equatable {
-  final CarouselCMSModel? carousel;
-  final String? title;
-
-  const HomeCMSModelFields({this.carousel, this.title});
-
-  static HomeCMSModelFields fromJson(Map<String, dynamic> json) {
-    return HomeCMSModelFields(
+  factory HomeCMSModel.fromJson(Map<String, dynamic> json) {
+    return HomeCMSModel(
       title: json['title'] as String?,
-      carousel: CarouselCMSModel.fromJson(json['carousel'] as Map<String, dynamic>)
+      carousel: json['carousel'] == null
+          ? null
+          : CarouselCMSModel.fromJson(json['carousel'] as Map<String, dynamic>),
     );
   }
 
-  Map<String, dynamic> toJson() => _$HomeCMSModelFieldsToJson(this);
+  Map<String, dynamic> toJson() => _$HomeCMSModelToJson(this);
 
   @override
   List<Object?> get props => [carousel, title];
