@@ -1,6 +1,5 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:sprint3_app/models/cms/cms_model.dart';
-import 'package:sprint3_app/models/cms/home_cms_model.dart';
 
 class CmsConnection {
   final String? accessToken;
