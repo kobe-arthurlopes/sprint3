@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
+import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
-import 'package:sprint3_app/widgets/all_articles_list.dart';
+import 'package:sprint3_app/widgets/articles_list.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
+import 'package:sprint3_app/widgets/banners_list.dart';
 import 'package:sprint3_app/widgets/news_sources_list.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,25 +38,24 @@ class _HomePageState extends State<HomePage> {
       valueListenable: _viewModel.homeData,
       builder: (_, data, _) {
         return Scaffold(
-          backgroundColor: Color(0xFFF9FAFB),
-          appBar: AppBarWidget(
-            title: 'News',
-          ),
+          backgroundColor: Color(0xFFECEDEF),
+          appBar: AppBarWidget(title: 'News'),
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(
-                    top: 10,
+                    top: 16,
                     left: 10,
-                    right: 10
+                    right: 10,
+                    bottom: 8
                   ),
                   child: Text(
                     'Top News Sources',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF1F1F1F)
+                      color: Color(0xFF1F1F1F),
                     ),
                   ),
                 ),
@@ -65,12 +66,16 @@ class _HomePageState extends State<HomePage> {
                     _viewModel.updateSelectedNewsSource(newsSource);
                     await _viewModel.fetchArticles();
 
+                    if (!context.mounted) {
+                      return;
+                    }
+
                     final List<ArticleModel> articles =
                         _viewModel.homeData.value.articles;
 
                     final _ = await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
-                      arguments: [newsSource.name, articles]
+                      arguments: [newsSource.name, articles],
                     );
 
                     _viewModel.resetSelectedNewsSource();
@@ -78,29 +83,66 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
 
-                const SizedBox(height: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 16,
+                        left: 10,
+                        right: 10,
+                        bottom: 8
+                      ),
+                      child: Text(
+                        'Classic Headlines',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF1F1F1F),
+                        ),
+                      ),
+                    ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
+                    BannersList(
+                      banners: data.banners,
+                      onTap: (banner) {
+                        Navigator.of(context).pushNamed(
+                          BannerDetailsPage.routId,
+                          arguments: banner
+                        );
+                      },
+                    ),
+                  ],
+                ),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 16,
+                        left: 10,
+                        right: 10,
+                        bottom: 8
+                      ),
+                      child: Text(
                         'Top Headlines',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1F1F1F)
+                          color: Color(0xFF1F1F1F),
                         ),
                       ),
-
-                      SizedBox(height: 8),
-
-                      AllArticlesList(
+                    ),
+                
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10
+                      ),
+                      child: ArticlesList(
                         articles: data.articles,
                         isScrollable: false,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),

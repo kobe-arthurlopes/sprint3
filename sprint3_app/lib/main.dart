@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
+import 'package:sprint3_app/models/banner_dto_model.dart';
+import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/pages/home_page.dart';
 import 'package:sprint3_app/pages/webview_page.dart';
@@ -48,6 +50,13 @@ class MyApp extends StatelessWidget {
               builder: (context) {
                 return WebviewPage(url: routeSettings.arguments as String?);
               },
+            );
+          case BannerDetailsPage.routId:
+            return MaterialPageRoute(
+              settings: routeSettings,
+              builder: (context) => BannerDetailsPage(
+                banner: routeSettings.arguments as BannerDTOModel
+              ),
             );
           default:
             return null;

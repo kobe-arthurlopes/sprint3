@@ -65,7 +65,7 @@ class _WebViewPageState extends State<WebviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF9FAFB),
+      backgroundColor: Color(0xFFECEDEF),
       appBar: AppBarWidget(
         title: 'Webview',
       ),

@@ -4,10 +4,18 @@ class NewsSourceCMSModel extends AutoRegisterCmsModel<NewsSourceCMSModel> {
   final String? name;
   final String? logoUrl;
   final String? sourceId;
+  final bool? isActive;
 
-  const NewsSourceCMSModel({this.name, this.logoUrl, this.sourceId}) : super();
+  const NewsSourceCMSModel({
+    this.name,
+    this.logoUrl,
+    this.sourceId,
+    this.isActive,
+  }) : super();
 
-  static final register = CmsModel.registerModel<NewsSourceCMSModel>(() => NewsSourceCMSModel());
+  static final register = CmsModel.registerModel<NewsSourceCMSModel>(
+    () => NewsSourceCMSModel(),
+  );
 
   @override
   final String contentType = 'newsSource';
@@ -19,6 +27,7 @@ class NewsSourceCMSModel extends AutoRegisterCmsModel<NewsSourceCMSModel> {
     logo {
       url
     }
+    isActive
   ''';
 
   @override
@@ -29,20 +38,23 @@ class NewsSourceCMSModel extends AutoRegisterCmsModel<NewsSourceCMSModel> {
         : json['logo']['url'] as String;
 
     final String? sourceId = json['sourceId'] as String?;
+    final bool? isActive = json['isActive'] as bool?;
 
     return NewsSourceCMSModel(
       name: jsonName,
       logoUrl: jsonLogoUrl,
       sourceId: sourceId,
+      isActive: isActive
     );
   }
 
   Map<String, dynamic> toJson() => {
     'name': name,
     'logoUrl': logoUrl,
-    'sourceId': sourceId
+    'sourceId': sourceId,
+    'isActive': isActive
   };
 
   @override
-  List<Object?> get props => [name, logoUrl, sourceId];
+  List<Object?> get props => [name, logoUrl, sourceId, isActive];
 }

@@ -18,20 +18,20 @@ class HomeData {
     required this.articles,
     required this.newsSources,
     required this.selectedNewsSource,
-    required this.banners
+    required this.banners,
   });
 
   HomeData copyWith({
     List<ArticleModel>? articles,
     List<NewsSourceDTOModel>? newsSources,
     NewsSourceDTOModel? selectedNewsSource,
-    List<BannerDTOModel>? banners
+    List<BannerDTOModel>? banners,
   }) {
     return HomeData(
       articles: articles ?? this.articles,
       newsSources: newsSources ?? this.newsSources,
       selectedNewsSource: selectedNewsSource ?? this.selectedNewsSource,
-      banners: banners ?? this.banners
+      banners: banners ?? this.banners,
     );
   }
 }
@@ -42,7 +42,12 @@ class HomeViewModel {
   late final ApiService _apiService;
 
   ValueNotifier<HomeData> homeData = ValueNotifier(
-    HomeData(articles: [], newsSources: [], selectedNewsSource: null, banners: []),
+    HomeData(
+      articles: [],
+      newsSources: [],
+      selectedNewsSource: null,
+      banners: [],
+    ),
   );
 
   Map<String, dynamic>? _requestProperties = {'category': 'general'};
@@ -72,11 +77,19 @@ class HomeViewModel {
       HomeCMSModel.registerChildren();
       final HomeCMSModel homeCMS = await _cmsConnection.findAll();
       final homeDTO = HomeDTOModel.fromCMS(homeCMS);
-      final carouselDTO = homeDTO.carousel;
-      final newsSourcesDTO = carouselDTO.newsSources;
-      final bannersDTO = homeDTO.banners;
 
-      homeData.value = homeData.value.copyWith(newsSources: newsSourcesDTO, banners: bannersDTO);
+      final carouselDTO = homeDTO.carousel;
+
+      List<NewsSourceDTOModel> newsSourcesDTO = carouselDTO.newsSources;
+      newsSourcesDTO = NewsSourceDTOModel.getActiveNewsSources(newsSourcesDTO);
+      
+      List<BannerDTOModel> bannersDTO = homeDTO.banners;
+      bannersDTO = BannerDTOModel.getActiveBanners(bannersDTO);
+
+      homeData.value = homeData.value.copyWith(
+        newsSources: newsSourcesDTO,
+        banners: bannersDTO,
+      );
     } on Exception {
       rethrow;
     }

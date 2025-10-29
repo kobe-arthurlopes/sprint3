@@ -17,11 +17,7 @@ class NewsSourceItem extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.only(
-          top: 10,
-          right: 5,
-          left: 5
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
