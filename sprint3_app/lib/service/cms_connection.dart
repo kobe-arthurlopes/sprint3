@@ -1,4 +1,4 @@
-import 'package:contentful/contentful.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:sprint3_app/models/cms/home_cms_model.dart';
 
 class CmsConnection {
@@ -6,37 +6,67 @@ class CmsConnection {
   final String? spaceId;
   final String environment;
 
+  late final GraphQLClient _client;
+
   CmsConnection({
-    required this.accessToken, 
+    required this.accessToken,
     required this.spaceId,
-    this.environment = 'master'
-  });
-
-  Future<HomeCMSModel> findAll() async {
-    if (accessToken == null) {
-      throw Exception();
+    this.environment = 'master',
+  }) {
+    if (accessToken == null || spaceId == null) {
+      throw Exception('Missing accessToken or spaceId');
     }
 
-    if (spaceId == null) {
-      throw Exception();
-    }
+    final String endpoint =
+        'https://graphql.contentful.com/content/v1/spaces/$spaceId/environments/$environment';
 
-    final Client contentful = Client(
-      BearerTokenHTTPClient(accessToken!),
-      spaceId: spaceId!,
-      environment: environment
+    final HttpLink httpLink = HttpLink(
+      endpoint,
+      defaultHeaders: {'Authorization': 'Bearer $accessToken'},
     );
 
-    try {
-      final homeCMSCollection = await contentful.getEntries<HomeCMSModel>({
-        'content_type': HomeCMSModel.contentType,
-        'include': '10'
-      }, HomeCMSModel.fromJson);
+    _client = GraphQLClient(link: httpLink, cache: GraphQLCache());
+  }
 
-      return homeCMSCollection.items.first;
-    } catch (e) {
-      print(e);
-      rethrow;
+  Future<HomeCMSModel> findAll() async {
+    const String query = r'''
+      query {
+        homeCollection(limit: 1) {
+          items {
+            title
+            carousel {
+              ... on CarouselNewsSources {
+                name
+                newsSourcesCollection {
+                  items {
+                    ... on NewsSource {
+                      name
+                      sourceId
+                      logo {
+                        url
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ''';
+
+    final result = await _client.query(QueryOptions(document: gql(query)));
+
+    if (result.hasException) {
+      throw Exception(result.exception.toString());
     }
-  } 
+
+    final items = result.data?['homeCollection']?['items'] as List?;
+
+    if (items == null || items.isEmpty) {
+      throw Exception('No home content found');
+    }
+
+    return HomeCMSModel.fromJson(items.first);
+  }
 }
