@@ -1,0 +1,72 @@
+import 'package:sprint3_app/models/cms/cms_model.dart';
+
+class BannerCMSModel extends AutoRegisterCmsModel<BannerCMSModel> {
+  final String? title;
+  final String? description;
+  final String? logoUrl;
+  final bool? isActive;
+
+  const BannerCMSModel({
+    this.title,
+    this.description,
+    this.logoUrl,
+    this.isActive
+  });
+
+  static final register = CmsModel.registerModel<BannerCMSModel>(() => BannerCMSModel());
+
+  @override
+  final String contentType = 'banner';
+
+  // @override
+  // String fieldsQuery() {
+  //   return '''
+  //     title
+  //     description
+  //     image {
+  //       url
+  //     }
+  //     ctaLink
+  //     isActive
+  //   ''';
+  // }
+
+  @override
+  String fieldsQuery() {
+    return '''
+      title
+      description
+      image {
+        url
+      }
+      isActive
+    ''';
+  }
+
+  @override
+  CmsModel fromJson(Map<String, dynamic> json) {
+    final String? jsonTitle = json['title'] as String?;
+    final String? jsonDescription = json['description'] as String?;
+    final String? jsonLogoUrl = json['image'] == null
+        ? null  
+        : json['image']['url'] as String;
+    final bool? jsonIsActive = json['isActive'];
+
+    return BannerCMSModel(
+      title: jsonTitle,
+      description: jsonDescription,
+      logoUrl: jsonLogoUrl,
+      isActive: jsonIsActive
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'description': description,
+    'logoUrl': logoUrl,
+    'isActive': isActive
+  };
+
+  @override
+  List<Object?> get props => [title, description, logoUrl, isActive];
+}
