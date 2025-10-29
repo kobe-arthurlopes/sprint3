@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sprint3_app/models/article_model.dart';
+import 'package:sprint3_app/models/banner_dto_model.dart';
 import 'package:sprint3_app/models/cms/home_cms_model.dart';
 import 'package:sprint3_app/models/home_dto_model.dart';
 import 'package:sprint3_app/models/news_source_dto_model.dart';
@@ -11,22 +12,26 @@ class HomeData {
   List<ArticleModel> articles;
   List<NewsSourceDTOModel> newsSources;
   NewsSourceDTOModel? selectedNewsSource;
+  List<BannerDTOModel> banners;
 
   HomeData({
     required this.articles,
     required this.newsSources,
     required this.selectedNewsSource,
+    required this.banners
   });
 
   HomeData copyWith({
     List<ArticleModel>? articles,
     List<NewsSourceDTOModel>? newsSources,
     NewsSourceDTOModel? selectedNewsSource,
+    List<BannerDTOModel>? banners
   }) {
     return HomeData(
       articles: articles ?? this.articles,
       newsSources: newsSources ?? this.newsSources,
       selectedNewsSource: selectedNewsSource ?? this.selectedNewsSource,
+      banners: banners ?? this.banners
     );
   }
 }
@@ -37,7 +42,7 @@ class HomeViewModel {
   late final ApiService _apiService;
 
   ValueNotifier<HomeData> homeData = ValueNotifier(
-    HomeData(articles: [], newsSources: [], selectedNewsSource: null),
+    HomeData(articles: [], newsSources: [], selectedNewsSource: null, banners: []),
   );
 
   Map<String, dynamic>? _requestProperties = {'category': 'general'};
@@ -69,8 +74,9 @@ class HomeViewModel {
       final homeDTO = HomeDTOModel.fromCMS(homeCMS);
       final carouselDTO = homeDTO.carousel;
       final newsSourcesDTO = carouselDTO.newsSources;
+      final bannersDTO = homeDTO.banners;
 
-      homeData.value = homeData.value.copyWith(newsSources: newsSourcesDTO);
+      homeData.value = homeData.value.copyWith(newsSources: newsSourcesDTO, banners: bannersDTO);
     } on Exception {
       rethrow;
     }
