@@ -23,18 +23,18 @@ class NewsSourceCMSModel extends AutoRegisterCmsModel<NewsSourceCMSModel> {
 
   @override
   CmsModel fromJson(Map<String, dynamic> json) {
-      final String? jsonName = json['name'] as String?;
-      final String? jsonLogoUrl = json['logo'] == null
-          ? null
-          : json['logo']['url'] as String;
+    final String? jsonName = json['name'] as String?;
+    final String? jsonLogoUrl = json['logo'] == null
+        ? null
+        : json['logo']['url'] as String;
 
-      final String? sourceId = json['sourceId'] as String?;
+    final String? sourceId = json['sourceId'] as String?;
 
-      return NewsSourceCMSModel(
-        name: jsonName,
-        logoUrl: jsonLogoUrl,
-        sourceId: sourceId,
-      );
+    return NewsSourceCMSModel(
+      name: jsonName,
+      logoUrl: jsonLogoUrl,
+      sourceId: sourceId,
+    );
   }
 
   Map<String, dynamic> toJson() => {

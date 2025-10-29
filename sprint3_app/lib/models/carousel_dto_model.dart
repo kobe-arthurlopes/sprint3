@@ -14,7 +14,11 @@ class CarouselDTOModel extends Equatable {
     }
 
     final List<NewsSourceCMSModel>? newsSourcesCMS = cmsModel?.newsSources;
-    final List<NewsSourceDTOModel>? newsSourcesDTO = newsSourcesCMS?.map((element) => NewsSourceDTOModel.fromCMS(element)).toList();
+    final List<NewsSourceDTOModel>? newsSourcesDTO = newsSourcesCMS
+        ?.map(
+          (element) => NewsSourceDTOModel.fromCMS(element)
+        )
+        .toList();
 
     return CarouselDTOModel(
       newsSources: newsSourcesDTO ?? []
@@ -22,7 +26,11 @@ class CarouselDTOModel extends Equatable {
   }
 
   CarouselCMSModel toCMS() {
-    final List<NewsSourceCMSModel> newsSourcesCMS = newsSources.map((element) => element.toCMS()).toList();
+    final List<NewsSourceCMSModel> newsSourcesCMS = newsSources
+        .map(
+          (element) => element.toCMS()
+        )
+        .toList();
 
     return CarouselCMSModel(
       newsSources: newsSourcesCMS

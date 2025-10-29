@@ -30,8 +30,10 @@ class CarouselCMSModel extends AutoRegisterCmsModel<CarouselCMSModel> {
 
   @override
   CmsModel fromJson(Map<String, dynamic> json) {
+    final String newsSourceContentType = CmsModel.contentTypeOf<NewsSourceCMSModel>();
+
     final List<dynamic>? items =
-    json['newsSourcesCollection']?['items'] as List<dynamic>?;
+    json['${newsSourceContentType}sCollection']?['items'] as List<dynamic>?;
 
     return CarouselCMSModel(
       newsSources: items
