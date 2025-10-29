@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sprint3_app/models/article_model.dart';
+import 'package:sprint3_app/models/cms/home_cms_model.dart';
 import 'package:sprint3_app/models/home_dto_model.dart';
 import 'package:sprint3_app/models/news_source_dto_model.dart';
 import 'package:sprint3_app/service/api_service.dart';
@@ -63,7 +64,8 @@ class HomeViewModel {
 
   Future<void> fetchNewsSources() async {
     try {
-      final homeCMS = await _cmsConnection.findAll();
+      HomeCMSModel.registerChildren();
+      final HomeCMSModel homeCMS = await _cmsConnection.findAll();
       final homeDTO = HomeDTOModel.fromCMS(homeCMS);
       final carouselDTO = homeDTO.carousel;
       final newsSourcesDTO = carouselDTO.newsSources;
