@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/banner_dto_model.dart';
-import 'package:sprint3_app/widgets/banner_item.dart';
+import 'package:sprint3_app/widgets/banner_tile.dart';
 
 class BannersList extends StatelessWidget {
   final List<BannerDTOModel> banners;
@@ -16,7 +16,7 @@ class BannersList extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: banners.isEmpty ? 10 : banners.length,
         itemBuilder: (context, index) {
-          return BannerItem(
+          return BannerTile(
             banner: banners.isEmpty ? null : banners[index],
             onTap: () {
               if (onTap != null && banners.isNotEmpty) {

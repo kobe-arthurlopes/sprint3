@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
-import 'package:sprint3_app/widgets/article_item.dart';
+import 'package:sprint3_app/widgets/article_tile.dart';
 
 class ArticlesList extends StatelessWidget {
   final List<ArticleModel> articles;
@@ -21,7 +21,7 @@ class ArticlesList extends StatelessWidget {
           ? AlwaysScrollableScrollPhysics()
           : NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return ArticleItem(article: articles.isEmpty ? null : articles[index]);
+        return ArticleTile(article: articles.isEmpty ? null : articles[index]);
       },
     );
   }

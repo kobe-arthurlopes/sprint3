@@ -4,11 +4,11 @@ import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/theme/image_paths.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
-class BannerItem extends StatelessWidget {
+class BannerTile extends StatelessWidget {
   final BannerDTOModel? banner;
   final VoidCallback? onTap;
 
-  const BannerItem({super.key, required this.banner, this.onTap});
+  const BannerTile({super.key, required this.banner, this.onTap});
 
   @override
   Widget build(BuildContext context) {

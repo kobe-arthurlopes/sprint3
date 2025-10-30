@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/news_source_dto_model.dart';
-import 'package:sprint3_app/widgets/news_source_item.dart';
+import 'package:sprint3_app/widgets/news_source_tile.dart';
 
 class NewsSourcesList extends StatelessWidget {
   final List<NewsSourceDTOModel> newsSources;
@@ -16,7 +16,7 @@ class NewsSourcesList extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: newsSources.isEmpty ? 10 : newsSources.length,
         itemBuilder: (context, index) {
-          return NewsSourceItem(
+          return NewsSourceTile(
             newsSource: newsSources.isEmpty ? null : newsSources[index],
             onTap: () {
               if (onTap != null && newsSources.isNotEmpty) {

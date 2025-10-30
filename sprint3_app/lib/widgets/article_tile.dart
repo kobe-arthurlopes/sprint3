@@ -5,10 +5,10 @@ import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/theme/image_paths.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
-class ArticleItem extends StatelessWidget {
+class ArticleTile extends StatelessWidget {
   final ArticleModel? article;
 
-  const ArticleItem({super.key, required this.article});
+  const ArticleTile({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {

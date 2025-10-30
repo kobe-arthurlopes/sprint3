@@ -4,11 +4,11 @@ import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/theme/image_paths.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
-class NewsSourceItem extends StatelessWidget {
+class NewsSourceTile extends StatelessWidget {
   final NewsSourceDTOModel? newsSource;
   final VoidCallback? onTap;
 
-  const NewsSourceItem({super.key, required this.newsSource, this.onTap});
+  const NewsSourceTile({super.key, required this.newsSource, this.onTap});
 
   @override
   Widget build(BuildContext context) {
