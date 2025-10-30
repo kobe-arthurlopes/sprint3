@@ -14,15 +14,13 @@ class NewsSourcesList extends StatelessWidget {
       height: 160,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: newsSources.length,
+        itemCount: newsSources.isEmpty ? 10 : newsSources.length,
         itemBuilder: (context, index) {
-          final newsSource = newsSources[index];
-    
           return NewsSourceItem(
-            newsSource: newsSource,
+            newsSource: newsSources.isEmpty ? null : newsSources[index],
             onTap: () {
-              if (onTap != null) {
-                onTap!(newsSource);
+              if (onTap != null && newsSources.isNotEmpty) {
+                onTap!(newsSources[index]);
               }
             },
           );
