@@ -20,28 +20,8 @@ class ArticleItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           article == null
-              ? ShimmerWidget.rectangular(
-                  width: size.width,
-                  height: size.height,
-                  borderRadius: 16,
-                )
-              : ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.network(
-                  article!.urlToImage ?? '',
-                  width: size.width,
-                  height: size.height,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) {
-                    return Image.asset(
-                      AppImagePaths.placeholder,
-                      width: size.width,
-                      height: size.height,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
-              ),
+            ? _buildImageShimmer(size)
+            : _buildArticleImage(size),
 
           SizedBox(width: 10),
 
@@ -54,84 +34,137 @@ class ArticleItem extends StatelessWidget {
                 children: [
                   SizedBox(height: 8),
 
+                  ...
                   article == null
-                      ? ShimmerWidget.rectangular(height: 50)
-                      : Text(
-                          article!.title,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.secondary,
-                          ),
-                          maxLines: 4,
-                          textAlign: TextAlign.left,
-                        ),
-
-                  article == null
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 40),
-                          child: ShimmerWidget.rectangular(height: 20),
-                        )
-                      : Text(
-                          article!.author,
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300,
-                            color: AppColors.tertiary,
-                          ),
-                          maxLines: 2,
-                        ),
-
-                  SizedBox(height: 8),
-
-                  article == null
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 50),
-                          child: ShimmerWidget.rectangular(height: 16),
-                        )
-                      : Material(
-                          type: MaterialType.transparency,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(
-                                WebViewPage.routeId,
-                                arguments: article!.url,
-                              );
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Visit website',
-                                  style: TextStyle(
-                                    color: AppColors.link,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-
-                                SizedBox(width: 4),
-
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 1),
-                                  child: Icon(
-                                    Icons.open_in_new,
-                                    color: AppColors.link,
-                                    size: 8,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                  SizedBox(height: 6),
+                    ? _buildDetailsShimmers()
+                    : _buildArticleDetails(
+                      () {
+                        Navigator.of(context).pushNamed(
+                          WebViewPage.routeId,
+                          arguments: article!.url,
+                        );
+                      }
+                    )
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
     );
+  }
+
+  Widget _buildImageShimmer(Size size) {
+    return ShimmerWidget.rectangular(
+      width: size.width,
+      height: size.height,
+      borderRadius: 16,
+    );
+  }
+
+  Widget _buildArticleImage(Size size) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Image.network(
+        article!.urlToImage ?? '',
+        width: size.width,
+        height: size.height,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) {
+          return Image.asset(
+            AppImagePaths.placeholder,
+            width: size.width,
+            height: size.height,
+            fit: BoxFit.cover,
+          );
+        }
+      ),
+    );
+  }
+
+  List<Widget> _buildDetailsShimmers() {
+    return [
+      ShimmerWidget.rectangular(height: 50),
+
+      Padding(
+        padding: const EdgeInsets.only(
+          right: 40,
+          bottom: 8
+        ),
+        child: ShimmerWidget.rectangular(height: 20),
+      ),
+
+      Padding(
+        padding: const EdgeInsets.only(
+          right: 50,
+          bottom: 6
+        ),
+        child: ShimmerWidget.rectangular(height: 16),
+      )
+    ];
+  }
+
+  List<Widget> _buildArticleDetails(VoidCallback? onTap) {
+    return [
+      Text(
+        article!.title,
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: AppColors.secondary,
+        ),
+        maxLines: 4,
+        textAlign: TextAlign.left,
+      ),
+
+      Text(
+        article!.author,
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w300,
+          color: AppColors.tertiary,
+        ),
+        maxLines: 2,
+      ),
+
+      SizedBox(height: 8),
+
+      Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () {
+            if (onTap != null) {
+              onTap();
+            }
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Visit website',
+                style: TextStyle(
+                  color: AppColors.link,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+
+              SizedBox(width: 4),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 1),
+                child: Icon(
+                  Icons.open_in_new,
+                  color: AppColors.link,
+                  size: 8,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+
+      SizedBox(height: 6)
+    ];
   }
 }
