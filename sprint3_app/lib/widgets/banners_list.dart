@@ -14,15 +14,13 @@ class BannersList extends StatelessWidget {
       height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: banners.length,
+        itemCount: banners.isEmpty ? 10 : banners.length,
         itemBuilder: (context, index) {
-          final banner = banners[index];
-
           return BannerItem(
-            banner: banner,
+            banner: banners.isEmpty ? null : banners[index],
             onTap: () {
-              if (onTap != null) {
-                onTap!(banner);
+              if (onTap != null && banners.isNotEmpty) {
+                onTap!(banners[index]);
               }
             },
           );
