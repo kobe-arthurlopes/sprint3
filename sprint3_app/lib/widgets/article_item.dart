@@ -15,7 +15,7 @@ class ArticleItem extends StatelessWidget {
     final Size size = Size(150, 150);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(top: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -22,7 +22,7 @@ class NewsSourceDetailsPage extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBarWidget(title: title),
       body: Padding(
-        padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ArticlesList(articles: articles),
       ),
     );

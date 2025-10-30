@@ -126,8 +126,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.only(
                         top: 16,
                         left: 10,
-                        right: 10,
-                        bottom: 8
+                        right: 10
                       ),
                       child: Text(
                         'Top Headlines',
