@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/banner_dto_model.dart';
 import 'package:sprint3_app/theme/colors.dart';
+import 'package:sprint3_app/theme/image_paths.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class BannerItem extends StatelessWidget {
@@ -36,7 +37,7 @@ class BannerItem extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorBuilder: (_, _, _) {
                         return Image.asset(
-                          'images/article_img_placeholder.png',
+                          AppImagePaths.placeholder,
                           width: MediaQuery.of(context).size.width - 20,
                           height: 250,
                           fit: BoxFit.cover,

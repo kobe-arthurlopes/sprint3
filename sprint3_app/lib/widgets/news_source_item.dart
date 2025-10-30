@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/news_source_dto_model.dart';
 import 'package:sprint3_app/theme/colors.dart';
+import 'package:sprint3_app/theme/image_paths.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class NewsSourceItem extends StatelessWidget {
@@ -33,7 +34,7 @@ class NewsSourceItem extends StatelessWidget {
                   fit: BoxFit.cover,
                   errorBuilder: (_, _, _) {
                     return Image.asset(
-                      'images/article_img_placeholder.png',
+                      AppImagePaths.placeholder,
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,

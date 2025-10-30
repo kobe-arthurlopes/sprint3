@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/pages/web_view_page.dart';
 import 'package:sprint3_app/theme/colors.dart';
+import 'package:sprint3_app/theme/image_paths.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class ArticleItem extends StatelessWidget {
@@ -33,7 +34,7 @@ class ArticleItem extends StatelessWidget {
                   fit: BoxFit.cover,
                   errorBuilder: (_, _, _) {
                     return Image.asset(
-                      'images/article_img_placeholder.png',
+                      AppImagePaths.placeholder,
                       width: size.width,
                       height: size.height,
                       fit: BoxFit.cover,
