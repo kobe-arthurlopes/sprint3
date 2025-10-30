@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 
 abstract class ApiServiceProtocol {
-  Future<T> fetchResponse<T>(
+  Future<T> fetchResponse<T>({
     String endpoint, 
-    T Function(Map<String, dynamic>) fromJson,
+    required T Function(Map<String, dynamic>) fromJson,
     Map<String, dynamic>? properties
-  );
+  });
 }
 
 class ApiService implements ApiServiceProtocol {
@@ -15,11 +15,11 @@ class ApiService implements ApiServiceProtocol {
   ApiService({required this.apiKey});
 
   @override
-  Future<T> fetchResponse<T>(
-    String endpoint,
-    T Function(Map<String, dynamic>) fromJson,
+  Future<T> fetchResponse<T>({
+    String endpoint = 'top-headlines',
+    required Function(Map<String, dynamic>) fromJson,
     Map<String, dynamic>? properties
-  ) async {
+  }) async {
     if (apiKey == null) {
       throw Exception;
     }

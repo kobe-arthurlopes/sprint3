@@ -37,11 +37,10 @@ class HomeData {
 }
 
 class HomeViewModel {
-  late final TokenProvider _tokens;
   late final CmsConnectionProtocol _cmsConnection;
   late final ApiServiceProtocol _apiService;
 
-  ValueNotifier<HomeData> homeData = ValueNotifier(
+  final ValueNotifier<HomeData> homeData = ValueNotifier(
     HomeData(
       articles: [],
       newsSources: [],
@@ -53,22 +52,22 @@ class HomeViewModel {
   Map<String, dynamic>? _requestProperties = {'category': 'general'};
 
   Future<void> start() async {
-    _tokens = await TokenProvider.create();
+    final tokenProvider = await TokenProvider.create();
 
-    _cmsConnection = CmsConnection(
-      accessToken: _tokens.accessTokenCDA,
-      spaceId: _tokens.spaceIdCDA,
+    _cmsConnection = CmsConnection();
+    _cmsConnection.initClient(
+      accessToken: tokenProvider.accessTokenCDA, 
+      spaceId: tokenProvider.spaceIdCDA
     );
 
-    _apiService = ApiService(apiKey: _tokens.newsApiKey);
+    _apiService = ApiService(apiKey: tokenProvider.newsApiKey);
   }
 
   Future<void> fetchArticles() async {
     try {
       final articleResponse = await _apiService.fetchResponse(
-        'top-headlines', 
-        ArticleResponse.fromJson, 
-        _requestProperties
+        fromJson: ArticleResponse.fromJson, 
+        properties: _requestProperties
       );
 
       final articles = articleResponse.articles;

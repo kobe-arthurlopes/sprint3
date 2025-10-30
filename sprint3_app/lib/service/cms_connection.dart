@@ -3,19 +3,21 @@ import 'package:sprint3_app/models/cms/cms_model.dart';
 
 abstract class CmsConnectionProtocol {
   Future<T> findAll<T extends CmsModelProtocol>();
+  void initClient({
+    required String? accessToken,
+    required String? spaceId,
+    String environment = 'master'
+  });
 }
 
 class CmsConnection implements CmsConnectionProtocol {
-  final String? accessToken;
-  final String? spaceId;
-  final String environment;
-
   late final GraphQLClient _client;
 
-  CmsConnection({
-    required this.accessToken,
-    required this.spaceId,
-    this.environment = 'master',
+  @override
+  void initClient({
+    required String? accessToken, 
+    required String? spaceId,
+    String environment = 'master'
   }) {
     if (accessToken == null || spaceId == null) {
       throw Exception('Missing accessToken or spaceId');
