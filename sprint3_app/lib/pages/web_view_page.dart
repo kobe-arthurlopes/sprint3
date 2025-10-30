@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/view_models/web_view_model.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebviewPage extends StatefulWidget {
-  static const routeId = '/webview';
+class WebViewPage extends StatefulWidget {
+  static const routeId = '/webView';
 
   final String? url;
 
-  const WebviewPage({super.key, required this.url});
+  const WebViewPage({super.key, required this.url});
 
   @override
   State<StatefulWidget> createState() => _WebViewPageState();
 }
 
-class _WebViewPageState extends State<WebviewPage> {
+class _WebViewPageState extends State<WebViewPage> {
+  final WebViewModel _viewModel = WebViewModel();
   WebViewController? _controller;
-  String? _errorMessage;
-  bool _isLoading = true;
 
   @override
   void initState() {
@@ -24,25 +24,10 @@ class _WebViewPageState extends State<WebviewPage> {
     _initializeWebview();
   }
 
-  void _initializeWebview() {
-    final url = widget.url;
+  Future<void> _initializeWebview() async {
+    final Uri? uri = await _viewModel.getUri(widget.url);
 
-    if (url == null || url.isEmpty) {
-      setState(() => _errorMessage = 'URL not provided');
-      return;
-    }
-
-    Uri? uri;
-
-    try {
-      uri = Uri.parse(url);
-
-      if (!uri.hasScheme) {
-        setState(() => _errorMessage = 'Invalid URL');
-        return;
-      }
-    } catch (e) {
-      setState(() => _errorMessage = 'Invalid URL');
+    if (uri == null) {
       return;
     }
 
@@ -51,29 +36,32 @@ class _WebViewPageState extends State<WebviewPage> {
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setNavigationDelegate(
           NavigationDelegate(
-            onPageStarted: (_) { 
-              setState(() => _isLoading = false);
-            },
+            onPageStarted: (_) {
+              _viewModel.toggleIsLoading();
+            }
           )
         )
         ..loadRequest(uri);
-    } catch (e) {
-      setState(() => _errorMessage = 'Error loading Webpage');
+    } catch (error) {
+      _viewModel.updateErrorMessage(error);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFECEDEF),
-      appBar: AppBarWidget(
-        title: 'Webview',
-      ),
-      body: _errorMessage != null
-        ? _buildErrorView(_errorMessage!)
-        : _controller == null || _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : WebViewWidget(controller: _controller!)
+    return ValueListenableBuilder(
+      valueListenable: _viewModel.webViewData, 
+      builder: (_, data, _) {
+        return Scaffold(
+          backgroundColor: Color(0xFFECEDEF),
+          appBar: AppBarWidget(title: 'Web View'),
+          body: data.errorMessage != null
+            ? _buildErrorView(data.errorMessage!)
+            : _controller == null || data.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : WebViewWidget(controller: _controller!)
+        );
+      }
     );
   }
 

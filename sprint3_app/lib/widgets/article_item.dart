@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
-import 'package:sprint3_app/pages/webview_page.dart';
+import 'package:sprint3_app/pages/web_view_page.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class ArticleItem extends StatelessWidget {
@@ -92,7 +92,7 @@ class ArticleItem extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               Navigator.of(context).pushNamed(
-                                WebviewPage.routeId,
+                                WebViewPage.routeId,
                                 arguments: article!.url,
                               );
                             },

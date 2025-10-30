@@ -4,7 +4,7 @@ import 'package:sprint3_app/models/banner_dto_model.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/pages/home_page.dart';
-import 'package:sprint3_app/pages/webview_page.dart';
+import 'package:sprint3_app/pages/web_view_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,11 +44,11 @@ class MyApp extends StatelessWidget {
                 return NewsSourceDetailsPage(title: title, articles: articles);
               },
             );
-          case WebviewPage.routeId:
+          case WebViewPage.routeId:
             return MaterialPageRoute(
               settings: routeSettings,
               builder: (context) {
-                return WebviewPage(url: routeSettings.arguments as String?);
+                return WebViewPage(url: routeSettings.arguments as String?);
               },
             );
           case BannerDetailsPage.routeId:
