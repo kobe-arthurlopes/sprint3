@@ -1,7 +1,11 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:sprint3_app/models/cms/cms_model.dart';
 
-class CmsConnection {
+abstract class CmsConnectionProtocol {
+  Future<T> findAll<T extends CmsModelProtocol>();
+}
+
+class CmsConnection implements CmsConnectionProtocol {
   final String? accessToken;
   final String? spaceId;
   final String environment;
@@ -28,9 +32,10 @@ class CmsConnection {
     _client = GraphQLClient(link: httpLink, cache: GraphQLCache());
   }
 
-  Future<T> findAll<T extends CmsModel>() async {
-    final String contentType = CmsModel.contentTypeOf<T>();
-    final String fieldsQuery = CmsModel.fieldsQueryOf<T>();
+  @override
+  Future<T> findAll<T extends CmsModelProtocol>() async {
+    final String contentType = CmsModelProtocol.contentTypeOf<T>();
+    final String fieldsQuery = CmsModelProtocol.fieldsQueryOf<T>();
 
     final String query = '''
       query {
@@ -54,6 +59,6 @@ class CmsConnection {
       throw Exception('No $T content found');
     }
 
-    return CmsModel.fromJsonOf<T>(items.first);
+    return CmsModelProtocol.fromJsonOf<T>(items.first);
   }
 }
