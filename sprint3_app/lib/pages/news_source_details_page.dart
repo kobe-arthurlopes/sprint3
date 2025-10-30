@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
+import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/widgets/articles_list.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
 
@@ -18,7 +19,7 @@ class NewsSourceDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFECEDEF),
+      backgroundColor: AppColors.background,
       appBar: AppBarWidget(title: title),
       body: Padding(
         padding: const EdgeInsets.only(top: 10, left: 10, right: 10),

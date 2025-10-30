@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/theme/colors.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -11,11 +12,11 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: TextStyle(
-          color: Colors.white
+          color: AppColors.appBarForeground
         ),
       ),
-      foregroundColor: Colors.white,
-      backgroundColor: Color(0xFFD32F2F),
+      backgroundColor: AppColors.appBarBackground,
+      foregroundColor: AppColors.appBarForeground,
     );
   }
   

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/pages/web_view_page.dart';
+import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class ArticleItem extends StatelessWidget {
@@ -59,7 +60,7 @@ class ArticleItem extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF333333),
+                            color: AppColors.secondary,
                           ),
                           maxLines: 4,
                           textAlign: TextAlign.left,
@@ -75,7 +76,7 @@ class ArticleItem extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w300,
-                            color: Color(0xFF6B7280),
+                            color: AppColors.tertiary,
                           ),
                           maxLines: 2,
                         ),
@@ -102,7 +103,7 @@ class ArticleItem extends StatelessWidget {
                                 Text(
                                   'Visit website',
                                   style: TextStyle(
-                                    color: Color(0xFF1976D2),
+                                    color: AppColors.link,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w300,
                                   ),
@@ -114,7 +115,7 @@ class ArticleItem extends StatelessWidget {
                                   padding: const EdgeInsets.only(top: 1),
                                   child: Icon(
                                     Icons.open_in_new,
-                                    color: Color(0xFF1976D2),
+                                    color: AppColors.link,
                                     size: 8,
                                   ),
                                 ),

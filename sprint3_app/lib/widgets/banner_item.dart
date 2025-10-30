@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/banner_dto_model.dart';
+import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class BannerItem extends StatelessWidget {
@@ -48,7 +49,7 @@ class BannerItem extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: Colors.grey[200]!,
+                            color: AppColors.border,
                             width: 2,
                           ),
                         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/view_models/web_view_model.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -53,7 +54,7 @@ class _WebViewPageState extends State<WebViewPage> {
       valueListenable: _viewModel.webViewData, 
       builder: (_, data, _) {
         return Scaffold(
-          backgroundColor: Color(0xFFECEDEF),
+          backgroundColor: AppColors.background,
           appBar: AppBarWidget(title: 'Web View'),
           body: data.errorMessage != null
             ? _buildErrorView(data.errorMessage!)
@@ -72,17 +73,21 @@ class _WebViewPageState extends State<WebViewPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, color: Color(0xFFD32F2F), size: 60),
+            Icon(
+              Icons.error_outline, 
+              color: AppColors.appBarBackground, 
+              size: 60
+            ),
 
             const SizedBox(height: 16),
 
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16, 
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF333333)
+                color: AppColors.secondary
               ),
             ),
 

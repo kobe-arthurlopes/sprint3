@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
+import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
 import 'package:sprint3_app/widgets/articles_list.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
       valueListenable: _viewModel.homeData,
       builder: (_, data, _) {
         return Scaffold(
-          backgroundColor: Color(0xFFECEDEF),
+          backgroundColor: AppColors.background,
           appBar: AppBarWidget(title: 'News'),
           body: SingleChildScrollView(
             child: Column(
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                     'Top News Sources',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF1F1F1F),
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
@@ -97,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                         'Classic Headlines',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1F1F1F),
+                          color: AppColors.primary,
                         ),
                       ),
                     ),
@@ -128,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                         'Top Headlines',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1F1F1F),
+                          color: AppColors.primary,
                         ),
                       ),
                     ),

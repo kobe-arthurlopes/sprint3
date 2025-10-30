@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/news_source_dto_model.dart';
+import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class NewsSourceItem extends StatelessWidget {
@@ -51,7 +52,7 @@ class NewsSourceItem extends StatelessWidget {
                     newsSource!.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Color(0xFF333333),
+                      color: AppColors.secondary,
                       fontWeight: FontWeight.w500
                     ),
                   )

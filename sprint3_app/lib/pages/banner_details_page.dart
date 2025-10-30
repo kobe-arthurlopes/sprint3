@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/banner_dto_model.dart';
+import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
 
 class BannerDetailsPage extends StatelessWidget {
@@ -12,7 +13,7 @@ class BannerDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFECEDEF),
+      backgroundColor: AppColors.background,
       appBar: AppBarWidget(title: banner.title),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -37,7 +38,7 @@ class BannerDetailsPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF6B7280)
+                color: AppColors.tertiary
               ),
               textAlign: TextAlign.center,
             ),
@@ -49,7 +50,7 @@ class BannerDetailsPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
-                color: Color(0xFF1F1F1F),
+                color: AppColors.primary,
               ),
             )
           ],
