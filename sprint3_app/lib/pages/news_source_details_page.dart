@@ -3,7 +3,7 @@ import 'package:sprint3_app/models/article_model.dart';
 import 'package:sprint3_app/widgets/articles_list.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
 
-class NewsSourceDetailsPage extends StatefulWidget {
+class NewsSourceDetailsPage extends StatelessWidget {
   static const routeId = '/news_source_details';
 
   final String title;
@@ -16,18 +16,13 @@ class NewsSourceDetailsPage extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _NewsSourceDetailsPageState();
-}
-
-class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFECEDEF),
-      appBar: AppBarWidget(title: widget.title),
+      appBar: AppBarWidget(title: title),
       body: Padding(
         padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-        child: ArticlesList(articles: widget.articles),
+        child: ArticlesList(articles: articles),
       ),
     );
   }
