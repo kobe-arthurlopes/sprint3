@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                       banners: data.banners,
                       onTap: (banner) {
                         Navigator.of(context).pushNamed(
-                          BannerDetailsPage.routId,
+                          BannerDetailsPage.routeId,
                           arguments: banner
                         );
                       },

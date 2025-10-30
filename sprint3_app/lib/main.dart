@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
                 return WebviewPage(url: routeSettings.arguments as String?);
               },
             );
-          case BannerDetailsPage.routId:
+          case BannerDetailsPage.routeId:
             return MaterialPageRoute(
               settings: routeSettings,
               builder: (context) => BannerDetailsPage(
