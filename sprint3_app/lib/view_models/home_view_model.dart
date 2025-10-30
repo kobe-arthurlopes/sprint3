@@ -4,6 +4,7 @@ import 'package:sprint3_app/models/banner_dto_model.dart';
 import 'package:sprint3_app/models/cms/home_cms_model.dart';
 import 'package:sprint3_app/models/home_dto_model.dart';
 import 'package:sprint3_app/models/news_source_dto_model.dart';
+import 'package:sprint3_app/protocols/api_service_protocol.dart';
 import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
@@ -39,7 +40,7 @@ class HomeData {
 class HomeViewModel {
   late final TokenProvider _tokens;
   late final CmsConnection _cmsConnection;
-  late final ApiService _apiService;
+  late final ApiServiceProtocol _apiService;
 
   ValueNotifier<HomeData> homeData = ValueNotifier(
     HomeData(
@@ -65,7 +66,13 @@ class HomeViewModel {
 
   Future<void> fetchArticles() async {
     try {
-      final articles = await _apiService.fetchArticles(_requestProperties);
+      final articleResponse = await _apiService.fetchResponse(
+        'top-headlines', 
+        ArticleResponse.fromJson, 
+        _requestProperties
+      );
+      
+      final articles = articleResponse.articles;
       homeData.value = homeData.value.copyWith(articles: articles);
     } on Exception {
       rethrow;
