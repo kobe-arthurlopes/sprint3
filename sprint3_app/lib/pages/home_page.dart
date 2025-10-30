@@ -71,6 +71,10 @@ class _HomePageState extends State<HomePage> {
                       return;
                     }
 
+                    if (ModalRoute.of(context)?.isCurrent == false) {
+                      return;
+                    }
+
                     final List<ArticleModel> articles =
                         _viewModel.homeData.value.articles;
 
