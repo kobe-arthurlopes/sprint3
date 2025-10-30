@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 
-abstract class CmsModel {
+abstract class CmsModelProtocol {
   String get contentType;
   String fieldsQuery();
-  CmsModel fromJson(Map<String, dynamic> json);
+  CmsModelProtocol fromJson(Map<String, dynamic> json);
 
-  static final Map<Type, CmsModel Function()> _registry = {};
+  static final Map<Type, CmsModelProtocol Function()> _registry = {};
 
-  static void registerModel<T>(CmsModel Function() creator) {
+  static void registerModel<T>(CmsModelProtocol Function() creator) {
     _registry[T] = creator;
   }
 
-  static String contentTypeOf<T extends CmsModel>() {
+  static String contentTypeOf<T extends CmsModelProtocol>() {
     final model = _registry[T]?.call();
 
     if (model == null) {
@@ -21,7 +21,7 @@ abstract class CmsModel {
     return model.contentType;
   }
 
-  static String fieldsQueryOf<T extends CmsModel>() {
+  static String fieldsQueryOf<T extends CmsModelProtocol>() {
     final model = _registry[T]?.call();
 
     if (model == null) {
@@ -31,7 +31,7 @@ abstract class CmsModel {
     return model.fieldsQuery();
   }
   
-  static T fromJsonOf<T extends CmsModel>(Map<String, dynamic> json) {
+  static T fromJsonOf<T extends CmsModelProtocol>(Map<String, dynamic> json) {
     final creator = _registry[T];
 
     if (creator == null) {
@@ -42,9 +42,9 @@ abstract class CmsModel {
   }
 }
 
-abstract class AutoRegisterCmsModel<T extends CmsModel>
+abstract class AutoRegisterCmsModel<T extends CmsModelProtocol>
     extends Equatable
-    implements CmsModel {
+    implements CmsModelProtocol {
 
     const AutoRegisterCmsModel();
 }

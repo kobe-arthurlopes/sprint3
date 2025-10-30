@@ -13,7 +13,7 @@ class NewsSourceCMSModel extends AutoRegisterCmsModel<NewsSourceCMSModel> {
     this.isActive,
   }) : super();
 
-  static final register = CmsModel.registerModel<NewsSourceCMSModel>(
+  static final register = CmsModelProtocol.registerModel<NewsSourceCMSModel>(
     () => NewsSourceCMSModel(),
   );
 
@@ -31,7 +31,7 @@ class NewsSourceCMSModel extends AutoRegisterCmsModel<NewsSourceCMSModel> {
   ''';
 
   @override
-  CmsModel fromJson(Map<String, dynamic> json) {
+  CmsModelProtocol fromJson(Map<String, dynamic> json) {
     final String? jsonName = json['name'] as String?;
     final String? jsonLogoUrl = json['logo'] == null
         ? null

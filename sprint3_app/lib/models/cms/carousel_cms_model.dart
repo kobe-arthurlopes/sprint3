@@ -7,15 +7,15 @@ class CarouselCMSModel extends AutoRegisterCmsModel<CarouselCMSModel> {
 
   const CarouselCMSModel({this.newsSources}) : super();
 
-  static final register = CmsModel.registerModel<CarouselCMSModel>(() => CarouselCMSModel());
+  static final register = CmsModelProtocol.registerModel<CarouselCMSModel>(() => CarouselCMSModel());
 
   @override
   final String contentType = 'carouselNewsSources';
 
   @override
   String fieldsQuery() {
-    final String newsSourceContentType = CmsModel.contentTypeOf<NewsSourceCMSModel>();
-    final String newsSourceFieldsQuery = CmsModel.fieldsQueryOf<NewsSourceCMSModel>();
+    final String newsSourceContentType = CmsModelProtocol.contentTypeOf<NewsSourceCMSModel>();
+    final String newsSourceFieldsQuery = CmsModelProtocol.fieldsQueryOf<NewsSourceCMSModel>();
 
     return '''
       ${newsSourceContentType}sCollection {
@@ -29,8 +29,8 @@ class CarouselCMSModel extends AutoRegisterCmsModel<CarouselCMSModel> {
   }
 
   @override
-  CmsModel fromJson(Map<String, dynamic> json) {
-    final String newsSourceContentType = CmsModel.contentTypeOf<NewsSourceCMSModel>();
+  CmsModelProtocol fromJson(Map<String, dynamic> json) {
+    final String newsSourceContentType = CmsModelProtocol.contentTypeOf<NewsSourceCMSModel>();
 
     final List<dynamic>? items =
     json['${newsSourceContentType}sCollection']?['items'] as List<dynamic>?;
@@ -38,7 +38,7 @@ class CarouselCMSModel extends AutoRegisterCmsModel<CarouselCMSModel> {
     return CarouselCMSModel(
       newsSources: items
           ?.map(
-            (item) => CmsModel.fromJsonOf<NewsSourceCMSModel>(item as Map<String, dynamic>),
+            (item) => CmsModelProtocol.fromJsonOf<NewsSourceCMSModel>(item as Map<String, dynamic>),
           )
           .toList(),
     );

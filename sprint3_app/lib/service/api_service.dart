@@ -1,11 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:sprint3_app/protocols/api_service_protocol.dart';
+
+abstract class ApiServiceProtocol {
+  Future<T> fetchResponse<T>(
+    String endpoint, 
+    T Function(Map<String, dynamic>) fromJson,
+    Map<String, dynamic>? properties
+  );
+}
 
 class ApiService implements ApiServiceProtocol {
-  @override
   final String? apiKey;
-
-  @override
   final dio = Dio(BaseOptions(baseUrl: 'https://newsapi.org/v2/'));
 
   ApiService({required this.apiKey});

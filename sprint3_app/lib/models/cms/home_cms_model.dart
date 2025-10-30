@@ -11,7 +11,7 @@ class HomeCMSModel extends AutoRegisterCmsModel<HomeCMSModel>  {
 
   const HomeCMSModel({this.title, this.carousel, this.banners}) : super();
 
-  static final register = CmsModel.registerModel<HomeCMSModel>(() => HomeCMSModel());
+  static final register = CmsModelProtocol.registerModel<HomeCMSModel>(() => HomeCMSModel());
   
   static registerChildren() {
     register;
@@ -25,11 +25,11 @@ class HomeCMSModel extends AutoRegisterCmsModel<HomeCMSModel>  {
 
   @override
   String fieldsQuery() {
-    final String carouselContentType = CmsModel.contentTypeOf<CarouselCMSModel>();
-    final String carouselFieldsQuery = CmsModel.fieldsQueryOf<CarouselCMSModel>();
+    final String carouselContentType = CmsModelProtocol.contentTypeOf<CarouselCMSModel>();
+    final String carouselFieldsQuery = CmsModelProtocol.fieldsQueryOf<CarouselCMSModel>();
 
-    final String bannerContentType = CmsModel.contentTypeOf<BannerCMSModel>();
-    final String bannerFieldsQuery = CmsModel.fieldsQueryOf<BannerCMSModel>();
+    final String bannerContentType = CmsModelProtocol.contentTypeOf<BannerCMSModel>();
+    final String bannerFieldsQuery = CmsModelProtocol.fieldsQueryOf<BannerCMSModel>();
 
     return '''
       title
@@ -50,7 +50,7 @@ class HomeCMSModel extends AutoRegisterCmsModel<HomeCMSModel>  {
 
   @override
   HomeCMSModel fromJson(Map<String, dynamic> json) {
-    final String bannerContentType = CmsModel.contentTypeOf<BannerCMSModel>();
+    final String bannerContentType = CmsModelProtocol.contentTypeOf<BannerCMSModel>();
 
     final List<dynamic>? items = json['${bannerContentType}sCollection']?['items'] as List<dynamic>?;
 
@@ -58,10 +58,10 @@ class HomeCMSModel extends AutoRegisterCmsModel<HomeCMSModel>  {
       title: json['title'] as String?,
       carousel: json['carousel'] == null
           ? null
-          : CmsModel.fromJsonOf<CarouselCMSModel>(json['carousel']),
+          : CmsModelProtocol.fromJsonOf<CarouselCMSModel>(json['carousel']),
       banners: items
           ?.map(
-            (item) => CmsModel.fromJsonOf<BannerCMSModel>(item as Map<String, dynamic>)
+            (item) => CmsModelProtocol.fromJsonOf<BannerCMSModel>(item as Map<String, dynamic>)
           )
           .toList()
     );

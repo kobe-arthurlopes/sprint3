@@ -15,7 +15,7 @@ class BannerCMSModel extends AutoRegisterCmsModel<BannerCMSModel> {
     this.isActive,
   });
 
-  static final register = CmsModel.registerModel<BannerCMSModel>(
+  static final register = CmsModelProtocol.registerModel<BannerCMSModel>(
     () => BannerCMSModel(),
   );
 
@@ -36,7 +36,7 @@ class BannerCMSModel extends AutoRegisterCmsModel<BannerCMSModel> {
   }
 
   @override
-  CmsModel fromJson(Map<String, dynamic> json) {
+  CmsModelProtocol fromJson(Map<String, dynamic> json) {
     final String? jsonTitle = json['title'] as String?;
     final String? subtitle = json['subtitle'] as String?;
     final String? jsonDescription = json['description'] as String?;
