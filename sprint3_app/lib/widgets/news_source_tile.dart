@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/news_source_dto_model.dart';
+import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/theme/image_paths.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sprint3_app/models/article_model.dart';
-import 'package:sprint3_app/models/banner_dto_model.dart';
+import 'package:sprint3_app/models/dto/banner_dto_model.dart';
 import 'package:sprint3_app/models/cms/home_cms_model.dart';
-import 'package:sprint3_app/models/home_dto_model.dart';
-import 'package:sprint3_app/models/news_source_dto_model.dart';
+import 'package:sprint3_app/models/dto/home_dto_model.dart';
+import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
