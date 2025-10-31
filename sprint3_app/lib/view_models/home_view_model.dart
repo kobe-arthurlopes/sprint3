@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sprint3_app/models/dao/banner_dao_model.dart';
-import 'package:sprint3_app/models/dao/dao_protocol.dart';
 import 'package:sprint3_app/models/dao/news_source_dao_model.dart';
 import 'package:sprint3_app/models/dto/article_dto_model.dart';
 import 'package:sprint3_app/models/dao/article_dao_model.dart';
@@ -9,7 +8,6 @@ import 'package:sprint3_app/models/cms/home_cms_model.dart';
 import 'package:sprint3_app/models/dto/home_dto_model.dart';
 import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/models/sqlite/app_database.dart';
-import 'package:sprint3_app/models/sqlite/article_sqlite_model.dart';
 import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
