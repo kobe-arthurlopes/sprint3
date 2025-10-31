@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/article_model.dart';
+import 'package:sprint3_app/models/dto/article_dto_model.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/widgets/articles_list.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
@@ -8,7 +8,7 @@ class NewsSourceDetailsPage extends StatelessWidget {
   static const routeId = '/news_source_details';
 
   final String title;
-  final List<ArticleModel> articles;
+  final List<ArticleDTOModel> articles;
 
   const NewsSourceDetailsPage({
     super.key,

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:sprint3_app/models/cms/banner_cms_model.dart';
+import 'package:sprint3_app/models/sqlite/banner_sqlite_model.dart';
 
 class BannerDTOModel extends Equatable {
   final String title;
@@ -43,6 +44,30 @@ class BannerDTOModel extends Equatable {
       description: description,
       logoUrl: logoUrl,
       isActive: isActive,
+    );
+  }
+
+  factory BannerDTOModel.fromSqlite(BannerSqliteModel? sqliteModel) {
+    if (sqliteModel == null) {
+      return BannerDTOModel();
+    }
+
+    return BannerDTOModel(
+      title: sqliteModel.title,
+      subtitle: sqliteModel.subtitle,
+      description: sqliteModel.description,
+      logoUrl: sqliteModel.logoUrl,
+      isActive: sqliteModel.isActive
+    );
+  }
+
+  BannerSqliteModel toSqlite() {
+    return BannerSqliteModel(
+      title: title,
+      subtitle: subtitle,
+      description: description,
+      logoUrl: logoUrl,
+      isActive: isActive
     );
   }
 

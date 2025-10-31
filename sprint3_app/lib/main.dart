@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/article_model.dart';
+import 'package:sprint3_app/models/dto/article_dto_model.dart';
 import 'package:sprint3_app/models/dto/banner_dto_model.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
@@ -32,10 +32,10 @@ class MyApp extends StatelessWidget {
                 routeSettings.arguments as List<dynamic>;
 
             final String title = arguments[0] as String;
-            List<ArticleModel> articles = [];
+            List<ArticleDTOModel> articles = [];
 
-            if (arguments[1] is List<ArticleModel>) {
-              articles = arguments[1] as List<ArticleModel>;
+            if (arguments[1] is List<ArticleDTOModel>) {
+              articles = arguments[1] as List<ArticleDTOModel>;
             }
 
             return MaterialPageRoute(

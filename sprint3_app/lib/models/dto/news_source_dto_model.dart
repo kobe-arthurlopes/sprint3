@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:sprint3_app/models/cms/news_source_cms_model.dart';
+import 'package:sprint3_app/models/sqlite/news_source_sqlite_model.dart';
 
 class NewsSourceDTOModel extends Equatable {
   final String name;
@@ -38,6 +39,28 @@ class NewsSourceDTOModel extends Equatable {
       logoUrl: logoUrl,
       sourceId: sourceId,
       isActive: isActive,
+    );
+  }
+
+  factory NewsSourceDTOModel.fromSqlite(NewsSourceSqliteModel? sqliteModel) {
+    if (sqliteModel == null) {
+      return NewsSourceDTOModel(name: 'Untitled');
+    }
+
+    return NewsSourceDTOModel(
+      name: sqliteModel.name,
+      logoUrl: sqliteModel.logoUrl,
+      sourceId: sqliteModel.sourceId,
+      isActive: sqliteModel.isActive
+    );
+  }
+
+  NewsSourceSqliteModel toSqlite() {
+    return NewsSourceSqliteModel(
+      name: name,
+      logoUrl: logoUrl,
+      sourceId: sourceId,
+      isActive: isActive
     );
   }
 
