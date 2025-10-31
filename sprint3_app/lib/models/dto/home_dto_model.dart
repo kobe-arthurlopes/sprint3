@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:sprint3_app/models/banner_dto_model.dart';
-import 'package:sprint3_app/models/carousel_dto_model.dart';
+import 'package:sprint3_app/models/dto/banner_dto_model.dart';
+import 'package:sprint3_app/models/dto/carousel_dto_model.dart';
 import 'package:sprint3_app/models/cms/banner_cms_model.dart';
 import 'package:sprint3_app/models/cms/carousel_cms_model.dart';
 import 'package:sprint3_app/models/cms/home_cms_model.dart';

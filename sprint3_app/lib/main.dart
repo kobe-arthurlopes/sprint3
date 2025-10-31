@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
-import 'package:sprint3_app/models/banner_dto_model.dart';
+import 'package:sprint3_app/models/dto/banner_dto_model.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/pages/home_page.dart';

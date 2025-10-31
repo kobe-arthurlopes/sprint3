@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:sprint3_app/models/cms/carousel_cms_model.dart';
 import 'package:sprint3_app/models/cms/news_source_cms_model.dart';
-import 'package:sprint3_app/models/news_source_dto_model.dart';
+import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 
 class CarouselDTOModel extends Equatable {
   final List<NewsSourceDTOModel> newsSources;
