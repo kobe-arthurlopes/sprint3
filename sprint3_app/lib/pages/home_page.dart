@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _initialize() async {
     await _viewModel.start();
+    // await _viewModel.clearAll();
     await _viewModel.fetchObjects();
   }
 
@@ -62,8 +63,7 @@ class _HomePageState extends State<HomePage> {
                 NewsSourcesList(
                   newsSources: data.newsSources,
                   onTap: (newsSource) async {
-                    _viewModel.updateSelectedNewsSource(newsSource);
-                    await _viewModel.fetchArticles();
+                    await _viewModel.updateSelectedNewsSource(newsSource);
 
                     if (!context.mounted) {
                       return;

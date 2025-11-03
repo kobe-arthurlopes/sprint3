@@ -1,40 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sprint3_app/models/dao/banner_dao_model.dart';
+import 'package:sprint3_app/models/dao/dao_protocol.dart';
 import 'package:sprint3_app/models/dao/news_source_dao_model.dart';
 import 'package:sprint3_app/models/dto/article_dto_model.dart';
 import 'package:sprint3_app/models/dao/article_dao_model.dart';
 import 'package:sprint3_app/models/dto/banner_dto_model.dart';
 import 'package:sprint3_app/models/cms/home_cms_model.dart';
+import 'package:sprint3_app/models/dto/dto_protocol.dart';
+import 'package:sprint3_app/models/dto/dto_type.dart';
 import 'package:sprint3_app/models/dto/home_dto_model.dart';
 import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/models/sqlite/app_database.dart';
+import 'package:sprint3_app/models/sqlite/article_sqlite_model.dart';
+import 'package:sprint3_app/models/sqlite/news_source_sqlite_model.dart';
 import 'package:sprint3_app/service/api_service.dart';
+import 'package:sprint3_app/service/app_preferences.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
 
 class HomeData {
   List<ArticleDTOModel> articles;
   List<NewsSourceDTOModel> newsSources;
-  NewsSourceDTOModel? selectedNewsSource;
   List<BannerDTOModel> banners;
 
   HomeData({
     required this.articles,
     required this.newsSources,
-    required this.selectedNewsSource,
     required this.banners,
   });
 
   HomeData copyWith({
     List<ArticleDTOModel>? articles,
     List<NewsSourceDTOModel>? newsSources,
-    NewsSourceDTOModel? selectedNewsSource,
     List<BannerDTOModel>? banners,
   }) {
     return HomeData(
       articles: articles ?? this.articles,
       newsSources: newsSources ?? this.newsSources,
-      selectedNewsSource: selectedNewsSource ?? this.selectedNewsSource,
       banners: banners ?? this.banners,
     );
   }
@@ -51,7 +53,6 @@ class HomeViewModel {
     HomeData(
       articles: [],
       newsSources: [],
-      selectedNewsSource: null,
       banners: [],
     ),
   );
@@ -80,51 +81,89 @@ class HomeViewModel {
     await _articleDao.clear();
     await _newsSourceDao.clear();
     await _bannerDao.clear();
+    await AppPreferences.isFirstEntry.set(true);
   }
 
   Future<void> fetchObjects() async {
-    await _fetchArticlesFromSql();
+    bool isFirstEntry = await AppPreferences.isFirstEntry.get();
 
-    if (homeData.value.articles.isEmpty) {
-      await fetchArticles();
+    if (isFirstEntry) {
+      await _setObjects(fromSqlite: false);
+      AppPreferences.isFirstEntry.set(false);
+      return;
     }
 
-    await _fetchNewsSourcesFromSql();
-    await _fetchBannersFromSql();
+    await _setObjects(fromSqlite: true);
+  }
 
-    if (homeData.value.newsSources.isEmpty || homeData.value.banners.isEmpty) {
-      await _fetchNewsSources();
+  Future<void> _setObjects({bool fromSqlite = true}) async {
+    final articles = await _fetchArticles(fromSqlite: fromSqlite);
+
+    final data = await _fetchNewsSourcesAndBanners(fromSqlite: fromSqlite);
+    final newsSources = data.newsSources;
+    final banners = data.banners;
+
+    homeData.value = homeData.value.copyWith(
+      articles: articles,
+      newsSources: newsSources,
+      banners: banners
+    );
+
+    if (!fromSqlite) {
+      _persistObjects<ArticleDTOModel>(_articleDao, DtoType.article);
+      _persistObjects<NewsSourceDTOModel>(_newsSourceDao, DtoType.newsSource);
+      _persistObjects<BannerDTOModel>(_bannerDao, DtoType.banner);
     }
   }
 
-  Future<void> fetchArticles() async {
+  Future<List<D>> _fetchObjectsFromSqlite<D extends DtoProtocol<S>, S>(
+    DaoProtocol dao,
+    D Function(S sqliteModel) fromSqlite
+  ) async {
+    final objectsSqlite = await dao.fetchAll() as List<S>;
+    return objectsSqlite.map((element) => fromSqlite(element)).toList();
+  }
+
+  Future<List<ArticleDTOModel>> _fetchArticles({bool fromSqlite = true}) async {
+    if (fromSqlite) {
+      final articles = await _fetchObjectsFromSqlite<ArticleDTOModel, ArticleSqliteModel>(
+        _articleDao, 
+        ArticleDTOModel.fromSqlite
+      );
+
+      return articles;
+    }
+
     try {
       final articleResponse = await _apiService.fetchResponse(
-        fromJson: ArticleResponse.fromJson, 
+        fromJson: ArticleResponse.fromJson,
         properties: _requestProperties
       );
 
-      final articles = articleResponse.articles;
-      homeData.value = homeData.value.copyWith(articles: articles);
-
-      await _persistArticles();
+      return articleResponse.articles;
     } on Exception {
       rethrow;
     }
   }
 
-  Future<void> _persistArticles() async {
-    await _articleDao.clear();
+  Future<({List<NewsSourceDTOModel> newsSources, List<BannerDTOModel> banners})> _fetchNewsSourcesAndBanners({
+    bool fromSqlite = true
+  }) async {
+    List<NewsSourceDTOModel> newsSources = [];
+    List<BannerDTOModel> banners = [];
 
-    final articles = homeData.value.articles;
+    if (fromSqlite) {
+      newsSources = await _fetchObjectsFromSqlite<NewsSourceDTOModel, NewsSourceSqliteModel>(
+        _newsSourceDao, 
+        NewsSourceDTOModel.fromSqlite
+      );
 
-    for (final article in articles) {
-      final articleSqlite = article.toSqlite();
-      await _articleDao.insert(articleSqlite);
+      banners = await _fetchObjectsFromSqlite(
+        _bannerDao, 
+        BannerDTOModel.fromSqlite
+      );
     }
-  }
 
-  Future<void> _fetchNewsSources() async {
     try {
       HomeCMSModel.registerChildren();
       final HomeCMSModel homeCMS = await _cmsConnection.findAll();
@@ -132,71 +171,57 @@ class HomeViewModel {
 
       final carouselDTO = homeDTO.carousel;
 
-      List<NewsSourceDTOModel> newsSourcesDTO = carouselDTO.newsSources;
-      newsSourcesDTO = NewsSourceDTOModel.getActiveNewsSources(newsSourcesDTO);
-      
-      List<BannerDTOModel> bannersDTO = homeDTO.banners;
-      bannersDTO = BannerDTOModel.getActiveBanners(bannersDTO);
+      newsSources = NewsSourceDTOModel.getActiveNewsSources(carouselDTO.newsSources);
 
-      homeData.value = homeData.value.copyWith(
-        newsSources: newsSourcesDTO,
-        banners: bannersDTO,
-      );
-
-      await _persistNewsSources();
-      await _persistBanners();
+      banners = BannerDTOModel.getActiveBanners(homeDTO.banners);
     } on Exception {
       rethrow;
     }
+
+    return (newsSources: newsSources, banners: banners);
   }
 
-  Future<void> _persistNewsSources() async {
-    await _newsSourceDao.clear();
+  Future<void> _persistObjects<T extends DtoProtocol>(
+    DaoProtocol dao,
+    DtoType dtoType
+  ) async {
+    await dao.clear();
+
+    final objects = _getObjects<T>(dtoType);
+
+    for (final object in objects) {
+      final objectSqlite = object.toSqlite();
+      await dao.insert(objectSqlite);
+    }
+  }
+
+  List<T> _getObjects<T extends DtoProtocol>(DtoType dtoType) {
+    switch (dtoType) {
+      case DtoType.article:
+        return homeData.value.articles as List<T>;
+      case DtoType.newsSource:
+        return homeData.value.newsSources as List<T>;
+      case DtoType.banner:
+        return homeData.value.banners as List<T>;
+    }
+  }
+
+  Future<void> updateSelectedNewsSource(NewsSourceDTOModel newsSource) async {
+    if (newsSource.articles.isNotEmpty) {
+      return;
+    }
+
+    _requestProperties = {'sources': newsSource.sourceId};
 
     final newsSources = homeData.value.newsSources;
+    final index = newsSources.indexWhere((element) => element == newsSource);
+    final articles = await _fetchArticles(fromSqlite: false);
+    newsSources[index].articles.addAll(articles);
 
-    for (final newsSource in newsSources) {
-      final newsSourceSqlite = newsSource.toSqlite();
-      await _newsSourceDao.insert(newsSourceSqlite);
-    }
-  }
-
-  Future<void> _persistBanners() async {
-    await _bannerDao.clear();
-
-    final banners = homeData.value.banners;
-
-    for (final banner in banners) {
-      final bannerSqlite = banner.toSqlite();
-      await _bannerDao.insert(bannerSqlite);
-    }
-  }
-
-  Future<void> _fetchArticlesFromSql() async {
-    final articlesSqlite = await _articleDao.fetchAll();
-    final articles = articlesSqlite.map((element) => ArticleDTOModel.fromSqlite(element)).toList();
-    homeData.value = homeData.value.copyWith(articles: articles);
-  }
-
-  Future<void> _fetchNewsSourcesFromSql() async {
-    final newsSourcesSqlite = await _newsSourceDao.fetchAll();
-    final newsSources = newsSourcesSqlite.map((element) => NewsSourceDTOModel.fromSqlite(element)).toList();
     homeData.value = homeData.value.copyWith(newsSources: newsSources);
   }
 
-  Future<void> _fetchBannersFromSql() async {
-    final bannersSqlite = await _bannerDao.fetchAll();
-    final banners = bannersSqlite.map((element) => BannerDTOModel.fromSqlite(element)).toList();
-    homeData.value = homeData.value.copyWith(banners: banners);
-  }
-
-  void updateSelectedNewsSource(NewsSourceDTOModel newsSource) {
-    homeData.value = homeData.value.copyWith(selectedNewsSource: newsSource);
-    _requestProperties = {'sources': newsSource.sourceId};
-  }
-
   void resetSelectedNewsSource() {
-    homeData.value = homeData.value.copyWith(selectedNewsSource: null);
     _requestProperties = {'category': 'general'};
   }
 }
