@@ -73,9 +73,11 @@ class _HomePageState extends State<HomePage> {
                       return;
                     }
 
+                    final String? errorMessage = _viewModel.homeData.value.errorMessage;
+
                     final _ = await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
-                      arguments: newsSource
+                      arguments: [newsSource, errorMessage]
                     );
 
                     _viewModel.resetSelectedNewsSource();

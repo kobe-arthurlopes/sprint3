@@ -22,22 +22,26 @@ class HomeData {
   List<ArticleDTOModel> articles;
   List<NewsSourceDTOModel> newsSources;
   List<BannerDTOModel> banners;
+  String? errorMessage;
 
   HomeData({
     required this.articles,
     required this.newsSources,
     required this.banners,
+    required this.errorMessage
   });
 
   HomeData copyWith({
     List<ArticleDTOModel>? articles,
     List<NewsSourceDTOModel>? newsSources,
     List<BannerDTOModel>? banners,
+    String? errorMessage
   }) {
     return HomeData(
       articles: articles ?? this.articles,
       newsSources: newsSources ?? this.newsSources,
       banners: banners ?? this.banners,
+      errorMessage: errorMessage ?? this.errorMessage
     );
   }
 }
@@ -54,6 +58,7 @@ class HomeViewModel {
       articles: [],
       newsSources: [],
       banners: [],
+      errorMessage: null
     ),
   );
 
@@ -141,7 +146,7 @@ class HomeViewModel {
       );
 
       return articleResponse.articles;
-    } on Exception {
+    } catch (error) {
       rethrow;
     }
   }
@@ -215,10 +220,14 @@ class HomeViewModel {
 
     final newsSources = homeData.value.newsSources;
     final index = newsSources.indexWhere((element) => element == newsSource);
-    final articles = await _fetchArticles(fromSqlite: false);
-    newsSources[index].articles.addAll(articles);
 
-    homeData.value = homeData.value.copyWith(newsSources: newsSources);
+    try {
+      final articles = await _fetchArticles(fromSqlite: false);
+      newsSources[index].articles.addAll(articles);
+      homeData.value = homeData.value.copyWith(newsSources: newsSources);
+    } on ApiException catch (error)  {
+      homeData.value = homeData.value.copyWith(errorMessage: error.userMessage);
+    }
   }
 
   void resetSelectedNewsSource() {

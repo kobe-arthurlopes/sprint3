@@ -28,10 +28,18 @@ class MyApp extends StatelessWidget {
               builder: (context) => HomePage(),
             );
           case NewsSourceDetailsPage.routeId:
+            final List<dynamic> arguments = routeSettings.arguments as List<dynamic>;
+
+            final NewsSourceDTOModel newsSource = arguments[0] as NewsSourceDTOModel;
+            final String? errorMessage = arguments[1] as String?;
+
             return MaterialPageRoute(
               settings: routeSettings,
               builder: (context) {
-                return NewsSourceDetailsPage(newsSource: routeSettings.arguments as NewsSourceDTOModel);
+                return NewsSourceDetailsPage(
+                  newsSource: newsSource,
+                  errorMessage: errorMessage,
+                );
               },
             );
           case WebViewPage.routeId:
