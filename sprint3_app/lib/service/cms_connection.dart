@@ -1,43 +1,66 @@
-import 'package:contentful/contentful.dart';
-import 'package:sprint3_app/models/carousel_model.dart';
-import 'package:sprint3_app/models/home_model.dart';
-import 'package:sprint3_app/models/news_source_model.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:sprint3_app/models/cms/cms_model.dart';
 
-class CmsConnection {
-  final String? accessToken;
-  final String? spaceId;
+abstract class CmsConnectionProtocol {
+  Future<T> findAll<T extends CmsModelProtocol>();
+  void initClient({
+    required String? accessToken,
+    required String? spaceId,
+    String environment = 'master'
+  });
+}
 
-  CmsConnection({required this.accessToken, required this.spaceId});
+class CmsConnection implements CmsConnectionProtocol {
+  late final GraphQLClient _client;
 
-  Future<List<NewsSourceModel>?> findAll() async {
-    if (accessToken == null) {
-      return null;
+  @override
+  void initClient({
+    required String? accessToken, 
+    required String? spaceId,
+    String environment = 'master'
+  }) {
+    if (accessToken == null || spaceId == null) {
+      throw Exception('Missing accessToken or spaceId');
     }
 
-    if (spaceId == null) {
-      return null;
-    }
+    final String endpoint =
+        'https://graphql.contentful.com/content/v1/spaces/$spaceId/environments/$environment';
 
-    final Client contentful = Client(
-      BearerTokenHTTPClient(accessToken!),
-      spaceId: spaceId!,
-      environment: 'master'
+    final HttpLink httpLink = HttpLink(
+      endpoint,
+      defaultHeaders: {'Authorization': 'Bearer $accessToken'},
     );
 
-    try {
-      final homeModelCollection = await contentful.getEntries<HomeModel>({
-        'content_type': HomeModel.contentType,
-        'include': '10',
-      }, HomeModel.fromJson);
+    _client = GraphQLClient(link: httpLink, cache: GraphQLCache());
+  }
 
-      final home = homeModelCollection.items.first;
-      final CarouselModel? carousel = home.fields?.carousel;
-      final List<NewsSourceModel>? newsSources = carousel?.fields?.newsSources;
+  @override
+  Future<T> findAll<T extends CmsModelProtocol>() async {
+    final String contentType = CmsModelProtocol.contentTypeOf<T>();
+    final String fieldsQuery = CmsModelProtocol.fieldsQueryOf<T>();
 
-      return newsSources;
-    } catch (e) {
-      print(e);
+    final String query = '''
+      query {
+        ${contentType}Collection(limit: 1) {
+          items {
+            $fieldsQuery
+          }
+        }
+      }
+    ''';
+
+    final result = await _client.query(QueryOptions(document: gql(query)));
+
+    if (result.hasException) {
+      throw Exception(result.exception.toString());
     }
-    return null;
+
+    final items = result.data?['${contentType}Collection']?['items'] as List?;
+
+    if (items == null || items.isEmpty) {
+      throw Exception('No $T content found');
+    }
+
+    return CmsModelProtocol.fromJsonOf<T>(items.first);
   }
 }

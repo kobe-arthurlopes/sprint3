@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
+import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
+import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
-import 'package:sprint3_app/widgets/all_articles_list.dart';
+import 'package:sprint3_app/widgets/articles_list.dart';
+import 'package:sprint3_app/widgets/app_bar_widget.dart';
+import 'package:sprint3_app/widgets/banners_list.dart';
 import 'package:sprint3_app/widgets/news_sources_list.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,16 +39,25 @@ class _HomePageState extends State<HomePage> {
       valueListenable: _viewModel.homeData,
       builder: (_, data, _) {
         return Scaffold(
-          appBar: AppBar(title: const Text('News')),
+          backgroundColor: AppColors.background,
+          appBar: AppBarWidget(title: 'News'),
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.only(
+                    top: 16,
+                    left: 10,
+                    right: 10,
+                    bottom: 8
+                  ),
                   child: Text(
                     'Top News Sources',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
                   ),
                 ),
 
@@ -54,12 +67,20 @@ class _HomePageState extends State<HomePage> {
                     _viewModel.updateSelectedNewsSource(newsSource);
                     await _viewModel.fetchArticles();
 
+                    if (!context.mounted) {
+                      return;
+                    }
+
+                    if (ModalRoute.of(context)?.isCurrent == false) {
+                      return;
+                    }
+
                     final List<ArticleModel> articles =
                         _viewModel.homeData.value.articles;
 
-                    final result = await Navigator.of(context).pushNamed(
+                    final _ = await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
-                      arguments: [newsSource.fields?.name ?? 'empty', articles],
+                      arguments: [newsSource.name, articles],
                     );
 
                     _viewModel.resetSelectedNewsSource();
@@ -67,26 +88,65 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
 
-                const SizedBox(height: 16),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Top Headlines',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 16,
+                        left: 10,
+                        right: 10,
+                        bottom: 8
                       ),
+                      child: Text(
+                        'Classic Headlines',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
 
-                      SizedBox(height: 8),
+                    BannersList(
+                      banners: data.banners,
+                      onTap: (banner) {
+                        Navigator.of(context).pushNamed(
+                          BannerDetailsPage.routeId,
+                          arguments: banner
+                        );
+                      },
+                    ),
+                  ],
+                ),
 
-                      AllArticlesList(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 16,
+                        left: 10,
+                        right: 10
+                      ),
+                      child: Text(
+                        'Top Headlines',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10
+                      ),
+                      child: ArticlesList(
                         articles: data.articles,
                         isScrollable: false,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),

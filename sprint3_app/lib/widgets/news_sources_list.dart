@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/news_source_model.dart';
-import 'package:sprint3_app/widgets/news_source_item.dart';
+import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
+import 'package:sprint3_app/widgets/news_source_tile.dart';
 
 class NewsSourcesList extends StatelessWidget {
-  final List<NewsSourceModel> newsSources;
-  final void Function(NewsSourceModel)? onTap;
+  final List<NewsSourceDTOModel> newsSources;
+  final void Function(NewsSourceDTOModel)? onTap;
 
   const NewsSourcesList({super.key, required this.newsSources, this.onTap});
 
@@ -14,15 +14,13 @@ class NewsSourcesList extends StatelessWidget {
       height: 160,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: newsSources.length,
+        itemCount: newsSources.isEmpty ? 10 : newsSources.length,
         itemBuilder: (context, index) {
-          final newsSource = newsSources[index];
-    
-          return NewsSourceItem(
-            newsSource: newsSource,
+          return NewsSourceTile(
+            newsSource: newsSources.isEmpty ? null : newsSources[index],
             onTap: () {
-              if (onTap != null) {
-                onTap!(newsSource);
+              if (onTap != null && newsSources.isNotEmpty) {
+                onTap!(newsSources[index]);
               }
             },
           );

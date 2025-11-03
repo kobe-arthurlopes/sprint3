@@ -1,59 +1,76 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sprint3_app/models/article_model.dart';
-import 'package:sprint3_app/models/news_source_model.dart';
+import 'package:sprint3_app/models/dto/banner_dto_model.dart';
+import 'package:sprint3_app/models/cms/home_cms_model.dart';
+import 'package:sprint3_app/models/dto/home_dto_model.dart';
+import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
 
 class HomeData {
   List<ArticleModel> articles;
-  List<NewsSourceModel> newsSources;
-  NewsSourceModel? selectedNewsSource;
+  List<NewsSourceDTOModel> newsSources;
+  NewsSourceDTOModel? selectedNewsSource;
+  List<BannerDTOModel> banners;
 
   HomeData({
     required this.articles,
     required this.newsSources,
     required this.selectedNewsSource,
+    required this.banners,
   });
 
   HomeData copyWith({
     List<ArticleModel>? articles,
-    List<NewsSourceModel>? newsSources,
-    NewsSourceModel? selectedNewsSource,
+    List<NewsSourceDTOModel>? newsSources,
+    NewsSourceDTOModel? selectedNewsSource,
+    List<BannerDTOModel>? banners,
   }) {
     return HomeData(
       articles: articles ?? this.articles,
       newsSources: newsSources ?? this.newsSources,
       selectedNewsSource: selectedNewsSource ?? this.selectedNewsSource,
+      banners: banners ?? this.banners,
     );
   }
 }
 
 class HomeViewModel {
-  late final TokenProvider _tokens;
-  late final CmsConnection _cmsConnection;
-  late final ApiService _apiService;
+  late final CmsConnectionProtocol _cmsConnection;
+  late final ApiServiceProtocol _apiService;
 
-  ValueNotifier<HomeData> homeData = ValueNotifier(
-    HomeData(articles: [], newsSources: [], selectedNewsSource: null),
+  final ValueNotifier<HomeData> homeData = ValueNotifier(
+    HomeData(
+      articles: [],
+      newsSources: [],
+      selectedNewsSource: null,
+      banners: [],
+    ),
   );
 
   Map<String, dynamic>? _requestProperties = {'category': 'general'};
 
   Future<void> start() async {
-    _tokens = await TokenProvider.create();
+    final tokenProvider = await TokenProvider.create();
 
-    _cmsConnection = CmsConnection(
-      accessToken: _tokens.contentfulAccessToken,
-      spaceId: _tokens.contentfulSpaceId,
+    _cmsConnection = CmsConnection();
+    _cmsConnection.initClient(
+      accessToken: tokenProvider.accessTokenCDA, 
+      spaceId: tokenProvider.spaceIdCDA
     );
 
-    _apiService = ApiService(apiKey: _tokens.apiKey);
+    _apiService = ApiService(apiKey: tokenProvider.newsApiKey);
   }
 
   Future<void> fetchArticles() async {
     try {
-      final articles = await _apiService.fetchArticles(_requestProperties);
+      final articleResponse = await _apiService.fetchResponse(
+        fromJson: ArticleResponse.fromJson, 
+        properties: _requestProperties
+      );
+
+      final articles = articleResponse.articles;
       homeData.value = homeData.value.copyWith(articles: articles);
     } on Exception {
       rethrow;
@@ -62,16 +79,30 @@ class HomeViewModel {
 
   Future<void> fetchNewsSources() async {
     try {
-      final newsSources = await _cmsConnection.findAll();
-      homeData.value = homeData.value.copyWith(newsSources: newsSources);
+      HomeCMSModel.registerChildren();
+      final HomeCMSModel homeCMS = await _cmsConnection.findAll();
+      final homeDTO = HomeDTOModel.fromCMS(homeCMS);
+
+      final carouselDTO = homeDTO.carousel;
+
+      List<NewsSourceDTOModel> newsSourcesDTO = carouselDTO.newsSources;
+      newsSourcesDTO = NewsSourceDTOModel.getActiveNewsSources(newsSourcesDTO);
+      
+      List<BannerDTOModel> bannersDTO = homeDTO.banners;
+      bannersDTO = BannerDTOModel.getActiveBanners(bannersDTO);
+
+      homeData.value = homeData.value.copyWith(
+        newsSources: newsSourcesDTO,
+        banners: bannersDTO,
+      );
     } on Exception {
       rethrow;
     }
   }
 
-  void updateSelectedNewsSource(NewsSourceModel newsSource) {
+  void updateSelectedNewsSource(NewsSourceDTOModel newsSource) {
     homeData.value = homeData.value.copyWith(selectedNewsSource: newsSource);
-    _requestProperties = {'sources': newsSource.fields?.sourceId};
+    _requestProperties = {'sources': newsSource.sourceId};
   }
 
   void resetSelectedNewsSource() {

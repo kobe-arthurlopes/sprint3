@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/article_model.dart';
-import 'package:sprint3_app/widgets/all_articles_list.dart';
+import 'package:sprint3_app/theme/colors.dart';
+import 'package:sprint3_app/widgets/articles_list.dart';
+import 'package:sprint3_app/widgets/app_bar_widget.dart';
 
-class NewsSourceDetailsPage extends StatefulWidget {
+class NewsSourceDetailsPage extends StatelessWidget {
   static const routeId = '/news_source_details';
 
   final String title;
@@ -15,19 +17,13 @@ class NewsSourceDetailsPage extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _NewsSourceDetailsPageState();
-}
-
-class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      backgroundColor: AppColors.background,
+      appBar: AppBarWidget(title: title),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: AllArticlesList(
-          articles: widget.articles,
-        ),
+        child: ArticlesList(articles: articles),
       ),
     );
   }

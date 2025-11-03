@@ -1,28 +1,38 @@
 import 'package:dio/dio.dart';
-import 'package:sprint3_app/models/article_model.dart';
 
-class ApiService {
+abstract class ApiServiceProtocol {
+  Future<T> fetchResponse<T>({
+    String endpoint, 
+    required T Function(Map<String, dynamic>) fromJson,
+    Map<String, dynamic>? properties
+  });
+}
+
+class ApiService implements ApiServiceProtocol {
   final String? apiKey;
+  final dio = Dio(BaseOptions(baseUrl: 'https://newsapi.org/v2/'));
 
   ApiService({required this.apiKey});
 
-  final _dio = Dio(BaseOptions(baseUrl: 'https://newsapi.org/v2/'));
-
-  Future<List<ArticleModel>> fetchArticles(Map<String, dynamic>? properties) async {
+  @override
+  Future<T> fetchResponse<T>({
+    String endpoint = 'top-headlines',
+    required Function(Map<String, dynamic>) fromJson,
+    Map<String, dynamic>? properties
+  }) async {
     if (apiKey == null) {
       throw Exception;
     }
 
-    properties?['apiKey'] = apiKey!;
+    properties?['apiKey'] = apiKey;
 
     try {
-      final response = await _dio.get(
-        'top-headlines',
+      final response = await dio.get(
+        endpoint,
         queryParameters: properties,
       );
 
-      final ArticleResponse articleResponse = ArticleResponse.fromJson(response.data);
-      return articleResponse.articles;
+      return fromJson(response.data);
     } on DioException {
       rethrow;
     }
