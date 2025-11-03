@@ -1,8 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:sprint3_app/models/cms/banner_cms_model.dart';
+import 'package:sprint3_app/models/dto/dto_protocol.dart';
 import 'package:sprint3_app/models/sqlite/banner_sqlite_model.dart';
 
-class BannerDTOModel extends Equatable {
+class BannerDTOModel extends Equatable
+    implements DtoProtocol<BannerSqliteModel> {
+
   final String title;
   final String subtitle;
   final String description;
@@ -61,6 +64,7 @@ class BannerDTOModel extends Equatable {
     );
   }
 
+  @override
   BannerSqliteModel toSqlite() {
     return BannerSqliteModel(
       title: title,

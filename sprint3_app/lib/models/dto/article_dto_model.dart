@@ -1,4 +1,4 @@
-import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
+import 'package:sprint3_app/models/dto/dto_protocol.dart';
 import 'package:sprint3_app/models/sqlite/article_sqlite_model.dart';
 
 class ArticleResponse {
@@ -19,15 +19,14 @@ class ArticleResponse {
   }
 }
 
-class ArticleDTOModel {
+class ArticleDTOModel implements DtoProtocol<ArticleSqliteModel> {
   final String title;
   final String description;
   final String author;
   final String? url;
   final String? urlToImage;
-  List<NewsSourceDTOModel> newsSources = [];
 
-  ArticleDTOModel({
+  const ArticleDTOModel({
     this.title = 'Untitled',
     this.description = 'No description',
     this.author = 'No author',
@@ -59,6 +58,7 @@ class ArticleDTOModel {
     );
   }
 
+  @override
   ArticleSqliteModel toSqlite() {
     return ArticleSqliteModel(
       title: title,

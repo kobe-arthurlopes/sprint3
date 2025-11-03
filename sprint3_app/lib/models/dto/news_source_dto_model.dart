@@ -1,19 +1,25 @@
 import 'package:equatable/equatable.dart';
 import 'package:sprint3_app/models/cms/news_source_cms_model.dart';
+import 'package:sprint3_app/models/dto/article_dto_model.dart';
+import 'package:sprint3_app/models/dto/dto_protocol.dart';
 import 'package:sprint3_app/models/sqlite/news_source_sqlite_model.dart';
 
-class NewsSourceDTOModel extends Equatable {
+class NewsSourceDTOModel extends Equatable
+    implements DtoProtocol<NewsSourceSqliteModel> {
+
   final String name;
   final String? logoUrl;
   final String? sourceId;
   final bool isActive;
+  final List<ArticleDTOModel> articles;
 
-  const NewsSourceDTOModel({
+  NewsSourceDTOModel({
     required this.name,
     this.logoUrl,
     this.sourceId,
     this.isActive = false,
-  });
+    List<ArticleDTOModel>? articles,
+  }) : articles = articles ?? [];
 
   factory NewsSourceDTOModel.fromCMS(NewsSourceCMSModel? cmsModel) {
     if (cmsModel == null) {
@@ -55,6 +61,7 @@ class NewsSourceDTOModel extends Equatable {
     );
   }
 
+  @override
   NewsSourceSqliteModel toSqlite() {
     return NewsSourceSqliteModel(
       name: name,
