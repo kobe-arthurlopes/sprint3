@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/dto/article_dto_model.dart';
 import 'package:sprint3_app/models/dto/banner_dto_model.dart';
+import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/pages/home_page.dart';
@@ -28,20 +29,10 @@ class MyApp extends StatelessWidget {
               builder: (context) => HomePage(),
             );
           case NewsSourceDetailsPage.routeId:
-            final List<dynamic> arguments =
-                routeSettings.arguments as List<dynamic>;
-
-            final String title = arguments[0] as String;
-            List<ArticleDTOModel> articles = [];
-
-            if (arguments[1] is List<ArticleDTOModel>) {
-              articles = arguments[1] as List<ArticleDTOModel>;
-            }
-
             return MaterialPageRoute(
               settings: routeSettings,
               builder: (context) {
-                return NewsSourceDetailsPage(title: title, articles: articles);
+                return NewsSourceDetailsPage(newsSource: routeSettings.arguments as NewsSourceDTOModel);
               },
             );
           case WebViewPage.routeId:

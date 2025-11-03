@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dto/article_dto_model.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/theme/colors.dart';
@@ -74,16 +73,12 @@ class _HomePageState extends State<HomePage> {
                       return;
                     }
 
-                    final List<ArticleDTOModel> articles =
-                        _viewModel.homeData.value.articles;
-
                     final _ = await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
-                      arguments: [newsSource.name, articles],
+                      arguments: newsSource
                     );
 
                     _viewModel.resetSelectedNewsSource();
-                    await _viewModel.fetchArticles();
                   },
                 ),
 
