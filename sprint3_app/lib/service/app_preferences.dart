@@ -9,12 +9,7 @@ class Preference<T> {
   Future<T> get() async {
     final prefs = await SharedPreferences.getInstance();
     final value = prefs.get(key);
-
-    if (value is T) {
-      return value;
-    }
-
-    return defaultValue;
+    return (value is T) ? value : defaultValue;
   }
 
   Future<void> set(T value) async {
