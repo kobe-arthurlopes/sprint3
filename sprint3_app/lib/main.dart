@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dto/article_dto_model.dart';
 import 'package:sprint3_app/models/dto/banner_dto_model.dart';
 import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
