@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/widgets/model_image_widget.dart';
 import 'package:sprint3_app/models/dto/article_dto_model.dart';
 import 'package:sprint3_app/pages/web_view_page.dart';
 import 'package:sprint3_app/theme/colors.dart';
-import 'package:sprint3_app/theme/image_paths.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class ArticleTile extends StatelessWidget {
@@ -65,19 +65,9 @@ class ArticleTile extends StatelessWidget {
   Widget _buildArticleImage(Size size) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
-      child: Image.network(
-        article!.urlToImage ?? '',
-        width: size.width,
-        height: size.height,
-        fit: BoxFit.cover,
-        errorBuilder: (_, _, _) {
-          return Image.asset(
-            AppImagePaths.placeholder,
-            width: size.width,
-            height: size.height,
-            fit: BoxFit.cover,
-          );
-        }
+      child: ModelImageWidget(
+        imageUrl: article!.urlToImage,
+        size: size
       ),
     );
   }

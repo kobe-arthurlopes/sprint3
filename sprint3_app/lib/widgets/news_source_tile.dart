@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/theme/image_paths.dart';
+import 'package:sprint3_app/widgets/model_image_widget.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class NewsSourceTile extends StatelessWidget {
@@ -27,20 +28,30 @@ class NewsSourceTile extends StatelessWidget {
             newsSource == null
               ? ShimmerWidget.circular(radius: 50)
               : ClipOval(
-                child: Image.network(
-                  newsSource!.logoUrl ?? '',
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) {
-                    return Image.asset(
-                      AppImagePaths.placeholder,
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
+                child: ModelImageWidget(
+                  imageUrl: newsSource!.logoUrl,
+                  size: Size(100, 100)
+                )
+                
+                
+                
+                
+                
+                
+                // Image.network(
+                //   newsSource!.logoUrl ?? '',
+                //   width: 100,
+                //   height: 100,
+                //   fit: BoxFit.cover,
+                //   errorBuilder: (_, _, _) {
+                //     return Image.asset(
+                //       AppImagePaths.placeholder,
+                //       width: 100,
+                //       height: 100,
+                //       fit: BoxFit.cover,
+                //     );
+                //   },
+                // ),
               ),
 
             SizedBox(

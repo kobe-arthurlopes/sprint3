@@ -14,6 +14,7 @@ import 'package:sprint3_app/models/sqlite/app_database.dart';
 import 'package:sprint3_app/models/sqlite/article_sqlite_model.dart';
 import 'package:sprint3_app/models/sqlite/news_source_sqlite_model.dart';
 import 'package:sprint3_app/service/api_service.dart';
+import 'package:sprint3_app/service/app_cache_manager.dart';
 import 'package:sprint3_app/service/app_preferences.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
@@ -118,6 +119,8 @@ class HomeViewModel {
       _persistObjects<ArticleDTOModel>(_articleDao, DtoType.article);
       _persistObjects<NewsSourceDTOModel>(_newsSourceDao, DtoType.newsSource);
       _persistObjects<BannerDTOModel>(_bannerDao, DtoType.banner);
+
+      _cacheImages();
     }
   }
 
@@ -200,6 +203,25 @@ class HomeViewModel {
     }
   }
 
+  Future<void> _cacheImages() async {
+    List<String?> allImageUrls = [];
+
+    final articles = _getObjects<ArticleDTOModel>(DtoType.article);
+    final articleImageUrls = articles.map((element) => element.urlToImage).toList();
+
+    final newsSources = _getObjects<NewsSourceDTOModel>(DtoType.newsSource);
+    final newsSourceImageUrls = newsSources.map((element) => element.logoUrl).toList();
+
+    final banners = _getObjects<BannerDTOModel>(DtoType.banner);
+    final bannerImageUrls = banners.map((element) => element.logoUrl).toList();
+
+    allImageUrls.addAll(articleImageUrls);
+    allImageUrls.addAll(newsSourceImageUrls);
+    allImageUrls.addAll(bannerImageUrls);
+
+    await AppCacheManager.preCacheImages(allImageUrls);
+  }
+
   List<T> _getObjects<T extends DtoProtocol>(DtoType dtoType) {
     switch (dtoType) {
       case DtoType.article:
@@ -232,5 +254,6 @@ class HomeViewModel {
 
   void resetSelectedNewsSource() {
     _requestProperties = {'category': 'general'};
+    homeData.value = homeData.value.copyWith(errorMessage: null);
   }
 }
