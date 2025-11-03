@@ -1,3 +1,4 @@
+import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/models/sqlite/article_sqlite_model.dart';
 
 class ArticleResponse {
@@ -24,6 +25,7 @@ class ArticleDTOModel {
   final String author;
   final String? url;
   final String? urlToImage;
+  List<NewsSourceDTOModel> newsSources = [];
 
   ArticleDTOModel({
     this.title = 'Untitled',
