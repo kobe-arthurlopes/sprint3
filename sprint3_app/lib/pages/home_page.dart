@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                     top: 16,
                     left: 10,
                     right: 10,
-                    bottom: 8
+                    bottom: 8,
                   ),
                   child: Text(
                     'Top News Sources',
@@ -73,11 +73,12 @@ class _HomePageState extends State<HomePage> {
                       return;
                     }
 
-                    final String? errorMessage = _viewModel.homeData.value.errorMessage;
+                    final String? errorMessage =
+                        _viewModel.homeData.value.errorMessage;
 
                     final _ = await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
-                      arguments: [newsSource, errorMessage]
+                      arguments: [newsSource, errorMessage],
                     );
 
                     _viewModel.resetSelectedNewsSource();
@@ -92,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                         top: 16,
                         left: 10,
                         right: 10,
-                        bottom: 8
+                        bottom: 8,
                       ),
                       child: Text(
                         'Classic Headlines',
@@ -108,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: (banner) {
                         Navigator.of(context).pushNamed(
                           BannerDetailsPage.routeId,
-                          arguments: banner
+                          arguments: banner,
                         );
                       },
                     ),
@@ -122,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.only(
                         top: 16,
                         left: 10,
-                        right: 10
+                        right: 10,
                       ),
                       child: Text(
                         'Top Headlines',
@@ -132,11 +133,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                
+
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: ArticlesList(
                         articles: data.articles,
                         isScrollable: false,

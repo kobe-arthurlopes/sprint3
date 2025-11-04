@@ -24,14 +24,13 @@ class NewsSourceTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            newsSource == null
-              ? ShimmerWidget.circular(radius: 50)
-              : ClipOval(
-                child: ModelImageWidget(
-                  imageUrl: newsSource!.logoUrl,
-                  size: Size(100, 100)
-                )
+            ClipOval(
+              child: ModelImageWidget(
+                imageUrl: newsSource?.logoUrl,
+                size: Size(100, 100), 
+                placeholder: ShimmerWidget.circular(radius: 50)
               ),
+            ),
 
             SizedBox(
               width: 100,

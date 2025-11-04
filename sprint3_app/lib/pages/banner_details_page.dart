@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/dto/banner_dto_model.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
+import 'package:sprint3_app/widgets/model_image_widget.dart';
+import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class BannerDetailsPage extends StatelessWidget {
   static const routeId = '/banner_details';
@@ -22,14 +24,28 @@ class BannerDetailsPage extends StatelessWidget {
             Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image.network(
-                  banner.logoUrl ?? '',
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.cover
+                child: ModelImageWidget(
+                  imageUrl: banner.logoUrl, 
+                  size: Size(200, 200), 
+                  placeholder: ShimmerWidget.rectangular(
+                    width: 200,
+                    height: 200,
+                  )
                 ),
               ),
             ),
+
+            // Center(
+            //   child: ClipRRect(
+            //     borderRadius: BorderRadius.circular(16),
+            //     child: Image.network(
+            //       banner.logoUrl ?? '',
+            //       width: 200,
+            //       height: 200,
+            //       fit: BoxFit.cover
+            //     ),
+            //   ),
+            // ),
 
             SizedBox(height: 16),
 

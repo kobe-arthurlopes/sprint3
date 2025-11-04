@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/dto/banner_dto_model.dart';
 import 'package:sprint3_app/theme/colors.dart';
-import 'package:sprint3_app/theme/image_paths.dart';
+import 'package:sprint3_app/widgets/model_image_widget.dart';
 import 'package:sprint3_app/widgets/shimmer_widget.dart';
 
 class BannerTile extends StatelessWidget {
@@ -12,6 +12,11 @@ class BannerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = Size(
+      MediaQuery.of(context).size.width - 20,
+      250
+    );
+
     return GestureDetector(
       onTap: () {
         if (onTap != null && banner != null) {
@@ -20,45 +25,34 @@ class BannerTile extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: banner == null
-            ? ShimmerWidget.rectangular(
-                width: MediaQuery.of(context).size.width - 20,
-                height: 250,
-                borderRadius: 16,
-              )
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Stack(
-                  children: [
-                    Image.network(
-                      banner!.logoUrl ?? '',
-                      width: MediaQuery.of(context).size.width - 20,
-                      height: 250,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) {
-                        return Image.asset(
-                          AppImagePaths.placeholder,
-                          width: MediaQuery.of(context).size.width - 20,
-                          height: 250,
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    ),
-
-                    Positioned.fill(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: AppColors.border,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Stack(
+            children: [
+              ModelImageWidget(
+                imageUrl: banner?.logoUrl, 
+                size: size, 
+                placeholder: ShimmerWidget.rectangular(
+                  width: size.width,
+                  height: size.height,
+                  borderRadius: 16,
+                )
               ),
+
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: AppColors.border,
+                      width: 2
+                    )
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

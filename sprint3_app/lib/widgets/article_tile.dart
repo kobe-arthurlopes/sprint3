@@ -19,9 +19,18 @@ class ArticleTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          article == null
-            ? _buildImageShimmer(size)
-            : _buildArticleImage(size),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: ModelImageWidget(
+              imageUrl: article?.urlToImage, 
+              size: size, 
+              placeholder: ShimmerWidget.rectangular(
+                width: size.width,
+                height: size.height,
+                borderRadius: 16,
+              )
+            ),
+          ),
 
           SizedBox(width: 10),
 
@@ -50,24 +59,6 @@ class ArticleTile extends StatelessWidget {
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget _buildImageShimmer(Size size) {
-    return ShimmerWidget.rectangular(
-      width: size.width,
-      height: size.height,
-      borderRadius: 16,
-    );
-  }
-
-  Widget _buildArticleImage(Size size) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: ModelImageWidget(
-        imageUrl: article!.urlToImage,
-        size: size
       ),
     );
   }
