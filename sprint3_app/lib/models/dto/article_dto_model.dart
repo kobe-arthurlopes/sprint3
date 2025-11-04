@@ -20,6 +20,7 @@ class ArticleResponse {
 }
 
 class ArticleDTOModel implements DtoProtocol<ArticleSqliteModel> {
+  final String? sourceId;
   final String title;
   final String description;
   final String author;
@@ -27,6 +28,7 @@ class ArticleDTOModel implements DtoProtocol<ArticleSqliteModel> {
   final String? urlToImage;
 
   const ArticleDTOModel({
+    this.sourceId,
     this.title = 'Untitled',
     this.description = 'No description',
     this.author = 'No author',
@@ -36,6 +38,7 @@ class ArticleDTOModel implements DtoProtocol<ArticleSqliteModel> {
 
   factory ArticleDTOModel.fromJson(Map<String, dynamic> json) {
     return ArticleDTOModel(
+      sourceId: json['source']['id'],
       title: json['title'] ?? 'No title', 
       description: json['description'] ?? 'No description',
       author: json['author'] ?? 'Unknown author', 
@@ -50,6 +53,7 @@ class ArticleDTOModel implements DtoProtocol<ArticleSqliteModel> {
     }
 
     return ArticleDTOModel(
+      sourceId: sqliteModel.sourceID,
       title: sqliteModel.title,
       description: sqliteModel.description,
       author: sqliteModel.author,
@@ -61,6 +65,7 @@ class ArticleDTOModel implements DtoProtocol<ArticleSqliteModel> {
   @override
   ArticleSqliteModel toSqlite() {
     return ArticleSqliteModel(
+      sourceID: sourceId,
       title: title,
       description: description,
       author: author,
