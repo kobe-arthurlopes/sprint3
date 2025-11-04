@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/models/dao/dao_protocol.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
+import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/view_models/home_view_model.dart';
 import 'package:sprint3_app/widgets/articles_list.dart';
@@ -35,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<HomeData>(
-      valueListenable: _viewModel.homeData,
+      valueListenable: _viewModel.data,
       builder: (_, data, _) {
         return Scaffold(
           backgroundColor: AppColors.background,
@@ -63,8 +65,6 @@ class _HomePageState extends State<HomePage> {
                 NewsSourcesList(
                   newsSources: data.newsSources,
                   onTap: (newsSource) async {
-                    await _viewModel.updateSelectedNewsSource(newsSource);
-
                     if (!context.mounted) {
                       return;
                     }
@@ -73,15 +73,13 @@ class _HomePageState extends State<HomePage> {
                       return;
                     }
 
-                    final String? errorMessage =
-                        _viewModel.homeData.value.errorMessage;
+                    final ApiServiceProtocol apiService = _viewModel.apiService;
+                    final DaoProtocol articleDo = _viewModel.articleDao;
 
                     final _ = await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
-                      arguments: [newsSource, errorMessage],
+                      arguments: [newsSource, apiService, articleDo]
                     );
-
-                    _viewModel.resetSelectedNewsSource();
                   },
                 ),
 
