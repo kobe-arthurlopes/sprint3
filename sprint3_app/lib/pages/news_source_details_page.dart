@@ -1,32 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/models/dao/dao_protocol.dart';
 import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
+import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/theme/colors.dart';
+import 'package:sprint3_app/view_models/news_source_details_view_model.dart';
 import 'package:sprint3_app/widgets/articles_list.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
 
-class NewsSourceDetailsPage extends StatelessWidget {
+class NewsSourceDetailsPage extends StatefulWidget {
   static const routeId = '/news_source_details';
 
   final NewsSourceDTOModel newsSource;
-  final String? errorMessage;
+  final ApiServiceProtocol apiService;
+  final DaoProtocol articleDao;
 
   const NewsSourceDetailsPage({
     super.key,
     required this.newsSource,
-    required this.errorMessage
+    required this.apiService,
+    required this.articleDao
   });
 
   @override
+  State<StatefulWidget> createState() => _NewsSourceDetailsPageState();
+}
+
+class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
+  late final NewsSourceDetailsViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    _viewModel = NewsSourceDetailsViewModel(
+      apiService: widget.apiService, 
+      articleDao: widget.articleDao,
+      sourceId: widget.newsSource.sourceId
+    );
+
+    await _viewModel.setArticles();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBarWidget(title: newsSource.name),
-      body: errorMessage != null
-        ? _buildErrorView(errorMessage!)
-        : Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: ArticlesList(articles: newsSource.articles),
-        ),
+    return ValueListenableBuilder<NewsSourceDetailsData>(
+      valueListenable: _viewModel.data,
+      builder: (_, data, _) {
+        final newsSource = widget.newsSource;
+
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          appBar: AppBarWidget(title: newsSource.name),
+          body: data.errorMessage != null
+            ? _buildErrorView(data.errorMessage!)
+            : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: ArticlesList(articles: data.articles),
+            ),
+        );
+      }
     );
   }
 

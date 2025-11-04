@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sprint3_app/models/dao/dao_protocol.dart';
 import 'package:sprint3_app/models/dto/banner_dto_model.dart';
 import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/pages/home_page.dart';
 import 'package:sprint3_app/pages/web_view_page.dart';
+import 'package:sprint3_app/service/api_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,14 +33,16 @@ class MyApp extends StatelessWidget {
             final List<dynamic> arguments = routeSettings.arguments as List<dynamic>;
 
             final NewsSourceDTOModel newsSource = arguments[0] as NewsSourceDTOModel;
-            final String? errorMessage = arguments[1] as String?;
+            final ApiServiceProtocol apiService = arguments[1] as ApiServiceProtocol;
+            final DaoProtocol articleDao = arguments[2] as DaoProtocol;
 
             return MaterialPageRoute(
               settings: routeSettings,
               builder: (context) {
                 return NewsSourceDetailsPage(
                   newsSource: newsSource,
-                  errorMessage: errorMessage,
+                  apiService: apiService,
+                  articleDao: articleDao,
                 );
               },
             );
