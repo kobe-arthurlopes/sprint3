@@ -27,6 +27,36 @@ abstract class DaoProtocol<T extends SqliteModel<T>> {
     return maps.map((element) => model.toSqliteModel(element)).toList();
   }
 
+  Future<List<T>> fetchWhere({
+    required String where,
+    required List<Object?> whereArgs
+  }) async {
+    final db = await dbProvider.database;
+
+    final maps = await db.query(
+      model.table,
+      where: where,
+      whereArgs: whereArgs
+    );
+
+    return maps.map((element) => model.toSqliteModel(element)).toList();
+  }
+
+  Future<void> updateField({
+    required String column,
+    required Object? value,
+    required String where,
+  }) async {
+    final db = await dbProvider.database;
+
+    await db.update(
+      model.table,
+      {column: value},
+      where: where,
+      conflictAlgorithm: ConflictAlgorithm.replace
+    );
+  }
+
   Future<void> clear() async {
     final db = await dbProvider.database;
     await db.delete(model.table);
