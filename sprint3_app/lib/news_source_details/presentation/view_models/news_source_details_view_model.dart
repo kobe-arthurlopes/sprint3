@@ -8,7 +8,7 @@ class NewsSourceDetailsViewModel {
 
   NewsSourceDetailsViewModel({required this.repository});
 
-  Future<void> start() async {
+  Future<void> fetch() async {
     data.value = NewsSourceDetailsData();
     final newsSourceDetailsData = await repository.fetchData();
     data.value = newsSourceDetailsData;

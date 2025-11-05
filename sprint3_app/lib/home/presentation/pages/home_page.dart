@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _initialize() async {
     // await _viewModel.clearAll();
-    await _viewModel.start();
+    await _viewModel.fetch();
   }
 
   @override
@@ -43,109 +43,122 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           backgroundColor: AppColors.background,
           appBar: AppBarWidget(title: 'News'),
-          body: data.errorMessage != null
-                  ? CustomErrorWidget(message: data.errorMessage!)
-                  : SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 16,
-                            left: 10,
-                            right: 10,
-                            bottom: 8,
-                          ),
-                          child: Text(
-                            'Top News Sources',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ),
-
-                        NewsSourcesList(
-                          newsSources: data.newsSources,
-                          onTap: (newsSource) async {
-                            if (!context.mounted) {
-                              return;
-                            }
-
-                            if (ModalRoute.of(context)?.isCurrent == false) {
-                              return;
-                            }
-
-                            await Navigator.of(context).pushNamed(
-                              NewsSourceDetailsPage.routeId,
-                              arguments: newsSource
-                            );
-                          },
-                        ),
-
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 16,
-                                left: 10,
-                                right: 10,
-                                bottom: 8,
-                              ),
-                              child: Text(
-                                'Classic Headlines',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            ),
-
-                            BannersList(
-                              banners: data.banners,
-                              onTap: (banner) {
-                                Navigator.of(context).pushNamed(
-                                  BannerDetailsPage.routeId,
-                                  arguments: banner,
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 16,
-                                left: 10,
-                                right: 10,
-                              ),
-                              child: Text(
-                                'Top Headlines',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            ),
-
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                              child: ArticlesList(
-                                articles: data.articles,
-                                isScrollable: false,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+          body: data.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : data.errorMessage != null
+                      ? CustomErrorWidget(
+                        message: data.errorMessage!,
+                        onRetry: () async {
+                          _viewModel.data.value = _viewModel.data.value.copyWith(isLoading: true);
+                          await _viewModel.fetch();
+                          _viewModel.data.value = _viewModel.data.value.copyWith(isLoading: false);
+                        },
+                      )
+                      : _buildMainView(data)
         );
       },
+    );
+  }
+
+  Widget _buildMainView(HomeData data) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 16,
+              left: 10,
+              right: 10,
+              bottom: 8,
+            ),
+            child: Text(
+              'Top News Sources',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary
+              ),
+            ),
+          ),
+
+          NewsSourcesList(
+            newsSources: data.newsSources,
+            onTap: (newsSource) async {
+              if (!context.mounted) {
+                return;
+              }
+
+              if (ModalRoute.of(context)?.isCurrent == false) {
+                return;
+              }
+
+              await Navigator.of(context).pushNamed(
+                NewsSourceDetailsPage.routeId,
+                arguments: newsSource
+              );
+            },
+          ),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 16,
+                  left: 10,
+                  right: 10,
+                  bottom: 8,
+                ),
+                child: Text(
+                  'Classic Headlines',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+
+              BannersList(
+                banners: data.banners,
+                onTap: (banner) {
+                  Navigator.of(context).pushNamed(
+                    BannerDetailsPage.routeId,
+                    arguments: banner,
+                  );
+                },
+              ),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 16,
+                      left: 10,
+                      right: 10,
+                    ),
+                    child: Text(
+                      'Top Headlines',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: ArticlesList(
+                      articles: data.articles,
+                      isScrollable: false,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

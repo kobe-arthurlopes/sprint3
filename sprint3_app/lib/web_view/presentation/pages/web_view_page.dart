@@ -29,7 +29,7 @@ class _WebViewPageState extends State<WebViewPage> {
 
   Future<void> _initialize() async {
     _viewModel.setUrl(widget.url);
-    await _viewModel.start();
+    await _viewModel.fetch();
   }
 
   @override

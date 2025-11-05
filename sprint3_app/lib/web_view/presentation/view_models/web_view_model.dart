@@ -8,7 +8,7 @@ class WebViewModel {
 
   WebViewModel({required this.repository});
 
-  Future<void> start() async {
+  Future<void> fetch() async {
     final webViewData = await repository.fetchData(
       onPageStarted: () {
         final isLoading = data.value.isLoading;

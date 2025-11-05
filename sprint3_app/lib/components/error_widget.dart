@@ -3,8 +3,9 @@ import 'package:sprint3_app/theme/colors.dart';
 
 class CustomErrorWidget extends StatelessWidget {
   final String message;
+  final VoidCallback? onRetry;
 
-  const CustomErrorWidget({super.key, required this.message});
+  const CustomErrorWidget({super.key, required this.message, this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +34,28 @@ class CustomErrorWidget extends StatelessWidget {
             ),
 
             const SizedBox(height: 24),
+
+            if (onRetry != null) 
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.appBarBackground,
+                  foregroundColor: AppColors.appBarForeground,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)
+                  )
+                ),
+                onPressed: () {
+                  onRetry!();
+                }, 
+                child: Text(
+                  'Try again',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              )
           ],
         ),
       ),

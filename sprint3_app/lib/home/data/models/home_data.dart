@@ -7,12 +7,14 @@ class HomeData {
   List<BannerDTO> banners;
   List<ArticleDTO> articles;
   String? errorMessage;
+  bool isLoading;
 
   HomeData({
     this.newsSources = const [],
     this.banners = const [],
     this.articles = const [],
-    this.errorMessage
+    this.errorMessage,
+    this.isLoading = false,
   });
 
   HomeData copyWith({
@@ -20,12 +22,14 @@ class HomeData {
     List<BannerDTO>? banners,
     List<ArticleDTO>? articles,
     String? errorMessage,
+    bool? isLoading,
   }) {
     return HomeData(
       newsSources: newsSources ?? this.newsSources,
       banners: banners ?? this.banners,
       articles: articles ?? this.articles,
       errorMessage: errorMessage ?? this.errorMessage,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 

@@ -31,7 +31,7 @@ class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
 
   Future<void> _initialize() async {
     _viewModel.setSourceId(widget.newsSource.sourceId);
-    await _viewModel.start();
+    await _viewModel.fetch();
   }
 
   @override
