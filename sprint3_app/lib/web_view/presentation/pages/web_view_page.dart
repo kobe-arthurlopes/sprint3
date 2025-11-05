@@ -41,7 +41,12 @@ class _WebViewPageState extends State<WebViewPage> {
           backgroundColor: AppColors.background,
           appBar: AppBarWidget(title: 'Web View'),
           body: data.errorMessage != null
-            ? CustomErrorWidget(message: data.errorMessage!)
+            ? CustomErrorWidget(
+              message: data.errorMessage!,
+              onRetry: () async {
+                await _viewModel.fetch();
+              },
+            )
             : data.controller == null || data.isLoading
               ? const Center(child: CircularProgressIndicator())
               : WebViewWidget(controller: data.controller!)

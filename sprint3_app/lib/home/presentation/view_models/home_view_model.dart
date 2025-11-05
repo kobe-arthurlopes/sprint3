@@ -17,4 +17,10 @@ class HomeViewModel {
     await repository.clearAll();
     data.value = HomeData();
   }
+
+  Future<void> reload() async {
+    data.value = data.value.copyWith(isLoading: true, errorMessage: null);
+    await fetch();
+    data.value = data.value.copyWith(isLoading: false);
+  }
 }

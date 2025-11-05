@@ -49,9 +49,7 @@ class _HomePageState extends State<HomePage> {
                       ? CustomErrorWidget(
                         message: data.errorMessage!,
                         onRetry: () async {
-                          _viewModel.data.value = _viewModel.data.value.copyWith(isLoading: true);
-                          await _viewModel.fetch();
-                          _viewModel.data.value = _viewModel.data.value.copyWith(isLoading: false);
+                          await _viewModel.reload();
                         },
                       )
                       : _buildMainView(data)

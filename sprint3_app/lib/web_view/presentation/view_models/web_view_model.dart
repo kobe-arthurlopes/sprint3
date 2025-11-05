@@ -9,14 +9,14 @@ class WebViewModel {
   WebViewModel({required this.repository});
 
   Future<void> fetch() async {
-    final webViewData = await repository.fetchData(
+    data.value = WebViewData();
+
+    data.value = await repository.fetchData(
       onPageStarted: () {
         final isLoading = data.value.isLoading;
         data.value = data.value.copyWith(isLoading: !isLoading);
       },
     );
-
-    data.value = webViewData;
   }
 
   void setUrl(String? url) {
