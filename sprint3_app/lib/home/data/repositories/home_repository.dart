@@ -20,30 +20,17 @@ class HomeRepository {
 
     if (isEmpty) {
       final remoteData = await remote.fetch();
-      await local.clearAll();
-      await _persist(remoteData);
-      await _cacheImages(remoteData);
+
+      if (!remoteData.isEmpty) {
+        await local.clearAll();
+        await _persist(remoteData);
+        await _cacheImages(remoteData);
+      }
+      
       return remoteData;
     }
 
     return localData;
-
-
-    // final isFirstEntry = await AppPreferences.isFirstEntry.get();
-
-    // if (!isFirstEntry) {
-    //   return await local.fetch();
-    // }
-
-    // final remoteData = await remote.fetch();
-
-    // await local.clearAll();
-    // await _persist(remoteData);
-    // await _cacheImages(remoteData);
-
-    // await AppPreferences.isFirstEntry.set(false);
-
-    // return remoteData;
   }
 
   Future<void> clearAll() async {

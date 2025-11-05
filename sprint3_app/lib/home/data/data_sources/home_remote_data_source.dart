@@ -15,24 +15,27 @@ class HomeRemoteDataSource {
 
   Future<HomeData> fetch() async {
     HomeCMSModel.registerChildren();
-    final cmsModel = await cmsConnection.findAll<HomeCMSModel>();
-    final homeDto = HomeDTO.fromCMS(cmsModel);
 
-    final newsSources = NewsSourceDTO.getActiveNewsSources(
-      homeDto.carousel.newsSources,
-    );
+    try {
+      final cmsModel = await cmsConnection.findAll<HomeCMSModel>();
+      final homeDto = HomeDTO.fromCMS(cmsModel);
+      final newsSources = NewsSourceDTO.getActiveNewsSources(homeDto.carousel.newsSources);
+      final banners = BannerDTO.getActiveBanners(homeDto.banners);
 
-    final banners = BannerDTO.getActiveBanners(homeDto.banners);
+      final articleResponse = await apiService.fetchResponse(
+        fromJson: ArticleResponse.fromJson,
+        properties: {'category': 'general'},
+      );
 
-    final articleResponse = await apiService.fetchResponse(
-      fromJson: ArticleResponse.fromJson,
-      properties: {'category': 'general'},
-    );
-
-    return HomeData(
-      newsSources: newsSources,
-      banners: banners,
-      articles: articleResponse.articles,
-    );
+      return HomeData(
+        newsSources: newsSources,
+        banners: banners,
+        articles: articleResponse.articles
+      );
+    } on ApiException catch (error) {
+      return HomeData(errorMessage: error.userMessage);
+    } catch (_) {
+      return HomeData(errorMessage: 'Failed to load content. Please connect to the internet at least once.');
+    }
   }
 }

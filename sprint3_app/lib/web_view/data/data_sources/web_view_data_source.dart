@@ -33,11 +33,11 @@ class WebViewDataSource {
 
       switch (response.statusCode) {
         case 400:
-          return WebViewData(errorMessage: 'Couldn’t open the page. The link might be incorrect.');
+          return WebViewData(errorMessage: "Couldn't open the page. The link might be incorrect.");
         case 401:
           return WebViewData(errorMessage: 'You need to log in to access this page.');
         case 403:
-          return WebViewData(errorMessage: 'Access denied. This page isn’t available for you.');
+          return WebViewData(errorMessage: "Access denied. This page isn't available for you.");
         case 404:
           return WebViewData(errorMessage: 'Page not found. The link may be outdated.');
         case 500:
@@ -46,7 +46,7 @@ class WebViewDataSource {
           break;
       }
     } catch (_) {
-      return WebViewData(errorMessage: 'Couldn’t open the page. Please check your connection or the link.');
+      return WebViewData(errorMessage: "Couldn't open the page. Please check your connection or the link.");
     }
 
     final controller = WebViewController()

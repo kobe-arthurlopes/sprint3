@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sprint3_app/components/error_widget.dart';
 import 'package:sprint3_app/home/data/models/home_data.dart';
 import 'package:sprint3_app/home/presentation/pages/banner_details_page.dart';
 import 'package:sprint3_app/news_source_details/presentation/pages/news_source_details_page.dart';
@@ -42,105 +43,107 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           backgroundColor: AppColors.background,
           appBar: AppBarWidget(title: 'News'),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 16,
-                    left: 10,
-                    right: 10,
-                    bottom: 8,
-                  ),
-                  child: Text(
-                    'Top News Sources',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ),
-
-                NewsSourcesList(
-                  newsSources: data.newsSources,
-                  onTap: (newsSource) async {
-                    if (!context.mounted) {
-                      return;
-                    }
-
-                    if (ModalRoute.of(context)?.isCurrent == false) {
-                      return;
-                    }
-
-                    await Navigator.of(context).pushNamed(
-                      NewsSourceDetailsPage.routeId,
-                      arguments: newsSource
-                    );
-                  },
-                ),
-
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 16,
-                        left: 10,
-                        right: 10,
-                        bottom: 8,
-                      ),
-                      child: Text(
-                        'Classic Headlines',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
+          body: data.errorMessage != null
+                  ? CustomErrorWidget(message: data.errorMessage!)
+                  : SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 16,
+                            left: 10,
+                            right: 10,
+                            bottom: 8,
+                          ),
+                          child: Text(
+                            'Top News Sources',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
 
-                    BannersList(
-                      banners: data.banners,
-                      onTap: (banner) {
-                        Navigator.of(context).pushNamed(
-                          BannerDetailsPage.routeId,
-                          arguments: banner,
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                        NewsSourcesList(
+                          newsSources: data.newsSources,
+                          onTap: (newsSource) async {
+                            if (!context.mounted) {
+                              return;
+                            }
 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 16,
-                        left: 10,
-                        right: 10,
-                      ),
-                      child: Text(
-                        'Top Headlines',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
+                            if (ModalRoute.of(context)?.isCurrent == false) {
+                              return;
+                            }
+
+                            await Navigator.of(context).pushNamed(
+                              NewsSourceDetailsPage.routeId,
+                              arguments: newsSource
+                            );
+                          },
                         ),
-                      ),
-                    ),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: ArticlesList(
-                        articles: data.articles,
-                        isScrollable: false,
-                      ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 16,
+                                left: 10,
+                                right: 10,
+                                bottom: 8,
+                              ),
+                              child: Text(
+                                'Classic Headlines',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ),
+
+                            BannersList(
+                              banners: data.banners,
+                              onTap: (banner) {
+                                Navigator.of(context).pushNamed(
+                                  BannerDetailsPage.routeId,
+                                  arguments: banner,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 16,
+                                left: 10,
+                                right: 10,
+                              ),
+                              child: Text(
+                                'Top Headlines',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: ArticlesList(
+                                articles: data.articles,
+                                isScrollable: false,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+                  ),
         );
       },
     );

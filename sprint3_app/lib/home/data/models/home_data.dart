@@ -6,22 +6,26 @@ class HomeData {
   List<NewsSourceDTO> newsSources;
   List<BannerDTO> banners;
   List<ArticleDTO> articles;
+  String? errorMessage;
 
   HomeData({
     this.newsSources = const [],
     this.banners = const [],
     this.articles = const [],
+    this.errorMessage
   });
 
   HomeData copyWith({
     List<NewsSourceDTO>? newsSources,
     List<BannerDTO>? banners,
     List<ArticleDTO>? articles,
+    String? errorMessage,
   }) {
     return HomeData(
       newsSources: newsSources ?? this.newsSources,
       banners: banners ?? this.banners,
       articles: articles ?? this.articles,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
