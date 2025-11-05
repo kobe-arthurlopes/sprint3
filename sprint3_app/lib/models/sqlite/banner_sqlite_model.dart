@@ -1,6 +1,6 @@
-import 'package:sprint3_app/models/sqlite/sqlite_model.dart';
+import 'package:sprint3_app/models/sqlite/sqlite_protocol.dart';
 
-class BannerSqliteModel implements SqliteModel<BannerSqliteModel> {
+class BannerSqliteModel implements SqliteProtocol<BannerSqliteModel> {
   final String title;
   final String subtitle;
   final String description;

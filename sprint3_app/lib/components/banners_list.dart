@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dto/banner_dto_model.dart';
-import 'package:sprint3_app/widgets/banner_tile.dart';
+import 'package:sprint3_app/models/dto/banner_dto.dart';
+import 'package:sprint3_app/components/banner_tile.dart';
 
 class BannersList extends StatelessWidget {
-  final List<BannerDTOModel> banners;
-  final void Function(BannerDTOModel)? onTap;
+  final List<BannerDTO> banners;
+  final void Function(BannerDTO)? onTap;
 
   const BannersList({super.key, required this.banners, this.onTap});
 

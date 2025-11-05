@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/view_models/web_view_model.dart';
-import 'package:sprint3_app/widgets/app_bar_widget.dart';
+import 'package:sprint3_app/components/app_bar_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {

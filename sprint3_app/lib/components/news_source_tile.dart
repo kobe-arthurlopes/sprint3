@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
+import 'package:sprint3_app/models/dto/news_source_dto.dart';
 import 'package:sprint3_app/theme/colors.dart';
-import 'package:sprint3_app/widgets/model_image_widget.dart';
-import 'package:sprint3_app/widgets/shimmer_widget.dart';
+import 'package:sprint3_app/components/model_image_widget.dart';
+import 'package:sprint3_app/components/shimmer_widget.dart';
 
 class NewsSourceTile extends StatelessWidget {
-  final NewsSourceDTOModel? newsSource;
+  final NewsSourceDTO? newsSource;
   final VoidCallback? onTap;
 
   const NewsSourceTile({super.key, required this.newsSource, this.onTap});

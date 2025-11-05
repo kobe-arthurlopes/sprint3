@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/widgets/model_image_widget.dart';
-import 'package:sprint3_app/models/dto/article_dto_model.dart';
+import 'package:sprint3_app/components/model_image_widget.dart';
+import 'package:sprint3_app/models/dto/article_dto.dart';
 import 'package:sprint3_app/pages/web_view_page.dart';
 import 'package:sprint3_app/theme/colors.dart';
-import 'package:sprint3_app/widgets/shimmer_widget.dart';
+import 'package:sprint3_app/components/shimmer_widget.dart';
 
 class ArticleTile extends StatelessWidget {
-  final ArticleDTOModel? article;
+  final ArticleDTO? article;
 
   const ArticleTile({super.key, required this.article});
 

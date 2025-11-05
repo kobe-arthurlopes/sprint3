@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:sprint3_app/home/data/data_sources/home_local_data_source.dart';
 import 'package:sprint3_app/home/data/data_sources/home_remote_data_source.dart';
 import 'package:sprint3_app/home/data/repositories/home_repository.dart';
-import 'package:sprint3_app/models/dao/article_dao_model.dart';
-import 'package:sprint3_app/models/dao/banner_dao_model.dart';
-import 'package:sprint3_app/models/dao/news_source_dao_model.dart';
-import 'package:sprint3_app/models/dto/banner_dto_model.dart';
-import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
+import 'package:sprint3_app/models/dao/article_dao.dart';
+import 'package:sprint3_app/models/dao/banner_dao.dart';
+import 'package:sprint3_app/models/dao/news_source_dao.dart';
+import 'package:sprint3_app/models/dto/banner_dto.dart';
+import 'package:sprint3_app/models/dto/news_source_dto.dart';
 import 'package:sprint3_app/models/sqlite/app_database.dart';
 import 'package:sprint3_app/news_source_details/data/data_sources/news_source_details_local_data_source.dart';
 import 'package:sprint3_app/news_source_details/data/data_sources/news_source_details_remote_data_source.dart';
@@ -36,9 +36,9 @@ Future<void> main() async {
     );
 
   final appDatabase = AppDatabase.instance;
-  final articleDao = ArticleDAOModel(dbProvider: appDatabase);
-  final newsSourceDao = NewsSourceDAOModel(dbProvider: appDatabase);
-  final bannerDao = BannerDAOModel(dbProvider: appDatabase);
+  final articleDao = ArticleDAO(dbProvider: appDatabase);
+  final newsSourceDao = NewsSourceDAO(dbProvider: appDatabase);
+  final bannerDao = BannerDAO(dbProvider: appDatabase);
 
   final homeLocalDataSource = HomeLocalDataSource(
     articleDao: articleDao,
@@ -111,7 +111,7 @@ class MyApp extends StatelessWidget {
         );
 
       case NewsSourceDetailsPage.routeId:
-        final newsSource = settings.arguments as NewsSourceDTOModel;
+        final newsSource = settings.arguments as NewsSourceDTO;
 
         return MaterialPageRoute(
           settings: settings,
@@ -126,7 +126,7 @@ class MyApp extends StatelessWidget {
         );
 
       case BannerDetailsPage.routeId:
-        final banner = settings.arguments as BannerDTOModel;
+        final banner = settings.arguments as BannerDTO;
 
         return MaterialPageRoute(
           builder: (_) => BannerDetailsPage(banner: banner),

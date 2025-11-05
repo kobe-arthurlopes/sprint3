@@ -1,11 +1,11 @@
-import 'package:sprint3_app/models/dto/article_dto_model.dart';
-import 'package:sprint3_app/models/dto/banner_dto_model.dart';
-import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
+import 'package:sprint3_app/models/dto/article_dto.dart';
+import 'package:sprint3_app/models/dto/banner_dto.dart';
+import 'package:sprint3_app/models/dto/news_source_dto.dart';
 
 class HomeData {
-  List<NewsSourceDTOModel> newsSources;
-  List<BannerDTOModel> banners;
-  List<ArticleDTOModel> articles;
+  List<NewsSourceDTO> newsSources;
+  List<BannerDTO> banners;
+  List<ArticleDTO> articles;
 
   HomeData({
     this.newsSources = const [],
@@ -14,9 +14,9 @@ class HomeData {
   });
 
   HomeData copyWith({
-    List<NewsSourceDTOModel>? newsSources,
-    List<BannerDTOModel>? banners,
-    List<ArticleDTOModel>? articles,
+    List<NewsSourceDTO>? newsSources,
+    List<BannerDTO>? banners,
+    List<ArticleDTO>? articles,
   }) {
     return HomeData(
       newsSources: newsSources ?? this.newsSources,

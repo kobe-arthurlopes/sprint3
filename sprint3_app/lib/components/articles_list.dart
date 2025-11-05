@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dto/article_dto_model.dart';
-import 'package:sprint3_app/widgets/article_tile.dart';
+import 'package:sprint3_app/models/dto/article_dto.dart';
+import 'package:sprint3_app/components/article_tile.dart';
 
 class ArticlesList extends StatelessWidget {
-  final List<ArticleDTOModel> articles;
+  final List<ArticleDTO> articles;
   final bool isScrollable;
 
   const ArticlesList({

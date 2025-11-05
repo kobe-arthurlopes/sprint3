@@ -1,9 +1,9 @@
-import 'package:sprint3_app/models/dao/article_dao_model.dart';
-import 'package:sprint3_app/models/dto/article_dto_model.dart';
+import 'package:sprint3_app/models/dao/article_dao.dart';
+import 'package:sprint3_app/models/dto/article_dto.dart';
 import 'package:sprint3_app/news_source_details/data/models/news_source_details_data.dart';
 
 class NewsSourceDetailsLocalDataSource {
-  final ArticleDAOModel articleDao;
+  final ArticleDAO articleDao;
   String? sourceId;
 
   NewsSourceDetailsLocalDataSource({
@@ -18,7 +18,7 @@ class NewsSourceDetailsLocalDataSource {
     );
 
     return NewsSourceDetailsData(
-      articles: articlesSqlite.map(ArticleDTOModel.fromSqlite).toList()
+      articles: articlesSqlite.map(ArticleDTO.fromSqlite).toList()
     );
   }
 }

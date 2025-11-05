@@ -1,8 +1,8 @@
 import 'package:sprint3_app/models/sqlite/app_database.dart';
-import 'package:sprint3_app/models/sqlite/sqlite_model.dart';
+import 'package:sprint3_app/models/sqlite/sqlite_protocol.dart';
 import 'package:sqflite/sql.dart';
 
-abstract class DaoProtocol<T extends SqliteModel<T>> {
+abstract class DaoProtocol<T extends SqliteProtocol<T>> {
   final AppDatabase dbProvider;
   final T model;
 

@@ -1,7 +1,7 @@
-import 'package:sprint3_app/models/dto/article_dto_model.dart';
+import 'package:sprint3_app/models/dto/article_dto.dart';
 
 class NewsSourceDetailsData {
-  List<ArticleDTOModel> articles;
+  List<ArticleDTO> articles;
   String? errorMessage;
 
   NewsSourceDetailsData({
@@ -10,7 +10,7 @@ class NewsSourceDetailsData {
   });
 
   NewsSourceDetailsData copyWith({
-    List<ArticleDTOModel>? articles,
+    List<ArticleDTO>? articles,
     String? errorMessage,
   }) {
     return NewsSourceDetailsData(

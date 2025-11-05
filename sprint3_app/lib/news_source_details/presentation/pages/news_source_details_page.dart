@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
+import 'package:sprint3_app/models/dto/news_source_dto.dart';
 import 'package:sprint3_app/news_source_details/data/models/news_source_details_data.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/news_source_details/presentation/view_models/news_source_details_view_model.dart';
-import 'package:sprint3_app/widgets/articles_list.dart';
-import 'package:sprint3_app/widgets/app_bar_widget.dart';
+import 'package:sprint3_app/components/articles_list.dart';
+import 'package:sprint3_app/components/app_bar_widget.dart';
 
 class NewsSourceDetailsPage extends StatefulWidget {
   static const routeId = '/news_source_details';
 
-  final NewsSourceDTOModel newsSource;
+  final NewsSourceDTO newsSource;
 
   const NewsSourceDetailsPage({super.key, required this.newsSource});
 

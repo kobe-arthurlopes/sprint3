@@ -2,7 +2,7 @@ import 'package:sprint3_app/models/dto/dto_protocol.dart';
 import 'package:sprint3_app/models/sqlite/article_sqlite_model.dart';
 
 class ArticleResponse {
-  final List<ArticleDTOModel> articles;
+  final List<ArticleDTO> articles;
 
   ArticleResponse({required this.articles});
 
@@ -10,7 +10,7 @@ class ArticleResponse {
     return ArticleResponse(
       articles: List.from(
         json['articles'],
-      ).map((element) => ArticleDTOModel.fromJson(element)).toList(),
+      ).map((element) => ArticleDTO.fromJson(element)).toList(),
     );
   }
 
@@ -19,7 +19,7 @@ class ArticleResponse {
   }
 }
 
-class ArticleDTOModel implements DtoProtocol<ArticleSqliteModel> {
+class ArticleDTO implements DtoProtocol<ArticleSqliteModel> {
   final String? sourceId;
   final String title;
   final String description;
@@ -27,7 +27,7 @@ class ArticleDTOModel implements DtoProtocol<ArticleSqliteModel> {
   final String? url;
   final String? urlToImage;
 
-  const ArticleDTOModel({
+  const ArticleDTO({
     this.sourceId,
     this.title = 'Untitled',
     this.description = 'No description',
@@ -36,8 +36,8 @@ class ArticleDTOModel implements DtoProtocol<ArticleSqliteModel> {
     this.urlToImage
   });
 
-  factory ArticleDTOModel.fromJson(Map<String, dynamic> json) {
-    return ArticleDTOModel(
+  factory ArticleDTO.fromJson(Map<String, dynamic> json) {
+    return ArticleDTO(
       sourceId: json['source']['id'],
       title: json['title'] ?? 'No title', 
       description: json['description'] ?? 'No description',
@@ -47,12 +47,12 @@ class ArticleDTOModel implements DtoProtocol<ArticleSqliteModel> {
     );
   }
 
-  factory ArticleDTOModel.fromSqlite(ArticleSqliteModel? sqliteModel) {
+  factory ArticleDTO.fromSqlite(ArticleSqliteModel? sqliteModel) {
     if (sqliteModel == null) {
-      return ArticleDTOModel();
+      return ArticleDTO();
     }
 
-    return ArticleDTOModel(
+    return ArticleDTO(
       sourceId: sqliteModel.sourceID,
       title: sqliteModel.title,
       description: sqliteModel.description,

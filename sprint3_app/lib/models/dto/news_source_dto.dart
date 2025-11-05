@@ -1,29 +1,29 @@
 import 'package:equatable/equatable.dart';
 import 'package:sprint3_app/models/cms/news_source_cms_model.dart';
-import 'package:sprint3_app/models/dto/article_dto_model.dart';
+import 'package:sprint3_app/models/dto/article_dto.dart';
 import 'package:sprint3_app/models/dto/dto_protocol.dart';
 import 'package:sprint3_app/models/sqlite/news_source_sqlite_model.dart';
 
-class NewsSourceDTOModel extends Equatable
+class NewsSourceDTO extends Equatable
     implements DtoProtocol<NewsSourceSqliteModel> {
 
   final String name;
   final String? logoUrl;
   final String? sourceId;
   final bool isActive;
-  final List<ArticleDTOModel> articles;
+  final List<ArticleDTO> articles;
 
-  NewsSourceDTOModel({
+  NewsSourceDTO({
     required this.name,
     this.logoUrl,
     this.sourceId,
     this.isActive = false,
-    List<ArticleDTOModel>? articles,
+    List<ArticleDTO>? articles,
   }) : articles = articles ?? [];
 
-  factory NewsSourceDTOModel.fromCMS(NewsSourceCMSModel? cmsModel) {
+  factory NewsSourceDTO.fromCMS(NewsSourceCMSModel? cmsModel) {
     if (cmsModel == null) {
-      return NewsSourceDTOModel(name: 'Untitled');
+      return NewsSourceDTO(name: 'Untitled');
     }
 
     final String name = cmsModel.name ?? 'Untitled';
@@ -31,7 +31,7 @@ class NewsSourceDTOModel extends Equatable
     final String? sourceId = cmsModel.sourceId;
     final bool isActive = cmsModel.isActive ?? false;
 
-    return NewsSourceDTOModel(
+    return NewsSourceDTO(
       name: name,
       logoUrl: logoUrl,
       sourceId: sourceId,
@@ -48,12 +48,12 @@ class NewsSourceDTOModel extends Equatable
     );
   }
 
-  factory NewsSourceDTOModel.fromSqlite(NewsSourceSqliteModel? sqliteModel) {
+  factory NewsSourceDTO.fromSqlite(NewsSourceSqliteModel? sqliteModel) {
     if (sqliteModel == null) {
-      return NewsSourceDTOModel(name: 'Untitled');
+      return NewsSourceDTO(name: 'Untitled');
     }
 
-    return NewsSourceDTOModel(
+    return NewsSourceDTO(
       name: sqliteModel.name,
       logoUrl: sqliteModel.logoUrl,
       sourceId: sqliteModel.sourceId,
@@ -71,8 +71,8 @@ class NewsSourceDTOModel extends Equatable
     );
   }
 
-  static List<NewsSourceDTOModel> getActiveNewsSources(
-    List<NewsSourceDTOModel> newsSources,
+  static List<NewsSourceDTO> getActiveNewsSources(
+    List<NewsSourceDTO> newsSources,
   ) {
     return newsSources.where((element) => element.isActive).toList();
   }

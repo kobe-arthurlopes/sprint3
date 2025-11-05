@@ -1,6 +1,6 @@
-import 'package:sprint3_app/models/sqlite/sqlite_model.dart';
+import 'package:sprint3_app/models/sqlite/sqlite_protocol.dart';
 
-class ArticleSqliteModel implements SqliteModel<ArticleSqliteModel> {
+class ArticleSqliteModel implements SqliteProtocol<ArticleSqliteModel> {
   final String? category;
   final String? sourceID;
   final String title;

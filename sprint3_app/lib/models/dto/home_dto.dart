@@ -1,33 +1,33 @@
 import 'package:equatable/equatable.dart';
-import 'package:sprint3_app/models/dto/banner_dto_model.dart';
-import 'package:sprint3_app/models/dto/carousel_dto_model.dart';
+import 'package:sprint3_app/models/dto/banner_dto.dart';
+import 'package:sprint3_app/models/dto/carousel_dto.dart';
 import 'package:sprint3_app/models/cms/banner_cms_model.dart';
 import 'package:sprint3_app/models/cms/carousel_cms_model.dart';
 import 'package:sprint3_app/models/cms/home_cms_model.dart';
 
-class HomeDTOModel extends Equatable {
+class HomeDTO extends Equatable {
   final String title;
-  final CarouselDTOModel carousel;
-  final List<BannerDTOModel> banners;
+  final CarouselDTO carousel;
+  final List<BannerDTO> banners;
 
-  const HomeDTOModel({
+  const HomeDTO({
     required this.title,
     required this.carousel,
     required this.banners
   });
 
-  factory HomeDTOModel.fromCMS(HomeCMSModel? cmsModel) {
+  factory HomeDTO.fromCMS(HomeCMSModel? cmsModel) {
     final String title = cmsModel?.title ?? 'No title';
     final CarouselCMSModel? carouselCMS = cmsModel?.carousel;
-    final CarouselDTOModel carouselDTO = CarouselDTOModel.fromCMS(carouselCMS);
+    final CarouselDTO carouselDTO = CarouselDTO.fromCMS(carouselCMS);
     final List<BannerCMSModel>? bannersCMS = cmsModel?.banners;
-    final List<BannerDTOModel>? bannersDTO = bannersCMS
+    final List<BannerDTO>? bannersDTO = bannersCMS
         ?.map(
-          (element) => BannerDTOModel.fromCMS(element)
+          (element) => BannerDTO.fromCMS(element)
         )
         .toList();
 
-    return HomeDTOModel(
+    return HomeDTO(
       title: title,
       carousel: carouselDTO,
       banners: bannersDTO ?? [] 

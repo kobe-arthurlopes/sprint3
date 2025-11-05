@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dto/banner_dto_model.dart';
+import 'package:sprint3_app/models/dto/banner_dto.dart';
 import 'package:sprint3_app/theme/colors.dart';
-import 'package:sprint3_app/widgets/model_image_widget.dart';
-import 'package:sprint3_app/widgets/shimmer_widget.dart';
+import 'package:sprint3_app/components/model_image_widget.dart';
+import 'package:sprint3_app/components/shimmer_widget.dart';
 
 class BannerTile extends StatelessWidget {
-  final BannerDTOModel? banner;
+  final BannerDTO? banner;
   final VoidCallback? onTap;
 
   const BannerTile({super.key, required this.banner, this.onTap});

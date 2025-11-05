@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
-import 'package:sprint3_app/widgets/news_source_tile.dart';
+import 'package:sprint3_app/models/dto/news_source_dto.dart';
+import 'package:sprint3_app/components/news_source_tile.dart';
 
 class NewsSourcesList extends StatelessWidget {
-  final List<NewsSourceDTOModel> newsSources;
-  final void Function(NewsSourceDTOModel)? onTap;
+  final List<NewsSourceDTO> newsSources;
+  final void Function(NewsSourceDTO)? onTap;
 
   const NewsSourcesList({super.key, required this.newsSources, this.onTap});
 

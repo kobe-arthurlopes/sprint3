@@ -1,4 +1,4 @@
-abstract class SqliteModel<T> {
+abstract class SqliteProtocol<T> {
   String get table;
   String get createTableQuery;
   Map<String, Object?> toSqliteMap();
