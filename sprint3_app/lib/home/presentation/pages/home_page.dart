@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dao/dao_protocol.dart';
+import 'package:provider/provider.dart';
+import 'package:sprint3_app/home/data/models/home_data.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
-import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/theme/colors.dart';
-import 'package:sprint3_app/view_models/home_view_model.dart';
+import 'package:sprint3_app/home/presentation/view_models/home_view_model.dart';
 import 'package:sprint3_app/widgets/articles_list.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
 import 'package:sprint3_app/widgets/banners_list.dart';
@@ -20,18 +20,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HomeViewModel _viewModel = HomeViewModel();
+  late final HomeViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
+    _viewModel = context.read<HomeViewModel>();
     _initialize();
   }
 
   Future<void> _initialize() async {
-    await _viewModel.start();
     // await _viewModel.clearAll();
-    await _viewModel.fetchObjects();
+    await _viewModel.start();
   }
 
   @override
@@ -73,12 +73,9 @@ class _HomePageState extends State<HomePage> {
                       return;
                     }
 
-                    final ApiServiceProtocol apiService = _viewModel.apiService;
-                    final DaoProtocol articleDo = _viewModel.articleDao;
-
-                    final _ = await Navigator.of(context).pushNamed(
+                    await Navigator.of(context).pushNamed(
                       NewsSourceDetailsPage.routeId,
-                      arguments: [newsSource, apiService, articleDo]
+                      arguments: newsSource
                     );
                   },
                 ),

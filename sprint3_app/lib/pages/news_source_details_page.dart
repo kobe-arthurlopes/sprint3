@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dao/dao_protocol.dart';
+import 'package:provider/provider.dart';
 import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
-import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/view_models/news_source_details_view_model.dart';
 import 'package:sprint3_app/widgets/articles_list.dart';
@@ -11,15 +10,8 @@ class NewsSourceDetailsPage extends StatefulWidget {
   static const routeId = '/news_source_details';
 
   final NewsSourceDTOModel newsSource;
-  final ApiServiceProtocol apiService;
-  final DaoProtocol articleDao;
 
-  const NewsSourceDetailsPage({
-    super.key,
-    required this.newsSource,
-    required this.apiService,
-    required this.articleDao
-  });
+  const NewsSourceDetailsPage({super.key, required this.newsSource});
 
   @override
   State<StatefulWidget> createState() => _NewsSourceDetailsPageState();
@@ -31,16 +23,12 @@ class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
   @override
   void initState() {
     super.initState();
+    _viewModel = context.read<NewsSourceDetailsViewModel>();
     _initialize();
   }
 
   Future<void> _initialize() async {
-    _viewModel = NewsSourceDetailsViewModel(
-      apiService: widget.apiService, 
-      articleDao: widget.articleDao,
-      sourceId: widget.newsSource.sourceId
-    );
-
+    _viewModel.sourceId = widget.newsSource.sourceId;
     await _viewModel.setArticles();
   }
 
@@ -55,13 +43,13 @@ class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
           backgroundColor: AppColors.background,
           appBar: AppBarWidget(title: newsSource.name),
           body: data.errorMessage != null
-            ? _buildErrorView(data.errorMessage!)
-            : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: ArticlesList(articles: data.articles),
-            ),
+              ? _buildErrorView(data.errorMessage!)
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: ArticlesList(articles: data.articles),
+                ),
         );
-      }
+      },
     );
   }
 
@@ -86,11 +74,11 @@ class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: AppColors.secondary
+                color: AppColors.secondary,
               ),
             ),
 
-            const SizedBox(height: 24)
+            const SizedBox(height: 24),
           ],
         ),
       ),

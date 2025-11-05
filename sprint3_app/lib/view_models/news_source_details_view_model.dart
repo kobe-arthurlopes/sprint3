@@ -12,18 +12,18 @@ class NewsSourceDetailsData {
   NewsSourceDetailsData({
     required this.articles,
     required this.isLoading,
-    this.errorMessage
+    this.errorMessage,
   });
 
   NewsSourceDetailsData copyWith({
     List<ArticleDTOModel>? articles,
     bool? isLoading,
-    String? errorMessage
+    String? errorMessage,
   }) {
     return NewsSourceDetailsData(
       articles: articles ?? this.articles,
       isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage ?? this.errorMessage
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
@@ -31,16 +31,16 @@ class NewsSourceDetailsData {
 class NewsSourceDetailsViewModel {
   final ApiServiceProtocol apiService;
   final DaoProtocol articleDao;
-  final String? sourceId;
+  String? sourceId;
 
   NewsSourceDetailsViewModel({
-    required this.apiService, 
+    required this.apiService,
     required this.articleDao,
-    required this.sourceId
+    this.sourceId,
   });
 
   final ValueNotifier<NewsSourceDetailsData> data = ValueNotifier(
-    NewsSourceDetailsData(articles: [], isLoading: true, errorMessage: null)
+    NewsSourceDetailsData(articles: [], isLoading: true, errorMessage: null),
   );
 
   Future<void> setArticles() async {
@@ -62,18 +62,22 @@ class NewsSourceDetailsViewModel {
 
   Future<List<ArticleDTOModel>> _fetchArticles({bool fromSqlite = true}) async {
     if (fromSqlite) {
-      final articlesSqlite = await articleDao.fetchWhere(
-        where: 'category IS NULL AND sourceId = ?', 
-        whereArgs: [sourceId]
-      ) as List<ArticleSqliteModel>;
+      final articlesSqlite =
+          await articleDao.fetchWhere(
+                where: 'category IS NULL AND sourceId = ?',
+                whereArgs: [sourceId],
+              )
+              as List<ArticleSqliteModel>;
 
-      return articlesSqlite.map((element) => ArticleDTOModel.fromSqlite(element)).toList();
+      return articlesSqlite
+          .map((element) => ArticleDTOModel.fromSqlite(element))
+          .toList();
     }
 
     try {
       final articleResponse = await apiService.fetchResponse(
         fromJson: ArticleResponse.fromJson,
-        properties: {'sources': sourceId}
+        properties: {'sources': sourceId},
       );
 
       return articleResponse.articles;
