@@ -5,12 +5,10 @@ import 'package:sprint3_app/home/data/data_sources/home_remote_data_source.dart'
 import 'package:sprint3_app/home/data/repositories/home_repository.dart';
 import 'package:sprint3_app/models/dao/article_dao_model.dart';
 import 'package:sprint3_app/models/dao/banner_dao_model.dart';
-import 'package:sprint3_app/models/dao/dao_protocol.dart';
 import 'package:sprint3_app/models/dao/news_source_dao_model.dart';
 import 'package:sprint3_app/models/dto/banner_dto_model.dart';
 import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/models/sqlite/app_database.dart';
-import 'package:sprint3_app/models/sqlite/article_sqlite_model.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
 import 'package:sprint3_app/pages/news_source_details_page.dart';
 import 'package:sprint3_app/home/presentation/pages/home_page.dart';
