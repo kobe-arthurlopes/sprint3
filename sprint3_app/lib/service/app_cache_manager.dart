@@ -28,4 +28,8 @@ class AppCacheManager {
       }
     }
   }
+
+  Future<void> clear() async {
+    await cacheManager.emptyCache();
+  }
 }

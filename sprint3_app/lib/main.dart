@@ -54,10 +54,12 @@ Future<void> main() async {
     cmsConnection: cmsConnection,
   );
 
+  final appCacheManager = AppCacheManager();
+
   final homeRepository = HomeRepository(
     local: homeLocalDataSource,
     remote: homeRemoteDataSource,
-    cacheManager: AppCacheManager(),
+    cacheManager: appCacheManager,
   );
 
   final newsSourceDetailsLocalDataSource = NewsSourceDetailsLocalDataSource(articleDao: articleDao);
@@ -66,7 +68,7 @@ Future<void> main() async {
   final newsSourceDetailsRepository = NewsSourceDetailsRepository(
     local: newsSourceDetailsLocalDataSource, 
     remote: newsSourceDetailsRemoteDataSource, 
-    cacheManager: AppCacheManager()
+    cacheManager: appCacheManager
   );
 
   final webViewDataSource = WebViewDataSource();
@@ -100,9 +102,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
       onGenerateRoute: (settings) => _onGenerateRoute(context, settings),
       home: const HomePage(),
     );

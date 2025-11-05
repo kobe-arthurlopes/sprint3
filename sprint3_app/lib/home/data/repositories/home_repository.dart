@@ -35,6 +35,7 @@ class HomeRepository {
 
   Future<void> clearAll() async {
     await local.clearAll();
+    await cacheManager.clear();
     await AppPreferences.isFirstEntry.set(true);
   }
 
