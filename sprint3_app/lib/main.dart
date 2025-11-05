@@ -77,9 +77,6 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        Provider.value(value: apiService),
-        Provider.value(value: articleDao),
-        Provider.value(value: homeRepository),
         Provider<HomeViewModel>(
           create: (_) => HomeViewModel(repository: homeRepository),
         ),
