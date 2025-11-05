@@ -15,7 +15,7 @@ class HomeRepository {
     required this.cacheManager,
   });
 
-  Future<HomeData> fetchHomeData() async {
+  Future<HomeData> fetchData() async {
     final isFirstEntry = await AppPreferences.isFirstEntry.get();
 
     if (!isFirstEntry) {

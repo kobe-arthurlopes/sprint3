@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint3_app/home/data/models/home_data.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
-import 'package:sprint3_app/pages/news_source_details_page.dart';
+import 'package:sprint3_app/news_source_details/presentation/pages/news_source_details_page.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/home/presentation/view_models/home_view_model.dart';
 import 'package:sprint3_app/widgets/articles_list.dart';

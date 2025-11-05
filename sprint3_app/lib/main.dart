@@ -9,8 +9,11 @@ import 'package:sprint3_app/models/dao/news_source_dao_model.dart';
 import 'package:sprint3_app/models/dto/banner_dto_model.dart';
 import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
 import 'package:sprint3_app/models/sqlite/app_database.dart';
+import 'package:sprint3_app/news_source_details/data/data_sources/news_source_details_local_data_source.dart';
+import 'package:sprint3_app/news_source_details/data/data_sources/news_source_details_remote_data_source.dart';
+import 'package:sprint3_app/news_source_details/data/repositories/news_source_details_repository.dart';
 import 'package:sprint3_app/pages/banner_details_page.dart';
-import 'package:sprint3_app/pages/news_source_details_page.dart';
+import 'package:sprint3_app/news_source_details/presentation/pages/news_source_details_page.dart';
 import 'package:sprint3_app/home/presentation/pages/home_page.dart';
 import 'package:sprint3_app/pages/web_view_page.dart';
 import 'package:sprint3_app/service/api_service.dart';
@@ -18,7 +21,7 @@ import 'package:sprint3_app/service/app_cache_manager.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
 import 'package:sprint3_app/home/presentation/view_models/home_view_model.dart';
-import 'package:sprint3_app/view_models/news_source_details_view_model.dart';
+import 'package:sprint3_app/news_source_details/presentation/view_models/news_source_details_view_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,21 +40,30 @@ Future<void> main() async {
   final newsSourceDao = NewsSourceDAOModel(dbProvider: appDatabase);
   final bannerDao = BannerDAOModel(dbProvider: appDatabase);
 
-  final localDataSource = HomeLocalDataSource(
+  final homeLocalDataSource = HomeLocalDataSource(
     articleDao: articleDao,
     newsSourceDao: newsSourceDao,
     bannerDao: bannerDao,
   );
 
-  final remoteDataSource = HomeRemoteDataSource(
+  final homeRemoteDataSource = HomeRemoteDataSource(
     apiService: apiService,
     cmsConnection: cmsConnection,
   );
 
-  final repository = HomeRepository(
-    local: localDataSource,
-    remote: remoteDataSource,
+  final homeRepository = HomeRepository(
+    local: homeLocalDataSource,
+    remote: homeRemoteDataSource,
     cacheManager: AppCacheManager(),
+  );
+
+  final newsSourceDetailsLocalDataSource = NewsSourceDetailsLocalDataSource(articleDao: articleDao);
+  final newsSourceDetailsRemoteDataSource = NewsSourceDetailsRemoteDataSource(apiService: apiService);
+
+  final newsSourceDetailsRepository = NewsSourceDetailsRepository(
+    local: newsSourceDetailsLocalDataSource, 
+    remote: newsSourceDetailsRemoteDataSource, 
+    cacheManager: AppCacheManager()
   );
 
   runApp(
@@ -59,15 +71,12 @@ Future<void> main() async {
       providers: [
         Provider.value(value: apiService),
         Provider.value(value: articleDao),
-        Provider.value(value: repository),
+        Provider.value(value: homeRepository),
         Provider<HomeViewModel>(
-          create: (_) => HomeViewModel(repository: repository),
+          create: (_) => HomeViewModel(repository: homeRepository),
         ),
         Provider<NewsSourceDetailsViewModel>(
-          create: (_) => NewsSourceDetailsViewModel(
-            apiService: apiService,
-            articleDao: articleDao,
-          ),
+          create: (_) => NewsSourceDetailsViewModel(repository: newsSourceDetailsRepository),
         ),
       ],
       child: const MyApp(),

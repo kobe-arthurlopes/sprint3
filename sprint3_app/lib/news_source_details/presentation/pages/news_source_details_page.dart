@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint3_app/models/dto/news_source_dto_model.dart';
+import 'package:sprint3_app/news_source_details/data/models/news_source_details_data.dart';
 import 'package:sprint3_app/theme/colors.dart';
-import 'package:sprint3_app/view_models/news_source_details_view_model.dart';
+import 'package:sprint3_app/news_source_details/presentation/view_models/news_source_details_view_model.dart';
 import 'package:sprint3_app/widgets/articles_list.dart';
 import 'package:sprint3_app/widgets/app_bar_widget.dart';
 
@@ -28,8 +29,8 @@ class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
   }
 
   Future<void> _initialize() async {
-    _viewModel.sourceId = widget.newsSource.sourceId;
-    await _viewModel.setArticles();
+    _viewModel.setSourceId(widget.newsSource.sourceId);
+    await _viewModel.start();
   }
 
   @override
