@@ -9,11 +9,11 @@ class WebViewDataSource {
 
   Future<WebViewData> fetch({Function()? onPageStarted}) async {
     if (url == null) {
-      return WebViewData(errorMessage: 'URL not provided');
+      return WebViewData(errorMessage: 'No link available to open.');
     }
 
     if (url!.isEmpty) {
-      return WebViewData(errorMessage: 'Invalid URL: The URL is empty');
+      return WebViewData(errorMessage: 'The link seems to be empty.');
     }
 
     Uri? uri;
@@ -22,38 +22,46 @@ class WebViewDataSource {
       uri = Uri.parse(url!);
 
       if (!uri.hasScheme) {
-        return WebViewData(errorMessage: 'Invalid URL: No scheme found');
+        return WebViewData(errorMessage: 'Invalid link. Please check the address.');
       }
     } catch (error) {
-      return WebViewData(errorMessage: 'Invalid URL: $error');
+      return WebViewData(errorMessage: 'Invalid link: $error');
     }
-
-    bool urlExists;
 
     try {
       final response = await http.head(uri).timeout(const Duration(seconds: 3));
-      urlExists = response.statusCode < 400;
+
+      switch (response.statusCode) {
+        case 400:
+          return WebViewData(errorMessage: 'Couldn’t open the page. The link might be incorrect.');
+        case 401:
+          return WebViewData(errorMessage: 'You need to log in to access this page.');
+        case 403:
+          return WebViewData(errorMessage: 'Access denied. This page isn’t available for you.');
+        case 404:
+          return WebViewData(errorMessage: 'Page not found. The link may be outdated.');
+        case 500:
+          return WebViewData(errorMessage: 'The website is having issues. Try again later.');
+        default:
+          break;
+      }
     } catch (_) {
-      urlExists = false;
+      return WebViewData(errorMessage: 'Couldn’t open the page. Please check your connection or the link.');
     }
 
-    if (urlExists) {
-      final controller = WebViewController()
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setNavigationDelegate(
-          NavigationDelegate(
-            onPageStarted: (_) {
-              if (onPageStarted != null) {
-                onPageStarted();
-              }
+    final controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (_) {
+            if (onPageStarted != null) {
+              onPageStarted();
             }
-          )
+          }
         )
-        ..loadRequest(uri);
+      )
+      ..loadRequest(uri);
 
-      return WebViewData(controller: controller);
-    } else {
-      return WebViewData(errorMessage: 'Invalid URL: Host not found');
-    }
+    return WebViewData(controller: controller);
   }
 }
