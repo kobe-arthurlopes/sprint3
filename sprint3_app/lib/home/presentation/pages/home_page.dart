@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint3_app/home/data/models/home_data.dart';
-import 'package:sprint3_app/pages/banner_details_page.dart';
+import 'package:sprint3_app/home/presentation/pages/banner_details_page.dart';
 import 'package:sprint3_app/news_source_details/presentation/pages/news_source_details_page.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/home/presentation/view_models/home_view_model.dart';
 import 'package:sprint3_app/components/articles_list.dart';
 import 'package:sprint3_app/components/app_bar_widget.dart';
-import 'package:sprint3_app/components/banners_list.dart';
-import 'package:sprint3_app/components/news_sources_list.dart';
+import 'package:sprint3_app/home/presentation/components/banners_list.dart';
+import 'package:sprint3_app/home/presentation/components/news_sources_list.dart';
 
 class HomePage extends StatefulWidget {
   static const routeId = '/home';

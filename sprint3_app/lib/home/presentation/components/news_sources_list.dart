@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/models/dto/news_source_dto.dart';
-import 'package:sprint3_app/components/news_source_tile.dart';
+import 'package:sprint3_app/home/presentation/components/news_source_tile.dart';
 
 class NewsSourcesList extends StatelessWidget {
   final List<NewsSourceDTO> newsSources;

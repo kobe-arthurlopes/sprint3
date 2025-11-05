@@ -12,16 +12,19 @@ import 'package:sprint3_app/models/sqlite/app_database.dart';
 import 'package:sprint3_app/news_source_details/data/data_sources/news_source_details_local_data_source.dart';
 import 'package:sprint3_app/news_source_details/data/data_sources/news_source_details_remote_data_source.dart';
 import 'package:sprint3_app/news_source_details/data/repositories/news_source_details_repository.dart';
-import 'package:sprint3_app/pages/banner_details_page.dart';
+import 'package:sprint3_app/home/presentation/pages/banner_details_page.dart';
 import 'package:sprint3_app/news_source_details/presentation/pages/news_source_details_page.dart';
 import 'package:sprint3_app/home/presentation/pages/home_page.dart';
-import 'package:sprint3_app/pages/web_view_page.dart';
+import 'package:sprint3_app/web_view/data/data_sources/web_view_data_source.dart';
+import 'package:sprint3_app/web_view/data/repositories/web_view_repository.dart';
+import 'package:sprint3_app/web_view/presentation/pages/web_view_page.dart';
 import 'package:sprint3_app/service/api_service.dart';
 import 'package:sprint3_app/service/app_cache_manager.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';
 import 'package:sprint3_app/home/presentation/view_models/home_view_model.dart';
 import 'package:sprint3_app/news_source_details/presentation/view_models/news_source_details_view_model.dart';
+import 'package:sprint3_app/web_view/presentation/view_models/web_view_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,6 +69,9 @@ Future<void> main() async {
     cacheManager: AppCacheManager()
   );
 
+  final webViewDataSource = WebViewDataSource();
+  final webViewRespository = WebViewRepository(dataSource: webViewDataSource);
+
   runApp(
     MultiProvider(
       providers: [
@@ -77,6 +83,9 @@ Future<void> main() async {
         ),
         Provider<NewsSourceDetailsViewModel>(
           create: (_) => NewsSourceDetailsViewModel(repository: newsSourceDetailsRepository),
+        ),
+        Provider<WebViewModel>(
+          create: (_) => WebViewModel(repository: webViewRespository),
         ),
       ],
       child: const MyApp(),

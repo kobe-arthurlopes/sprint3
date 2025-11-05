@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprint3_app/components/model_image_widget.dart';
 import 'package:sprint3_app/models/dto/article_dto.dart';
-import 'package:sprint3_app/pages/web_view_page.dart';
+import 'package:sprint3_app/web_view/presentation/pages/web_view_page.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/components/shimmer_widget.dart';
 

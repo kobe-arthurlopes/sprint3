@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sprint3_app/theme/colors.dart';
-import 'package:sprint3_app/view_models/web_view_model.dart';
+import 'package:sprint3_app/web_view/presentation/view_models/web_view_model.dart';
 import 'package:sprint3_app/components/app_bar_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -16,51 +17,33 @@ class WebViewPage extends StatefulWidget {
 }
 
 class _WebViewPageState extends State<WebViewPage> {
-  final WebViewModel _viewModel = WebViewModel();
-  WebViewController? _controller;
+  late final WebViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
-    _initializeWebview();
+    _viewModel = context.read<WebViewModel>();
+    _initialize();
   }
 
-  Future<void> _initializeWebview() async {
-    final Uri? uri = await _viewModel.getUri(widget.url);
-
-    if (uri == null) {
-      return;
-    }
-
-    try {
-      _controller = WebViewController()
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setNavigationDelegate(
-          NavigationDelegate(
-            onPageStarted: (_) {
-              _viewModel.toggleIsLoading();
-            }
-          )
-        )
-        ..loadRequest(uri);
-    } catch (error) {
-      _viewModel.updateErrorMessage(error);
-    }
+  Future<void> _initialize() async {
+    _viewModel.setUrl(widget.url);
+    await _viewModel.start();
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: _viewModel.webViewData, 
+      valueListenable: _viewModel.data, 
       builder: (_, data, _) {
         return Scaffold(
           backgroundColor: AppColors.background,
           appBar: AppBarWidget(title: 'Web View'),
           body: data.errorMessage != null
             ? _buildErrorView(data.errorMessage!)
-            : _controller == null || data.isLoading
+            : data.controller == null || data.isLoading
               ? const Center(child: CircularProgressIndicator())
-              : WebViewWidget(controller: _controller!)
+              : WebViewWidget(controller: data.controller!)
         );
       }
     );
