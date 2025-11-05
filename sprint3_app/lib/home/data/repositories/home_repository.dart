@@ -2,7 +2,6 @@ import 'package:sprint3_app/home/data/data_sources/home_local_data_source.dart';
 import 'package:sprint3_app/home/data/data_sources/home_remote_data_source.dart';
 import 'package:sprint3_app/home/data/models/home_data.dart';
 import 'package:sprint3_app/service/app_cache_manager.dart';
-import 'package:sprint3_app/service/app_preferences.dart';
 
 class HomeRepository {
   final HomeLocalDataSource local;
@@ -16,27 +15,40 @@ class HomeRepository {
   });
 
   Future<HomeData> fetchData() async {
-    final isFirstEntry = await AppPreferences.isFirstEntry.get();
+    final localData = await local.fetch();
+    final isEmpty = localData.isEmpty;
 
-    if (!isFirstEntry) {
-      return await local.fetch();
+    if (isEmpty) {
+      final remoteData = await remote.fetch();
+      await local.clearAll();
+      await _persist(remoteData);
+      await _cacheImages(remoteData);
+      return remoteData;
     }
 
-    final remoteData = await remote.fetch();
+    return localData;
 
-    await local.clearAll();
-    await _persist(remoteData);
-    await _cacheImages(remoteData);
 
-    await AppPreferences.isFirstEntry.set(false);
+    // final isFirstEntry = await AppPreferences.isFirstEntry.get();
 
-    return remoteData;
+    // if (!isFirstEntry) {
+    //   return await local.fetch();
+    // }
+
+    // final remoteData = await remote.fetch();
+
+    // await local.clearAll();
+    // await _persist(remoteData);
+    // await _cacheImages(remoteData);
+
+    // await AppPreferences.isFirstEntry.set(false);
+
+    // return remoteData;
   }
 
   Future<void> clearAll() async {
     await local.clearAll();
     await cacheManager.clear();
-    await AppPreferences.isFirstEntry.set(true);
   }
 
   Future<void> _persist(HomeData data) async {

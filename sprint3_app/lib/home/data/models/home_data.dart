@@ -24,4 +24,6 @@ class HomeData {
       articles: articles ?? this.articles,
     );
   }
+
+  bool get isEmpty => newsSources.isEmpty && banners.isEmpty && articles.isEmpty;
 }
