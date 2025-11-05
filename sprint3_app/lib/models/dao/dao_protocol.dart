@@ -57,7 +57,20 @@ abstract class DaoProtocol<T extends SqliteProtocol<T>> {
     );
   }
 
-  Future<void> clear() async {
+  Future<void> deleteWhere({
+    required String where,
+    required List<Object?> whereArgs,
+  }) async {
+    final db = await dbProvider.database;
+
+    await db.delete(
+      model.table,
+      where: where,
+      whereArgs: whereArgs
+    );
+  }
+
+  Future<void> deleteAll() async {
     final db = await dbProvider.database;
     await db.delete(model.table);
   }

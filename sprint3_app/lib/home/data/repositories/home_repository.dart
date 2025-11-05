@@ -22,7 +22,7 @@ class HomeRepository {
       final remoteData = await remote.fetch();
 
       if (!remoteData.isEmpty) {
-        await local.clearAll();
+        await clearAll();
         await _persist(remoteData);
         await _cacheImages(remoteData);
       }
@@ -34,7 +34,7 @@ class HomeRepository {
   }
 
   Future<void> clearAll() async {
-    await local.clearAll();
+    await local.deleteAll();
     await cacheManager.clear();
   }
 

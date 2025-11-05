@@ -17,13 +17,16 @@ class HomeLocalDataSource {
     required this.articleDao,
   });
 
+  final String _where = 'category = ?';
+  final List<Object?> _whereArgs = ['general'];
+
   Future<HomeData> fetch() async {
     final newsSourcesSqlite = await newsSourceDao.fetchAll();
     final bannersSqlite = await bannerDao.fetchAll();
 
     final articlesSqlite = await articleDao.fetchWhere(
-      where: 'category = ?',
-      whereArgs: ['general'],
+      where: _where,
+      whereArgs: _whereArgs,
     );
 
     return HomeData(
@@ -35,11 +38,14 @@ class HomeLocalDataSource {
     );
   }
 
-  Future<void> clearAll() async {
+  Future<void> deleteAll() async {
     await Future.wait([
-      newsSourceDao.clear(),
-      bannerDao.clear(),
-      articleDao.clear(),
+      newsSourceDao.deleteAll(),
+      bannerDao.deleteAll(),
+      articleDao.deleteWhere(
+        where: _where, 
+        whereArgs: _whereArgs
+      ),
     ]);
   }
 }

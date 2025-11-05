@@ -14,8 +14,8 @@ class HomeViewModel {
   }
 
   Future<void> clearAll() async {
-    await repository.clearAll();
     data.value = HomeData();
+    await repository.clearAll();
   }
 
   Future<void> reload() async {
