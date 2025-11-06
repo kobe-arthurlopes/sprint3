@@ -8,9 +8,11 @@ class NewsSourceDetailsLocalDataSource {
 
   NewsSourceDetailsLocalDataSource({required this.articleDao, this.sourceId});
 
+  final String _where = 'category IS NULL AND sourceId = ?';
+
   Future<NewsSourceDetailsData> fetch() async {
     final articlesSqlite = await articleDao.fetchWhere(
-      where: 'category IS NULL AND sourceId = ?',
+      where: _where,
       whereArgs: [sourceId],
     );
 
@@ -19,5 +21,12 @@ class NewsSourceDetailsLocalDataSource {
         .toList();
 
     return NewsSourceDetailsData(articles: articles);
+  }
+
+  Future<void> deleteAll() async {
+    await articleDao.deleteWhere(
+      where: _where, 
+      whereArgs: [sourceId]
+    );
   }
 }
