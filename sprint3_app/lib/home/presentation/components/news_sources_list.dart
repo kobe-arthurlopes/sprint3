@@ -5,8 +5,9 @@ import 'package:sprint3_app/home/presentation/components/news_source_tile.dart';
 class NewsSourcesList extends StatelessWidget {
   final List<NewsSourceDTO> newsSources;
   final void Function(NewsSourceDTO)? onTap;
+  final bool shouldStartTimeout;
 
-  const NewsSourcesList({super.key, required this.newsSources, this.onTap});
+  const NewsSourcesList({super.key, required this.newsSources, this.onTap, this.shouldStartTimeout = true});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class NewsSourcesList extends StatelessWidget {
                 onTap!(newsSources[index]);
               }
             },
+            shouldStartTimeout: shouldStartTimeout,
           );
         }
       ),

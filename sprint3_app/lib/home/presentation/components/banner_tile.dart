@@ -7,8 +7,9 @@ import 'package:sprint3_app/components/shimmer_widget.dart';
 class BannerTile extends StatelessWidget {
   final BannerDTO? banner;
   final VoidCallback? onTap;
+  final bool shouldStartTimeout;
 
-  const BannerTile({super.key, required this.banner, this.onTap});
+  const BannerTile({super.key, required this.banner, this.onTap, this.shouldStartTimeout = true});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,8 @@ class BannerTile extends StatelessWidget {
                   width: size.width,
                   height: size.height,
                   borderRadius: 16,
-                )
+                ),
+                shouldStartTimeout: shouldStartTimeout,
               ),
 
               Positioned.fill(

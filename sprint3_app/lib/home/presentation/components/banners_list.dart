@@ -5,8 +5,9 @@ import 'package:sprint3_app/home/presentation/components/banner_tile.dart';
 class BannersList extends StatelessWidget {
   final List<BannerDTO> banners;
   final void Function(BannerDTO)? onTap;
+  final bool shouldStartTimeout;
 
-  const BannersList({super.key, required this.banners, this.onTap});
+  const BannersList({super.key, required this.banners, this.onTap, this.shouldStartTimeout = true});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class BannersList extends StatelessWidget {
                 onTap!(banners[index]);
               }
             },
+            shouldStartTimeout: shouldStartTimeout,
           );
         },
       ),

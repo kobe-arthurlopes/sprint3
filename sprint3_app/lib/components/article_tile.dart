@@ -7,8 +7,9 @@ import 'package:sprint3_app/components/shimmer_widget.dart';
 
 class ArticleTile extends StatelessWidget {
   final ArticleDTO? article;
+  final bool shouldStartTimeout;
 
-  const ArticleTile({super.key, required this.article});
+  const ArticleTile({super.key, required this.article, this.shouldStartTimeout = true});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,8 @@ class ArticleTile extends StatelessWidget {
                 width: size.width,
                 height: size.height,
                 borderRadius: 16,
-              )
+              ),
+              shouldStartTimeout: shouldStartTimeout,
             ),
           ),
 

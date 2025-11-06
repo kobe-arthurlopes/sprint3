@@ -7,8 +7,9 @@ import 'package:sprint3_app/components/shimmer_widget.dart';
 class NewsSourceTile extends StatelessWidget {
   final NewsSourceDTO? newsSource;
   final VoidCallback? onTap;
+  final bool shouldStartTimeout;
 
-  const NewsSourceTile({super.key, required this.newsSource, this.onTap});
+  const NewsSourceTile({super.key, required this.newsSource, this.onTap, this.shouldStartTimeout = true});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,8 @@ class NewsSourceTile extends StatelessWidget {
               child: ModelImageWidget(
                 imageUrl: newsSource?.logoUrl,
                 size: Size(100, 100), 
-                placeholder: ShimmerWidget.circular(radius: 50)
+                placeholder: ShimmerWidget.circular(radius: 50),
+                shouldStartTimeout: shouldStartTimeout,
               ),
             ),
 

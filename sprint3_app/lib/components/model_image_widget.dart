@@ -9,6 +9,7 @@ class ModelImageWidget extends StatefulWidget {
   final String? imageUrl;
   final Size size;
   final Widget placeholder;
+  final bool shouldStartTimeout;
   final Duration timeoutDuration;
 
   const ModelImageWidget({
@@ -16,6 +17,7 @@ class ModelImageWidget extends StatefulWidget {
     required this.imageUrl,
     required this.size,
     required this.placeholder,
+    this.shouldStartTimeout = false,
     this.timeoutDuration = const Duration(seconds: 5),
   });
 
@@ -27,10 +29,7 @@ class _ModelImageWidgetState extends State<ModelImageWidget> {
   bool _timeoutReached = false;
   Timer? _timer;
 
-  @override
-  void initState() {
-    super.initState();
-
+  void _startTimeout() {
     _timer = Timer(widget.timeoutDuration, () {
       if (mounted) {
         setState(() => _timeoutReached = true);
@@ -46,6 +45,10 @@ class _ModelImageWidgetState extends State<ModelImageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.shouldStartTimeout == true) {
+      _startTimeout();
+    }
+ 
     if (_timeoutReached && (widget.imageUrl == null || widget.imageUrl!.isEmpty)) {
       return _buildFallbackImage();
     }
