@@ -1,10 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:sprint3_app/service/api/api_exception.dart';
 import 'package:sprint3_app/service/api/api_service_protocol.dart';
+import 'package:sprint3_app/service/internet_connection.dart';
 
 class ApiMockService implements ApiServiceProtocol {
+  final InternetConnectionChecker internetConnectionChecker;
+
+  ApiMockService({required this.internetConnectionChecker});
+
   @override
   Future<T> fetchResponse<T>({
     String endpoint = 'top-headlines', 
@@ -31,7 +35,7 @@ class ApiMockService implements ApiServiceProtocol {
     final firstName = (category != null) ? category : formatName(sourceId);
     final fileName = '${firstName}_response.json';
 
-    final hasInternet = await InternetConnection().hasInternetAccess;
+    final hasInternet = await internetConnectionChecker.hasInternet();
 
     if (!hasInternet) {
       throw ApiException(
