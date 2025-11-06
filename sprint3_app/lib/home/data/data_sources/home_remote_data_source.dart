@@ -36,7 +36,7 @@ class HomeRemoteDataSource {
     } on ApiException catch (error) {
       return HomeData(errorMessage: error.userMessage);
     } catch (_) {
-      return HomeData(errorMessage: 'Failed to load content. Please connect to the internet at least once.');
+      return HomeData(errorMessage: 'Failed to load content. Please connect to the internet.');
     }
   }
 }

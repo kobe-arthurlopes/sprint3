@@ -52,9 +52,7 @@ class _HomePageState extends State<HomePage> {
                   : data.errorMessage != null
                       ? CustomErrorWidget(
                         message: data.errorMessage!,
-                        onRetry: () async {
-                          await _viewModel.reload();
-                        },
+                        onRetry: _refresh,
                       )
                       : _buildMainView(data)
         );
