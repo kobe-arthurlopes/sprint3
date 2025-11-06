@@ -101,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                   arguments: newsSource
                 );
               },
+              shouldStartTimeout: data.shouldStartImagesTimeout,
             ),
       
             Column(
@@ -130,6 +131,7 @@ class _HomePageState extends State<HomePage> {
                       arguments: banner,
                     );
                   },
+                  shouldStartTimeout: data.shouldStartImagesTimeout,
                 ),
       
                 Column(
@@ -155,6 +157,7 @@ class _HomePageState extends State<HomePage> {
                       child: ArticlesList(
                         articles: data.articles,
                         isScrollable: false,
+                        shouldStartTimeout: data.shouldStartImagesTimeout,
                       ),
                     ),
                   ],
