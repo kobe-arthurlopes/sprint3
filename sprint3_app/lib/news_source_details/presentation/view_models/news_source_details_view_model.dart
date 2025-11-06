@@ -14,6 +14,7 @@ class NewsSourceDetailsViewModel {
     data.value = NewsSourceDetailsData();
     final newsSourceDetailsData = await repository.fetchData();
     data.value = newsSourceDetailsData;
+    data.value = data.value.copyWith(shouldStartImagesTimeout: true);
   }
 
   void setSourceId(String? id) {
