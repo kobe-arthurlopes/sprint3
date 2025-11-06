@@ -1,13 +1,10 @@
 import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:sprint3_app/service/api/api_exception.dart';
 import 'package:sprint3_app/service/api/api_service_protocol.dart';
 
 class ApiMockService implements ApiServiceProtocol {
-  final dio = Dio(BaseOptions(baseUrl: 'https://api.genderize.io?name=luc'));
-
   @override
   Future<T> fetchResponse<T>({
     String endpoint = 'top-headlines', 
@@ -34,17 +31,19 @@ class ApiMockService implements ApiServiceProtocol {
     final firstName = (category != null) ? category : formatName(sourceId);
     final fileName = '${firstName}_response.json';
 
-    try {
-      final _ = await dio.get('', queryParameters: {'name': 'luc'});
+    final hasInternet = await InternetConnection().hasInternetAccess;
 
+    if (!hasInternet) {
+      throw ApiException(
+        userMessage: 'Unable to connect. Please check your internet connection and try again.', 
+        debugMessage: 'Unable to connect. Please check your internet connection and try again.'
+      );
+    }
+
+    try {
       final jsonString = await rootBundle.loadString('lib/json/$fileName');
       final data = json.decode(jsonString);
       return fromJson(data);
-    } on DioException catch (dioError) {
-      throw ApiException(
-        userMessage: 'Unable to connect. Please check your internet connection and try again. Status code: ${dioError.response?.statusCode}', 
-        debugMessage: 'Connection error: ${dioError.message}; No status code found.'
-      );
     } catch (error) {
       throw ApiException(
         userMessage: 'Error parsing json', 
