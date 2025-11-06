@@ -4,7 +4,8 @@ import 'package:sprint3_app/models/dto/article_dto.dart';
 import 'package:sprint3_app/models/dto/banner_dto.dart';
 import 'package:sprint3_app/models/dto/home_dto.dart';
 import 'package:sprint3_app/models/dto/news_source_dto.dart';
-import 'package:sprint3_app/service/api_service.dart';
+import 'package:sprint3_app/service/api/api_exception.dart';
+import 'package:sprint3_app/service/api/api_service_protocol.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 
 class HomeRemoteDataSource {

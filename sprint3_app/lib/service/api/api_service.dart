@@ -1,12 +1,6 @@
 import 'package:dio/dio.dart';
-
-abstract class ApiServiceProtocol {
-  Future<T> fetchResponse<T>({
-    String endpoint, 
-    required T Function(Map<String, dynamic>) fromJson,
-    Map<String, dynamic>? properties
-  });
-}
+import 'package:sprint3_app/service/api/api_exception.dart';
+import 'package:sprint3_app/service/api/api_service_protocol.dart';
 
 class ApiService implements ApiServiceProtocol {
   final String? apiKey;
@@ -73,15 +67,4 @@ class ApiService implements ApiServiceProtocol {
       );
     }
   }
-}
-
-class ApiException implements Exception {
-  final String userMessage;
-  final String debugMessage;
-  final int? statusCode;
-
-  ApiException({required this.userMessage, required this.debugMessage, this.statusCode});
-
-  @override
-  String toString() => 'ApiExpection(statusCode: $statusCode, message: $debugMessage)';
 }

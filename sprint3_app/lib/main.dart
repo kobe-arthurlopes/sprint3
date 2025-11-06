@@ -18,7 +18,7 @@ import 'package:sprint3_app/home/presentation/pages/home_page.dart';
 import 'package:sprint3_app/web_view/data/data_sources/web_view_data_source.dart';
 import 'package:sprint3_app/web_view/data/repositories/web_view_repository.dart';
 import 'package:sprint3_app/web_view/presentation/pages/web_view_page.dart';
-import 'package:sprint3_app/service/api_service.dart';
+import 'package:sprint3_app/service/api/api_service.dart';
 import 'package:sprint3_app/service/app_cache_manager.dart';
 import 'package:sprint3_app/service/cms_connection.dart';
 import 'package:sprint3_app/service/token_provider.dart';

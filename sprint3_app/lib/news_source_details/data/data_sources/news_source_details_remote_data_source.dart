@@ -1,6 +1,7 @@
 import 'package:sprint3_app/models/dto/article_dto.dart';
 import 'package:sprint3_app/news_source_details/data/models/news_source_details_data.dart';
-import 'package:sprint3_app/service/api_service.dart';
+import 'package:sprint3_app/service/api/api_exception.dart';
+import 'package:sprint3_app/service/api/api_service_protocol.dart';
 
 class NewsSourceDetailsRemoteDataSource {
   final ApiServiceProtocol apiService;
