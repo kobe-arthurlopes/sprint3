@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sprint3_app/components/custom_progress_indicator.dart';
 import 'package:sprint3_app/components/error_widget.dart';
 import 'package:sprint3_app/theme/colors.dart';
 import 'package:sprint3_app/web_view/presentation/view_models/web_view_model.dart';
@@ -48,7 +49,7 @@ class _WebViewPageState extends State<WebViewPage> {
               },
             )
             : data.controller == null || data.isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? Center(child: CustomProgressIndicator())
               : WebViewWidget(controller: data.controller!)
         );
       }

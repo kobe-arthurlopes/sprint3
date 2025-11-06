@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sprint3_app/components/custom_progress_indicator.dart';
+import 'package:sprint3_app/components/custom_refresh_indicator.dart';
 import 'package:sprint3_app/components/error_widget.dart';
 import 'package:sprint3_app/home/data/models/home_data.dart';
 import 'package:sprint3_app/home/presentation/pages/banner_details_page.dart';
@@ -47,7 +49,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: AppColors.background,
           appBar: AppBarWidget(title: 'News'),
           body: data.isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(child: CustomProgressIndicator())
                   : data.errorMessage != null
                       ? CustomErrorWidget(
                         message: data.errorMessage!,
@@ -60,7 +62,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildMainView(HomeData data) {
-    return RefreshIndicator(
+    return CustomRefreshIndicator(
       onRefresh: _refresh,
       child: SingleChildScrollView(
         child: Column(
