@@ -3,16 +3,19 @@ import 'package:sprint3_app/home/data/data_sources/home_local_data_source.dart';
 import 'package:sprint3_app/home/data/data_sources/home_remote_data_source.dart';
 import 'package:sprint3_app/home/data/models/home_data.dart';
 import 'package:sprint3_app/service/app_cache_manager.dart';
+import 'package:sprint3_app/service/internet_connection.dart';
 
 class HomeRepository {
   final HomeLocalDataSource local;
   final HomeRemoteDataSource remote;
   final AppCacheManager cacheManager;
+  final InternetConnectionChecker internetConnectionChecker;
 
   HomeRepository({
     required this.local,
     required this.remote,
     required this.cacheManager,
+    required this.internetConnectionChecker,
   });
 
   Future<HomeData> fetchData() async {
@@ -23,7 +26,6 @@ class HomeRepository {
       final remoteData = await remote.fetch();
 
       await _clearAndPersist(remoteData);
-      // unawaited(_clearAndPersist(remoteData));
 
       return remoteData;
     }
@@ -65,5 +67,9 @@ class HomeRepository {
     ];
 
     await cacheManager.cacheImages(urls);
+  }
+
+  Future<bool> hasInternet() async {
+    return await internetConnectionChecker.hasInternet();
   }
 }

@@ -17,6 +17,7 @@ import 'package:sprint3_app/news_source_details/presentation/pages/news_source_d
 import 'package:sprint3_app/home/presentation/pages/home_page.dart';
 import 'package:sprint3_app/service/api/api_mock_service.dart';
 import 'package:sprint3_app/service/api/api_service.dart';
+import 'package:sprint3_app/service/internet_connection.dart';
 import 'package:sprint3_app/web_view/data/data_sources/web_view_data_source.dart';
 import 'package:sprint3_app/web_view/data/repositories/web_view_repository.dart';
 import 'package:sprint3_app/web_view/presentation/pages/web_view_page.dart';
@@ -32,8 +33,9 @@ Future<void> main() async {
 
   final tokenProvider = await TokenProvider.create();
 
-  // final apiService = ApiMockService();
-  final apiService = ApiService(apiKey: tokenProvider.newsApiKey);
+  final internetConnectionChecker = InternetConnectionChecker();
+  final apiService = ApiMockService(internetConnectionChecker: internetConnectionChecker);
+  // final apiService = ApiService(apiKey: tokenProvider.newsApiKey);
 
   
   final cmsConnection = CmsConnection()
@@ -64,6 +66,7 @@ Future<void> main() async {
     local: homeLocalDataSource,
     remote: homeRemoteDataSource,
     cacheManager: appCacheManager,
+    internetConnectionChecker: internetConnectionChecker,
   );
 
   final newsSourceDetailsLocalDataSource = NewsSourceDetailsLocalDataSource(articleDao: articleDao);
@@ -72,7 +75,8 @@ Future<void> main() async {
   final newsSourceDetailsRepository = NewsSourceDetailsRepository(
     local: newsSourceDetailsLocalDataSource, 
     remote: newsSourceDetailsRemoteDataSource, 
-    cacheManager: appCacheManager
+    cacheManager: appCacheManager,
+    internetConnectionChecker: internetConnectionChecker,
   );
 
   final webViewDataSource = WebViewDataSource();

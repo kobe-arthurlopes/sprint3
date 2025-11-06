@@ -21,4 +21,20 @@ class NewsSourceDetailsViewModel {
     repository.local.sourceId = id;
     repository.remote.sourceId = id;
   }
+
+  Future<void> _clearAll() async {
+    data.value = NewsSourceDetailsData();
+    await repository.clearAll();
+  }
+
+  Future<void> reload() async {
+    final hasInternet = await repository.hasInternet();
+
+    if (hasInternet) {
+      await _clearAll();
+    }
+
+    data.value = data.value.copyWith(errorMessage: null);
+    await fetch();
+  }
 }
