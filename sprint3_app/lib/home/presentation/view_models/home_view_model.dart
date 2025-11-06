@@ -16,14 +16,14 @@ class HomeViewModel {
     data.value = data.value.copyWith(shouldStartImagesTimeout: true);
   }
 
-  Future<void> clearAll({bool includingChildren = false}) async {
+  Future<void> _clearAll({bool includingChildren = false}) async {
     data.value = HomeData();
     await repository.clearAll(includingChildren: includingChildren);
   }
 
   Future<void> reload() async {
     if (await _hasInternet()) {
-      await clearAll();
+      await _clearAll();
     }
 
     data.value = data.value.copyWith(isLoading: true, errorMessage: null);
