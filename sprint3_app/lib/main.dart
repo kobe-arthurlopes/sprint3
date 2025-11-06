@@ -32,8 +32,8 @@ Future<void> main() async {
 
   final tokenProvider = await TokenProvider.create();
 
-  final apiService = ApiMockService();
-  // final apiService = ApiService(apiKey: tokenProvider.newsApiKey);
+  // final apiService = ApiMockService();
+  final apiService = ApiService(apiKey: tokenProvider.newsApiKey);
 
   
   final cmsConnection = CmsConnection()
