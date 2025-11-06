@@ -22,7 +22,8 @@ class HomeRepository {
     if (isEmpty) {
       final remoteData = await remote.fetch();
 
-      unawaited(_clearAndPersist(remoteData));
+      await _clearAndPersist(remoteData);
+      // unawaited(_clearAndPersist(remoteData));
 
       return remoteData;
     }

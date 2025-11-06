@@ -9,8 +9,10 @@ class HomeViewModel {
   HomeViewModel({required this.repository});
 
   Future<void> fetch() async {
+    data.value = data.value.copyWith(shouldStartImagesTimeout: false);
     final homeData = await repository.fetchData();
     data.value = homeData;
+    data.value = data.value.copyWith(shouldStartImagesTimeout: true);
   }
 
   Future<void> clearAll({bool includingChildren = false}) async {

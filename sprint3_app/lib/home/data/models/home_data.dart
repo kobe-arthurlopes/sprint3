@@ -8,6 +8,7 @@ class HomeData {
   List<ArticleDTO> articles;
   String? errorMessage;
   bool isLoading;
+  bool shouldStartImagesTimeout;
 
   HomeData({
     this.newsSources = const [],
@@ -15,6 +16,7 @@ class HomeData {
     this.articles = const [],
     this.errorMessage,
     this.isLoading = false,
+    this.shouldStartImagesTimeout = false
   });
 
   HomeData copyWith({
@@ -23,6 +25,7 @@ class HomeData {
     List<ArticleDTO>? articles,
     String? errorMessage,
     bool? isLoading,
+    bool? shouldStartImagesTimeout,
   }) {
     return HomeData(
       newsSources: newsSources ?? this.newsSources,
@@ -30,6 +33,7 @@ class HomeData {
       articles: articles ?? this.articles,
       errorMessage: errorMessage ?? this.errorMessage,
       isLoading: isLoading ?? this.isLoading,
+      shouldStartImagesTimeout: shouldStartImagesTimeout ?? this.shouldStartImagesTimeout,
     );
   }
 
