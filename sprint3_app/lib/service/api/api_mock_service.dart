@@ -28,7 +28,7 @@ class ApiMockService implements ApiServiceProtocol {
       );
     }
 
-    final firstName = (category != null) ? category : sourceId;
+    final firstName = (category != null) ? category : formatName(sourceId);
     final fileName = '${firstName}_response.json';
 
     try {
@@ -43,7 +43,7 @@ class ApiMockService implements ApiServiceProtocol {
     }
   }
 
-  String formatName(String name) {
-    return name.replaceAll('_', '-');
+  String formatName(String? name) {
+    return name != null ? name.replaceAll('-', '_') : '';
   }
 }
