@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sprint3_app/components/custom_refresh_indicator.dart';
 import 'package:sprint3_app/components/error_widget.dart';
 import 'package:sprint3_app/models/dto/news_source_dto.dart';
 import 'package:sprint3_app/news_source_details/data/models/news_source_details_data.dart';
@@ -34,6 +35,10 @@ class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
     await _viewModel.fetch();
   }
 
+  Future<void> _refresh() async {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<NewsSourceDetailsData>(
@@ -46,10 +51,16 @@ class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
           appBar: AppBarWidget(title: newsSource.name),
           body: data.errorMessage != null
               ? CustomErrorWidget(message: data.errorMessage!)
-              : Padding(
+              : CustomRefreshIndicator(
+                onRefresh: _refresh, 
+                child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ArticlesList(articles: data.articles),
+                  child: ArticlesList(
+                    articles: data.articles,
+                    shouldStartTimeout: data.shouldStartImagesTimeout,
+                  ),
                 ),
+              ),
         );
       },
     );
