@@ -35,18 +35,6 @@ class BannerDetailsPage extends StatelessWidget {
               ),
             ),
 
-            // Center(
-            //   child: ClipRRect(
-            //     borderRadius: BorderRadius.circular(16),
-            //     child: Image.network(
-            //       banner.logoUrl ?? '',
-            //       width: 200,
-            //       height: 200,
-            //       fit: BoxFit.cover
-            //     ),
-            //   ),
-            // ),
-
             SizedBox(height: 16),
 
             Text(
