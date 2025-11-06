@@ -18,4 +18,6 @@ class NewsSourceDetailsData {
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
+
+  bool get isEmpty => articles.isEmpty;
 }

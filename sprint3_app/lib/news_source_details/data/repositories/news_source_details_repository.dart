@@ -20,8 +20,12 @@ class NewsSourceDetailsRepository {
 
     if (isEmpty) {
       final remoteData = await remote.fetch();
-      await _persist(remoteData);
-      await _cacheImages(remoteData);
+
+      if (!remoteData.isEmpty) {
+        await _persist(remoteData);
+        await _cacheImages(remoteData);
+      }
+
       return remoteData;
     }
 
