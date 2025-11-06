@@ -13,9 +13,8 @@ class WebViewModel {
 
     data.value = await repository.fetchData(
       onPageStarted: () {
-        final isLoading = data.value.isLoading;
-        data.value = data.value.copyWith(isLoading: !isLoading);
-      },
+        data.value = data.value.copyWith(isLoading: false);
+      }
     );
   }
 
