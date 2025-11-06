@@ -31,11 +31,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _initialize() async {
+    // await _viewModel.clearAll(includingChildren: true);
     await _viewModel.fetch();
   }
 
   Future<void> _refresh() async {
-    await _viewModel.clearAll();
     await _viewModel.reload();
   }
 
