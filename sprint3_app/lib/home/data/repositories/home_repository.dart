@@ -34,8 +34,8 @@ class HomeRepository {
     await Future.wait([clearAll(), _persist(data), _cacheImages(data)]);
   }
 
-  Future<void> clearAll() async {
-    await local.deleteAll();
+  Future<void> clearAll({bool includingChildren = false}) async {
+    await local.deleteAll(includingChildren: includingChildren);
     await cacheManager.clear();
   }
 

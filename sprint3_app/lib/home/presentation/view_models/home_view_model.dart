@@ -13,9 +13,9 @@ class HomeViewModel {
     data.value = homeData;
   }
 
-  Future<void> clearAll() async {
+  Future<void> clearAll({bool includingChildren = false}) async {
     data.value = HomeData();
-    await repository.clearAll();
+    await repository.clearAll(includingChildren: includingChildren);
   }
 
   Future<void> reload() async {

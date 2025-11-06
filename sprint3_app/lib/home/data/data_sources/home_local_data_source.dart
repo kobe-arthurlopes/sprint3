@@ -47,11 +47,14 @@ class HomeLocalDataSource {
     );
   }
 
-  Future<void> deleteAll() async {
-    await Future.wait([
-      newsSourceDao.deleteAll(),
-      bannerDao.deleteAll(),
-      articleDao.deleteWhere(where: _where, whereArgs: _whereArgs),
-    ]);
+  Future<void> deleteAll({required bool includingChildren}) async {
+    await newsSourceDao.deleteAll();
+    await bannerDao.deleteAll();
+    
+    if (includingChildren) {
+      await articleDao.deleteAll();
+    } else {
+      await articleDao.deleteWhere(where: _where, whereArgs: _whereArgs);
+    }
   }
 }
