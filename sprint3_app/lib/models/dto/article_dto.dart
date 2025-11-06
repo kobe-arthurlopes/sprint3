@@ -1,5 +1,6 @@
 import 'package:sprint3_app/models/dto/dto_protocol.dart';
 import 'package:sprint3_app/models/sqlite/article_sqlite_model.dart';
+import 'package:uuid/uuid.dart';
 
 class ArticleResponse {
   final List<ArticleDTO> articles;
@@ -63,8 +64,10 @@ class ArticleDTO implements DtoProtocol<ArticleSqliteModel> {
   }
 
   @override
-  ArticleSqliteModel toSqlite() {
+  ArticleSqliteModel toSqlite({String? forcedCategory}) {
     return ArticleSqliteModel(
+      id: const Uuid().v4(),
+      category: forcedCategory,
       sourceID: sourceId,
       title: title,
       description: description,

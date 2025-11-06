@@ -4,7 +4,9 @@ import 'package:sprint3_app/news_source_details/data/repositories/news_source_de
 
 class NewsSourceDetailsViewModel {
   final NewsSourceDetailsRepository repository;
-  final ValueNotifier<NewsSourceDetailsData> data = ValueNotifier(NewsSourceDetailsData());
+  final ValueNotifier<NewsSourceDetailsData> data = ValueNotifier(
+    NewsSourceDetailsData(),
+  );
 
   NewsSourceDetailsViewModel({required this.repository});
 

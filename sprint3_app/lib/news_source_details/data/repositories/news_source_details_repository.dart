@@ -11,7 +11,7 @@ class NewsSourceDetailsRepository {
   NewsSourceDetailsRepository({
     required this.local,
     required this.remote,
-    required this.cacheManager
+    required this.cacheManager,
   });
 
   Future<NewsSourceDetailsData> fetchData() async {

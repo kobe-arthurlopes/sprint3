@@ -6,19 +6,18 @@ class NewsSourceDetailsLocalDataSource {
   final ArticleDAO articleDao;
   String? sourceId;
 
-  NewsSourceDetailsLocalDataSource({
-    required this.articleDao,
-    this.sourceId
-  });
+  NewsSourceDetailsLocalDataSource({required this.articleDao, this.sourceId});
 
   Future<NewsSourceDetailsData> fetch() async {
     final articlesSqlite = await articleDao.fetchWhere(
-      where: 'category IS NULL AND sourceId = ?', 
-      whereArgs: [sourceId]
+      where: 'category IS NULL AND sourceId = ?',
+      whereArgs: [sourceId],
     );
 
-    return NewsSourceDetailsData(
-      articles: articlesSqlite.map(ArticleDTO.fromSqlite).toList()
-    );
+    final articles = articlesSqlite
+        .map((element) => ArticleDTO.fromSqlite(element))
+        .toList();
+
+    return NewsSourceDetailsData(articles: articles);
   }
 }

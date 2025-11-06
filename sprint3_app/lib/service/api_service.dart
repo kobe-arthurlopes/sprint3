@@ -43,25 +43,19 @@ class ApiService implements ApiServiceProtocol {
         switch (dioError.response!.statusCode) {
           case 404:
             throw ApiException(
-              userMessage: '''
-                Sorry, we couldn't locate that resource.
-              ''',
+              userMessage: "Sorry, we couldn't locate that resource.",
               debugMessage: 'Entity not found',
               statusCode: 404
             );
           case 500:
             throw ApiException(
-              userMessage: '''
-                Oops! We're having a little trouble right now. Please try again in a moment.
-              ''', 
+              userMessage: "Oops! We're having a little trouble right now. Please try again in a moment.", 
               debugMessage: 'Internal server error',
               statusCode: 500
             );
           default:
             throw ApiException(
-              userMessage: '''
-                An unexpected error occured. Please try again later.
-              ''',
+              userMessage: 'An unexpected error occured. Please try again later.',
               debugMessage: 'Unknown error: ${dioError.response!.statusCode}',
               statusCode: dioError.response!.statusCode
             );
@@ -74,9 +68,7 @@ class ApiService implements ApiServiceProtocol {
       }
     } catch (error) {
       throw ApiException(
-        userMessage: '''
-          An unexpected error occured. Please try again later.
-        ''',
+        userMessage: "An unexpected error occured. Please try again later.",
         debugMessage: 'Unknown error: ${error.toString()}; No status code found.'
       );
     }

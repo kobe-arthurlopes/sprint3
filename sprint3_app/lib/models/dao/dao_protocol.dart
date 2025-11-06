@@ -17,7 +17,7 @@ abstract class DaoProtocol<T extends SqliteProtocol<T>> {
     await db.insert(
       model.table, 
       data.toSqliteMap(),
-      conflictAlgorithm: ConflictAlgorithm.ignore
+      conflictAlgorithm: ConflictAlgorithm.replace
     );
   }
 
@@ -40,21 +40,6 @@ abstract class DaoProtocol<T extends SqliteProtocol<T>> {
     );
 
     return maps.map((element) => model.toSqliteModel(element)).toList();
-  }
-
-  Future<void> updateField({
-    required String column,
-    required Object? value,
-    required String where,
-  }) async {
-    final db = await dbProvider.database;
-
-    await db.update(
-      model.table,
-      {column: value},
-      where: where,
-      conflictAlgorithm: ConflictAlgorithm.replace
-    );
   }
 
   Future<void> deleteWhere({

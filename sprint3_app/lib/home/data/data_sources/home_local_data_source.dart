@@ -22,19 +22,28 @@ class HomeLocalDataSource {
 
   Future<HomeData> fetch() async {
     final newsSourcesSqlite = await newsSourceDao.fetchAll();
+    final newsSources = newsSourcesSqlite
+        .map((element) => NewsSourceDTO.fromSqlite(element))
+        .toList();
+
     final bannersSqlite = await bannerDao.fetchAll();
+    final banners = bannersSqlite
+        .map((element) => BannerDTO.fromSqlite(element))
+        .toList();
 
     final articlesSqlite = await articleDao.fetchWhere(
       where: _where,
       whereArgs: _whereArgs,
     );
 
+    final articles = articlesSqlite
+        .map((element) => ArticleDTO.fromSqlite(element))
+        .toList();
+
     return HomeData(
-      newsSources: newsSourcesSqlite
-          .map(NewsSourceDTO.fromSqlite)
-          .toList(),
-      banners: bannersSqlite.map(BannerDTO.fromSqlite).toList(),
-      articles: articlesSqlite.map(ArticleDTO.fromSqlite).toList(),
+      newsSources: newsSources,
+      banners: banners,
+      articles: articles,
     );
   }
 
@@ -42,10 +51,7 @@ class HomeLocalDataSource {
     await Future.wait([
       newsSourceDao.deleteAll(),
       bannerDao.deleteAll(),
-      articleDao.deleteWhere(
-        where: _where, 
-        whereArgs: _whereArgs
-      ),
+      articleDao.deleteWhere(where: _where, whereArgs: _whereArgs),
     ]);
   }
 }

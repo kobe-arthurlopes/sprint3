@@ -31,7 +31,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _initialize() async {
-    // await _viewModel.clearAll();
     await _viewModel.fetch();
   }
 

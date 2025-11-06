@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:sprint3_app/home/data/data_sources/home_local_data_source.dart';
 import 'package:sprint3_app/home/data/data_sources/home_remote_data_source.dart';
 import 'package:sprint3_app/home/data/models/home_data.dart';
@@ -21,16 +22,16 @@ class HomeRepository {
     if (isEmpty) {
       final remoteData = await remote.fetch();
 
-      if (!remoteData.isEmpty) {
-        await clearAll();
-        await _persist(remoteData);
-        await _cacheImages(remoteData);
-      }
-      
+      unawaited(_clearAndPersist(remoteData));
+
       return remoteData;
     }
 
     return localData;
+  }
+
+  Future<void> _clearAndPersist(HomeData data) async {
+    await Future.wait([clearAll(), _persist(data), _cacheImages(data)]);
   }
 
   Future<void> clearAll() async {
@@ -50,15 +51,9 @@ class HomeRepository {
     }
 
     for (final article in data.articles) {
-      final articleSqlite = article.toSqlite();
+      final articleSqlite = article.toSqlite(forcedCategory: 'general');
       await local.articleDao.insert(articleSqlite);
     }
-
-    await local.articleDao.updateField(
-      column: 'category',
-      value: 'general',
-      where: 'category IS NULL',
-    );
   }
 
   Future<void> _cacheImages(HomeData data) async {
