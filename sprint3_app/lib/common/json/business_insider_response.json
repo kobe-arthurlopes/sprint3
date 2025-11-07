@@ -1,0 +1,136 @@
+{
+    "status": "ok",
+    "totalResults": 10,
+    "articles": [
+        {
+            "source": {
+                "id": "business-insider",
+                "name": "Business Insider"
+            },
+            "author": "Tom Carter",
+            "title": "BMW and Porsche have a China problem. They're not the only ones.",
+            "description": "Bad news for foreign automakers in the world's biggest car market keeps coming as two German marques reported big declines in deliveries in China.",
+            "url": "http://www.businessinsider.com/bmw-porsche-china-sales-falling-byd-xpeng-2025-1",
+            "urlToImage": "https://i.insider.com/6784f78b8951662c9f1fd234?width=1200&format=jpeg",
+            "publishedAt": "2025-01-13T12:27:46Z",
+            "content": "Porsche and BMW have become the latest European carmakers to report sliding sales in China.\r\nThe two German automakers said on Monday that sales in the world's largest auto market fell by 28% and 13.… [+2150 chars]"
+        },
+        {
+            "source": {
+                "id": "business-insider",
+                "name": "Business Insider"
+            },
+            "author": "Joshua Nelken-Zitser",
+            "title": "LA fires: Landlords are price gouging, says 'Selling Sunset' star",
+            "description": "Jason Oppenheim from \"Selling Sunset\" called out LA landlords for hiking rent during the fires. California law prohibits price gouging in emergencies.",
+            "url": "http://www.businessinsider.com/la-fires-jason-oppenheim-landlords-price-gouging-selling-sunset-star-2025-1",
+            "urlToImage": "https://i.insider.com/6784ee0188b000981b4a966f?width=1200&format=jpeg",
+            "publishedAt": "2025-01-13T12:00:34Z",
+            "content": "Jason Oppenheim, star of Netflix's \"Selling Sunset,\" has accused Los Angeles landlords of illegally price gouging rental rates amid the city's devastating fires.\r\nIn an interview with the BBC's Laura… [+2643 chars]"
+        },
+        {
+            "source": {
+                "id": "business-insider",
+                "name": "Business Insider"
+            },
+            "author": "Leena Rao",
+            "title": "Blockchain giant Chainalysis acquires AI agent startup Alterya",
+            "description": "AI agent cybersecurity startup Alterya has been bought by blockchain giant Chainalysis for over $100 million, Business Insider has learned.",
+            "url": "http://www.businessinsider.com/ai-agent-startup-alterya-acquired-by-chainalysis-2025-1",
+            "urlToImage": "https://i.insider.com/678410188951662c9f1fccc6?width=938&format=jpeg",
+            "publishedAt": "2025-01-13T12:00:01Z",
+            "content": "Before even leaving stealth mode, Alterya, a startup that uses AI agents to detect fraud, is being acquired by blockchain giant Chainalysis, Business Insider has learned from multiple sources.\r\nThe t… [+1410 chars]"
+        },
+        {
+            "source": {
+                "id": "business-insider",
+                "name": "Business Insider"
+            },
+            "author": "Matthew Fox",
+            "title": "Why investors shouldn't worry about stretched stock market valuations: BofA",
+            "description": "\"The S&P 500 is a different animal than in prior cycles,\" Bank of America's Savita Subramanian said in a note Friday.",
+            "url": "https://markets.businessinsider.com/news/stocks/stock-market-hits-extreme-valuations-get-used-to-it-outlook-2025-1",
+            "urlToImage": "https://i.insider.com/6703caa33f2165d716dec8d2?width=1200&format=jpeg",
+            "publishedAt": "2025-01-13T11:30:02Z",
+            "content": "The S&amp;P 500 is hitting valuation extremes. But one Wall Street strategist says that's simply the new normal, and not a screaming signal to sell.\r\nInstead, says Savita Subramanian, an equity strat… [+1954 chars]"
+        },
+        {
+            "source": {
+                "id": "business-insider",
+                "name": "Business Insider"
+            },
+            "author": "Jacob Zinkula, Madison Hoff",
+            "title": "Why middle managers are valuable to companies and their employees",
+            "description": "Workers and workplace experts discuss what makes middle managers valuable.",
+            "url": "http://www.businessinsider.com/middle-managers-valuable-company-employee-success-growth-2025-1",
+            "urlToImage": "https://i.insider.com/6761fc006c531c315b88ddb9?width=1200&format=jpeg",
+            "publishedAt": "2025-01-13T10:05:01Z",
+            "content": "US businesses are betting that they can thrive with fewer middle managers. They could come to regret it.\r\nSome business leaders think scaling back middle-manager roles a trend called the \"Great Flatt… [+5467 chars]"
+        },
+        {
+            "source": {
+                "id": "business-insider",
+                "name": "Business Insider"
+            },
+            "author": "Emily Stewart",
+            "title": "People can bet on the Los Angeles wildfires. It's a sign of the times.",
+            "description": "Polymarket is letting people wager on various outcomes for the Los Angeles wildfires. It shows just how far our gambling obsession has gone.",
+            "url": "http://www.businessinsider.com/california-los-angeles-palisades-fires-bets-gambling-wagers-polymarket-2025-1",
+            "urlToImage": "https://i.insider.com/67803de588b000981b4a44d2?width=1200&format=jpeg",
+            "publishedAt": "2025-01-13T09:07:02Z",
+            "content": "If you are betting on the California wildfires, I don't know what to tell you. Go outside (if it's safe). Do some reflecting. Call a gambling-addiction hotline, probably. Though I suppose the impulse… [+7408 chars]"
+        },
+        {
+            "source": {
+                "id": "business-insider",
+                "name": "Business Insider"
+            },
+            "author": "Kwan Wei Kevin Tan",
+            "title": "Blue Origin cancels rocket launch because of 'vehicle subsystem issue'",
+            "description": "The company said it was \"reviewing opportunities for our next launch attempt.\"",
+            "url": "http://www.businessinsider.com/blue-origin-cancels-rocket-launch-because-of-vehicle-subsystem-issue-2025-1",
+            "urlToImage": "https://i.insider.com/6784cc8488b000981b4a94ec?width=1200&format=jpeg",
+            "publishedAt": "2025-01-13T08:32:09Z",
+            "content": "Rocket company Blue Origin canceled its highly anticipated New Glenn rocket launch on Monday morning, citing a need to \"troubleshoot a vehicle subsystem issue.\"\r\nThe launch, which was originally set … [+1223 chars]"
+        },
+        {
+            "source": {
+                "id": "business-insider",
+                "name": "Business Insider"
+            },
+            "author": "Madeline Berg",
+            "title": "Mark Zuckerberg enters his next era as Trump takes office",
+            "description": "The Meta CEO is remaking himself — and his company — in the image of Donald Trump.",
+            "url": "http://www.businessinsider.com/mark-zuckerberg-new-identity-trump-elon-musk-fact-check-dei-2025-1",
+            "urlToImage": "https://i.insider.com/6781a9788951662c9f1fbccc?width=1200&format=jpeg",
+            "publishedAt": "2025-01-12T19:17:19Z",
+            "content": "Mark Zuckerberg has shown himself to be the ultimate Silicon Valley shapeshifter, and in the first couple weeks of 2025, we got our best look yet at the latest version of the Meta CEO.\r\nTo kick off t… [+5772 chars]"
+        },
+        {
+            "source": {
+                "id": "business-insider",
+                "name": "Business Insider"
+            },
+            "author": "Eammon Jacobs, Lauren Edmonds, Callie Ahlgrim, Lloyd Lee, Amanda Goh, Kashmira Gander, Kelsey Vlamis, Katie Balevic, Eve Crosbie, Kenneth Niemeyer",
+            "title": "Celebrities who lost homes in LA, Palisades fires: Full list",
+            "description": "Stars, including Paris Hilton, Billy Crystal, and Milo Ventimiglia were mourning the loss of their homes and possessions in LA's devastating fires.",
+            "url": "http://www.businessinsider.com/la-wildfire-pacific-palisades-malibu-celebrities-neighborhood-a-listers-2025-1",
+            "urlToImage": "https://i.insider.com/67850bbd88b000981b4a97ee?width=1200&format=jpeg",
+            "publishedAt": "2025-01-12T11:54:05Z",
+            "content": "The biggest of the wildfires in Los Angeles has been burning the Pacific Palisades neighborhood for nearly a week, razing one of the nation's most prosperous neighborhoods.\r\nStars including Paris Hil… [+13574 chars]"
+        },
+        {
+            "source": {
+                "id": "business-insider",
+                "name": "Business Insider"
+            },
+            "author": "Alex Nicoll",
+            "title": "5 do's and don'ts to land a job in the private-credit boom",
+            "description": "All signs point to a continued private-credit gold rush in 2025. Here are the top career pathways, according to recruiters and consultants.",
+            "url": "http://www.businessinsider.com/private-credit-career-pathways-junior-roles-senior-roles-2025-1",
+            "urlToImage": "https://i.insider.com/678040458951662c9f1f81d7?width=1200&format=jpeg",
+            "publishedAt": "2025-01-11T10:15:01Z",
+            "content": "Lending is not a new business for Wall Street, but the private-credit gold rush has opened the door to a hiring spree that's only expected to heat up in 2025.\r\nAfter the 2008 financial crisis, banks … [+8490 chars]"
+        }
+    ]
+}

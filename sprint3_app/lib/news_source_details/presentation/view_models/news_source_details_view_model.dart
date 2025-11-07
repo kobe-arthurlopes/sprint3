@@ -1,0 +1,40 @@
+import 'package:flutter/cupertino.dart';
+import 'package:sprint3_app/news_source_details/data/models/news_source_details_data.dart';
+import 'package:sprint3_app/news_source_details/data/repositories/news_source_details_repository.dart';
+
+class NewsSourceDetailsViewModel {
+  final NewsSourceDetailsRepository repository;
+  final ValueNotifier<NewsSourceDetailsData> data = ValueNotifier(
+    NewsSourceDetailsData(),
+  );
+
+  NewsSourceDetailsViewModel({required this.repository});
+
+  Future<void> fetch() async {
+    data.value = NewsSourceDetailsData();
+    final newsSourceDetailsData = await repository.fetchData();
+    data.value = newsSourceDetailsData;
+    data.value = data.value.copyWith(shouldStartImagesTimeout: true);
+  }
+
+  void setSourceId(String? id) {
+    repository.local.sourceId = id;
+    repository.remote.sourceId = id;
+  }
+
+  Future<void> _clearAll() async {
+    data.value = NewsSourceDetailsData();
+    await repository.clearAll(data.value);
+  }
+
+  Future<void> reload() async {
+    final hasInternet = await repository.hasInternet();
+
+    if (hasInternet) {
+      await _clearAll();
+    }
+
+    data.value = data.value.copyWith(errorMessage: null);
+    await fetch();
+  }
+}

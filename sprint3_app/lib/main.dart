@@ -1,122 +1,153 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sprint3_app/home/data/data_sources/home_local_data_source.dart';
+import 'package:sprint3_app/home/data/data_sources/home_remote_data_source.dart';
+import 'package:sprint3_app/home/data/repositories/home_repository.dart';
+import 'package:sprint3_app/common/models/dao/article_dao.dart';
+import 'package:sprint3_app/common/models/dao/banner_dao.dart';
+import 'package:sprint3_app/common/models/dao/news_source_dao.dart';
+import 'package:sprint3_app/common/models/dto/banner_dto.dart';
+import 'package:sprint3_app/common/models/dto/news_source_dto.dart';
+import 'package:sprint3_app/common/models/sqlite/app_database.dart';
+import 'package:sprint3_app/news_source_details/data/data_sources/news_source_details_local_data_source.dart';
+import 'package:sprint3_app/news_source_details/data/data_sources/news_source_details_remote_data_source.dart';
+import 'package:sprint3_app/news_source_details/data/repositories/news_source_details_repository.dart';
+import 'package:sprint3_app/home/presentation/pages/banner_details_page.dart';
+import 'package:sprint3_app/news_source_details/presentation/pages/news_source_details_page.dart';
+import 'package:sprint3_app/home/presentation/pages/home_page.dart';
+// import 'package:sprint3_app/service/api/api_mock_service.dart';
+import 'package:sprint3_app/common/service/api/api_service.dart';
+import 'package:sprint3_app/common/service/internet_connection.dart';
+import 'package:sprint3_app/web_view/data/data_sources/web_view_data_source.dart';
+import 'package:sprint3_app/web_view/data/repositories/web_view_repository.dart';
+import 'package:sprint3_app/web_view/presentation/pages/web_view_page.dart';
+import 'package:sprint3_app/common/service/app_cache_manager.dart';
+import 'package:sprint3_app/common/service/cms_connection.dart';
+import 'package:sprint3_app/common/service/token_provider.dart';
+import 'package:sprint3_app/home/presentation/view_models/home_view_model.dart';
+import 'package:sprint3_app/news_source_details/presentation/view_models/news_source_details_view_model.dart';
+import 'package:sprint3_app/web_view/presentation/view_models/web_view_model.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final tokenProvider = await TokenProvider.create();
+
+  final internetConnectionChecker = InternetConnectionChecker();
+  // final apiService = ApiMockService(internetConnectionChecker: internetConnectionChecker);
+  final apiService = ApiService(apiKey: tokenProvider.newsApiKey);
+
+  
+  final cmsConnection = CmsConnection()
+    ..initClient(
+      accessToken: tokenProvider.accessTokenCDA,
+      spaceId: tokenProvider.spaceIdCDA,
+    );
+
+  final appDatabase = AppDatabase.instance;
+  final articleDao = ArticleDAO(dbProvider: appDatabase);
+  final newsSourceDao = NewsSourceDAO(dbProvider: appDatabase);
+  final bannerDao = BannerDAO(dbProvider: appDatabase);
+
+  final homeLocalDataSource = HomeLocalDataSource(
+    articleDao: articleDao,
+    newsSourceDao: newsSourceDao,
+    bannerDao: bannerDao,
+  );
+
+  final homeRemoteDataSource = HomeRemoteDataSource(
+    apiService: apiService,
+    cmsConnection: cmsConnection,
+  );
+
+  final appCacheManager = AppCacheManager();
+
+  final homeRepository = HomeRepository(
+    local: homeLocalDataSource,
+    remote: homeRemoteDataSource,
+    cacheManager: appCacheManager,
+    internetConnectionChecker: internetConnectionChecker,
+  );
+
+  final newsSourceDetailsLocalDataSource = NewsSourceDetailsLocalDataSource(articleDao: articleDao);
+  final newsSourceDetailsRemoteDataSource = NewsSourceDetailsRemoteDataSource(apiService: apiService);
+
+  final newsSourceDetailsRepository = NewsSourceDetailsRepository(
+    local: newsSourceDetailsLocalDataSource, 
+    remote: newsSourceDetailsRemoteDataSource, 
+    cacheManager: appCacheManager,
+    internetConnectionChecker: internetConnectionChecker,
+  );
+
+  final webViewDataSource = WebViewDataSource();
+  final webViewRespository = WebViewRepository(dataSource: webViewDataSource);
+
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<HomeViewModel>(
+          create: (_) => HomeViewModel(repository: homeRepository),
+        ),
+        Provider<NewsSourceDetailsViewModel>(
+          create: (_) => NewsSourceDetailsViewModel(repository: newsSourceDetailsRepository),
+        ),
+        Provider<WebViewModel>(
+          create: (_) => WebViewModel(repository: webViewRespository),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      title: 'Nextra',
+      onGenerateRoute: (settings) => _onGenerateRoute(context, settings),
+      home: const HomePage(),
     );
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  Route<dynamic>? _onGenerateRoute(
+    BuildContext context,
+    RouteSettings settings,
+  ) {
+    switch (settings.name) {
+      case HomePage.routeId:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const HomePage(),
+        );
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+      case NewsSourceDetailsPage.routeId:
+        final newsSource = settings.arguments as NewsSourceDTO;
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => NewsSourceDetailsPage(newsSource: newsSource),
+        );
 
-  final String title;
+      case WebViewPage.routeId:
+        final url = settings.arguments as String?;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+        return MaterialPageRoute(
+          builder: (_) => WebViewPage(url: url),
+        );
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+      case BannerDetailsPage.routeId:
+        final banner = settings.arguments as BannerDTO;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+        return MaterialPageRoute(
+          builder: (_) => BannerDetailsPage(banner: banner),
+        );
 
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      default:
+        return null;
+    }
   }
 }
