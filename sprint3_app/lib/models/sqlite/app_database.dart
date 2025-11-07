@@ -2,7 +2,7 @@ import 'package:path/path.dart';
 import 'package:sprint3_app/models/sqlite/article_sqlite_model.dart';
 import 'package:sprint3_app/models/sqlite/banner_sqlite_model.dart';
 import 'package:sprint3_app/models/sqlite/news_source_sqlite_model.dart';
-import 'package:sprint3_app/models/sqlite/sqlite_model.dart';
+import 'package:sprint3_app/models/sqlite/sqlite_protocol.dart';
 import 'package:sqflite/sqflite.dart';
 
 class AppDatabase {
@@ -35,7 +35,7 @@ class AppDatabase {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    final List<SqliteModel<dynamic>> models = [
+    final List<SqliteProtocol<dynamic>> models = [
       const ArticleSqliteModel(),
       const NewsSourceSqliteModel(),
       const BannerSqliteModel()

@@ -1,8 +1,8 @@
 import 'package:sprint3_app/models/sqlite/app_database.dart';
-import 'package:sprint3_app/models/sqlite/sqlite_model.dart';
+import 'package:sprint3_app/models/sqlite/sqlite_protocol.dart';
 import 'package:sqflite/sql.dart';
 
-abstract class DaoProtocol<T extends SqliteModel<T>> {
+abstract class DaoProtocol<T extends SqliteProtocol<T>> {
   final AppDatabase dbProvider;
   final T model;
 
@@ -17,7 +17,7 @@ abstract class DaoProtocol<T extends SqliteModel<T>> {
     await db.insert(
       model.table, 
       data.toSqliteMap(),
-      conflictAlgorithm: ConflictAlgorithm.ignore
+      conflictAlgorithm: ConflictAlgorithm.replace
     );
   }
 
@@ -27,7 +27,35 @@ abstract class DaoProtocol<T extends SqliteModel<T>> {
     return maps.map((element) => model.toSqliteModel(element)).toList();
   }
 
-  Future<void> clear() async {
+  Future<List<T>> fetchWhere({
+    required String where,
+    required List<Object?> whereArgs
+  }) async {
+    final db = await dbProvider.database;
+
+    final maps = await db.query(
+      model.table,
+      where: where,
+      whereArgs: whereArgs
+    );
+
+    return maps.map((element) => model.toSqliteModel(element)).toList();
+  }
+
+  Future<void> deleteWhere({
+    required String where,
+    required List<Object?> whereArgs,
+  }) async {
+    final db = await dbProvider.database;
+
+    await db.delete(
+      model.table,
+      where: where,
+      whereArgs: whereArgs
+    );
+  }
+
+  Future<void> deleteAll() async {
     final db = await dbProvider.database;
     await db.delete(model.table);
   }

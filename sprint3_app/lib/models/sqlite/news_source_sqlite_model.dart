@@ -1,6 +1,6 @@
-import 'package:sprint3_app/models/sqlite/sqlite_model.dart';
+import 'package:sprint3_app/models/sqlite/sqlite_protocol.dart';
 
-class NewsSourceSqliteModel implements SqliteModel<NewsSourceSqliteModel> {
+class NewsSourceSqliteModel implements SqliteProtocol<NewsSourceSqliteModel> {
   final String name;
   final String? logoUrl;
   final String? sourceId;

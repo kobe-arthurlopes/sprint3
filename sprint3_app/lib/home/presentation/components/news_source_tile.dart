@@ -1,0 +1,58 @@
+import 'package:flutter/material.dart';
+import 'package:sprint3_app/models/dto/news_source_dto.dart';
+import 'package:sprint3_app/theme/colors.dart';
+import 'package:sprint3_app/components/model_image_widget.dart';
+import 'package:sprint3_app/components/shimmer_widget.dart';
+
+class NewsSourceTile extends StatelessWidget {
+  final NewsSourceDTO? newsSource;
+  final VoidCallback? onTap;
+  final bool shouldStartTimeout;
+
+  const NewsSourceTile({super.key, required this.newsSource, this.onTap, this.shouldStartTimeout = true});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        if (onTap != null && newsSource != null) {
+          onTap!();
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipOval(
+              child: ModelImageWidget(
+                imageUrl: newsSource?.logoUrl,
+                size: Size(100, 100), 
+                placeholder: ShimmerWidget.circular(radius: 50),
+                shouldStartTimeout: shouldStartTimeout,
+              ),
+            ),
+
+            SizedBox(
+              width: 100,
+              height: 40,
+              child: newsSource == null
+                ? ShimmerWidget.rectangular()
+                : Center(
+                  child: Text(
+                    newsSource!.name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColors.secondary,
+                      fontWeight: FontWeight.w500
+                    ),
+                  )
+                ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
