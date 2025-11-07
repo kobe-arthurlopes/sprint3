@@ -15,7 +15,7 @@ import 'package:sprint3_app/news_source_details/data/repositories/news_source_de
 import 'package:sprint3_app/home/presentation/pages/banner_details_page.dart';
 import 'package:sprint3_app/news_source_details/presentation/pages/news_source_details_page.dart';
 import 'package:sprint3_app/home/presentation/pages/home_page.dart';
-import 'package:sprint3_app/service/api/api_mock_service.dart';
+// import 'package:sprint3_app/service/api/api_mock_service.dart';
 import 'package:sprint3_app/service/api/api_service.dart';
 import 'package:sprint3_app/service/internet_connection.dart';
 import 'package:sprint3_app/web_view/data/data_sources/web_view_data_source.dart';
@@ -34,8 +34,8 @@ Future<void> main() async {
   final tokenProvider = await TokenProvider.create();
 
   final internetConnectionChecker = InternetConnectionChecker();
-  final apiService = ApiMockService(internetConnectionChecker: internetConnectionChecker);
-  // final apiService = ApiService(apiKey: tokenProvider.newsApiKey);
+  // final apiService = ApiMockService(internetConnectionChecker: internetConnectionChecker);
+  final apiService = ApiService(apiKey: tokenProvider.newsApiKey);
 
   
   final cmsConnection = CmsConnection()
