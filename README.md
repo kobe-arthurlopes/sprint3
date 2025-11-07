@@ -1,4 +1,4 @@
-***Nextra***
+***Sprint 3 App***
 
 Aplicativo de notícias que reúne conteúdos das principais fontes em um só lugar. Busca e exibe informações em tempo real, além de oferecer acesso offline às notícias salvas.
 
@@ -16,7 +16,7 @@ Aplicativo de notícias que reúne conteúdos das principais fontes em um só lu
 
 **Arquitetura e organização do código**:
 
-O Nextra utiliza o padrão MVVM, com Provider para injeção de dependências e ValueNotifier para gerenciamento de estado.
+O app utiliza o padrão MVVM, com Provider para injeção de dependências e ValueNotifier para gerenciamento de estado.
 
 ```plaintext
 lib/
@@ -153,7 +153,7 @@ class HomeRepository {
 ```
 
   - Presentation → contém as Pages, ViewModels e lógicas de UI.
-     - Cada ViewModel utiliza ValueNotifier notificar que a UI deve reagir.
+     - Cada ViewModel utiliza ValueNotifier para notificar que a UI deve reagir.
      - As Pages escutam as mudanças e atualizam a UI a partir de um ValueListenableBuilder.
    
 ```plainText
@@ -268,6 +268,11 @@ class TokenProvider {
 
 
 - GraphQL (CMS – Contentful)
+  ```plainText
+  Endpoint: https://graphql.contentful.com/content/v1/spaces/$spaceId/environments/$environment
+  Headers: 'Authorization': 'Bearer $accessToken'
+  ```
+
   - O app utiliza o Contentful como CMS, acessando o conteúdo através de queries GraphQL.
   - A classe CmsConnection monta as queries dinamicamente com base no modelo (CmsModelProtocol), garantindo flexibilidade.
 
@@ -297,77 +302,20 @@ query {
 <br>
 <br>
 
+- O Content Model do Contentful ficou assim:
+
 <img width="2888" height="650" alt="Screenshot 2025-11-07 at 02 34 54" src="https://github.com/user-attachments/assets/c5acdc25-af72-4c1e-9649-94247d1cf3ba" />
 
-```plainText
-abstract class CmsConnectionProtocol {
-  Future<T> findAll<T extends CmsModelProtocol>();
-  void initClient({
-    required String? accessToken,
-    required String? spaceId,
-    String environment = 'master'
-  });
-}
-
-class CmsConnection implements CmsConnectionProtocol {
-  late final GraphQLClient _client;
-
-  @override
-  void initClient({
-    required String? accessToken, 
-    required String? spaceId,
-    String environment = 'master'
-  }) {
-    if (accessToken == null || spaceId == null) {
-      throw Exception('Missing accessToken or spaceId');
-    }
-
-    final String endpoint =
-        'https://graphql.contentful.com/content/v1/spaces/$spaceId/environments/$environment';
-
-    final HttpLink httpLink = HttpLink(
-      endpoint,
-      defaultHeaders: {'Authorization': 'Bearer $accessToken'},
-    );
-
-    _client = GraphQLClient(link: httpLink, cache: GraphQLCache());
-  }
-
-  @override
-  Future<T> findAll<T extends CmsModelProtocol>() async {
-    final String contentType = CmsModelProtocol.contentTypeOf<T>();
-    final String fieldsQuery = CmsModelProtocol.fieldsQueryOf<T>();
-
-    final String query = '''
-      query {
-        ${contentType}Collection(limit: 1) {
-          items {
-            $fieldsQuery
-          }
-        }
-      }
-    ''';
-
-    final result = await _client.query(QueryOptions(document: gql(query)));
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    final items = result.data?['${contentType}Collection']?['items'] as List?;
-
-    if (items == null || items.isEmpty) {
-      throw Exception('No $T content found');
-    }
-
-    return CmsModelProtocol.fromJsonOf<T>(items.first);
-  }
-}
-```
-
 - API
+  ```plainText
+  Endpoint: https://newsapi.org/v2/top-headlines
+  Query parameters: 'apiKey': $apiKey; 'categories': 'general' ou 'sources': $news_source_id
+  ```
+  
   - A API pública utilizada foi a <a href="https://newsapi.org" target="_blank">News API</a>
   - As requisições são feitas utilizando REST
+  - É obrigatório o uso de uma chave de API. Ela é salva no Remote Config do Firebase e consumida pelo app.
+  - Os query parameters, além da chave de API, são category ou sources. Os dois não podem ser usados ao mesmo tempo.
  
 ```plainText
 class ApiService implements ApiServiceProtocol {
@@ -392,98 +340,6 @@ class ApiService implements ApiServiceProtocol {
 }
 ```
 
-- Persistência
-  - Feita através do SQLite
- 
-```plainText
-abstract class SqliteProtocol<T> {
-  String get table;
-  String get createTableQuery;
-  Map<String, Object?> toSqliteMap();
-  T toSqliteModel(Map<String, Object?> map);
-}
-```
-
-```plainText
-class NewsSourceSqliteModel implements SqliteProtocol<NewsSourceSqliteModel> {
-  final String name;
-  final String? logoUrl;
-  final String? sourceId;
-  final bool isActive;
-
-  const NewsSourceSqliteModel({
-    this.name = '',
-    this.logoUrl,
-    this.sourceId,
-    this.isActive = false,
-  });
-
-  @override
-  String get table => 'news_sources';
-  
-  @override
-  String get createTableQuery => '''
-    CREATE TABLE $table (
-      name TEXT PRIMARY KEY,
-      logoUrl TEXT,
-      sourceId TEXT,
-      isActive INTEGER NOT NULL
-    );
-  ''';
-  
-  @override
-  Map<String, Object?> toSqliteMap() {
-    return {
-      'name': name,
-      'logoUrl': logoUrl,
-      'sourceId': sourceId,
-      'isActive': isActive ? 1 : 0
-    };
-  }
-  
-  @override
-  NewsSourceSqliteModel toSqliteModel(Map<String, Object?> map) {
-    return NewsSourceSqliteModel(
-      name: map['name'] as String,
-      logoUrl: map['logoUrl'] as String?,
-      sourceId: map['sourceId'] as String?,
-      isActive: (map['isActive'] as int) == 1
-    );
-  }
-}
-```
-
-- Models
-  - DTOs (Data Transfer Objects)
-    - Responsáveis por transferir e converter dados entre diferentes camadas, garantindo compatibilidade entre a API, o banco local e o app.
-  - CMS Models
-    - Representam os dados vindos do Contentful.
-    - Possuem registro automático, definição de queries GraphQL e conversão entre JSON e modelo interno.
-  - DAOs (Data Access Objects)
-    - Gerenciam a persistência local dos dados, oferecendo métodos genéricos no SQLite.
-  - SQLite Models
-    - Definem a estrutura das tabelas e mapeam os objetos e registros do banco.
-  - Protocols
-    - Contratos genéricos que padronizam operações e facilitam a escalabilidade e reuso do código.
-
-
-
-**Endpoints e Queries Utilizados**
-
-- GraphQL (CMS – Contentful)
- - O app utiliza o Contentful como CMS, acessando o conteúdo através de queries GraphQL.
- - A classe CmsConnection monta as queries dinamicamente com base no modelo (CmsModelProtocol), garantindo flexibilidade.
-
-   
-- REST API (NewsAPI)
- - Para buscar manchetes e notícias atuais, o app consome a NewsAPI, com integração via HTTP GET usando Dio.
- - Endpoint principal:
-    - GET https://newsapi.org/v2/top-headlines
- - Parâmetros usados:
-    apiKey	String	Chave de autenticação obrigatória
-    category	String	Categoria opcional de notícias
-    sources String Fonte das notícias puxadas
-   
 Exemplo de chamada:
 
 ```plainText
@@ -496,23 +352,9 @@ apiService.fetchResponse(
 );
 ```
 
-Resumo:
- - GraphQL (CMS): consulta tipos de conteúdo personalizados (ex: fontes de notícia).
- - REST (API Externa): busca manchetes e notícias em tempo real.
- - Ambas as integrações convertem os resultados para models internos e armazenam no SQLite.
-
-- SQLite (DaoProtocol)
- - O DaoProtocol é uma classe genérica que padroniza o acesso ao banco SQLite no app.
- - Ela define operações básicas (CRUD) para qualquer model que implemente o protocolo SqliteProtocol.
- - Principais funções:
-
-```plainText
-insert() – Insere ou substitui um registro na tabela.
-fetchAll() – Retorna todos os registros da tabela.
-fetchWhere() – Retorna registros filtrados por uma condição (WHERE).
-deleteWhere() – Deleta registros específicos conforme uma condição.
-deleteAll() – Limpa completamente a tabela.
-```
+- Persistência
+  - Feita através do SQLite
+ 
 ```plainText
 abstract class DaoProtocol<T extends SqliteProtocol<T>> {
   final AppDatabase dbProvider;
@@ -536,12 +378,33 @@ abstract class DaoProtocol<T extends SqliteProtocol<T>> {
 }
 ```
 
+ - O DaoProtocol é uma classe genérica que padroniza o acesso ao banco SQLite no app.
+ - Ela define operações básicas (CRUD) para qualquer model que implemente o protocolo SqliteProtocol.
+ - Principais funções:
+
+```plainText
+insert() – Insere ou substitui um registro na tabela.
+fetchAll() – Retorna todos os registros da tabela.
+fetchWhere() – Retorna registros filtrados por uma condição (WHERE).
+deleteWhere() – Deleta registros específicos conforme uma condição.
+deleteAll() – Limpa completamente a tabela.
+```
+
 - Como funciona:
   - Cada model (ex: BannerSqliteModel) informa:
    - O nome da tabela (table);
    - Como converter o objeto para Map (toSqliteMap);
    - Como reconstruir o objeto a partir de um registro (toSqliteModel).
    - Assim, o DaoProtocol consegue manipular qualquer tipo de dado sem precisar reescrever código SQL.
+ 
+ ```plainText
+abstract class SqliteProtocol<T> {
+  String get table;
+  String get createTableQuery;
+  Map<String, Object?> toSqliteMap();
+  T toSqliteModel(Map<String, Object?> map);
+}
+```
  
  ```plainText
 class BannerSqliteModel implements SqliteProtocol<BannerSqliteModel> {
@@ -596,3 +459,57 @@ class BannerSqliteModel implements SqliteProtocol<BannerSqliteModel> {
   }
 }
 ```
+<br>
+
+Resumo:
+ - GraphQL (CMS): consulta tipos de conteúdo personalizados (ex: fontes de notícia).
+ - REST (API Externa): busca manchetes e notícias em tempo real.
+ - Ambas as integrações convertem os resultados para models internos e armazenam no SQLite.
+ - SQLite (DaoProtocol)
+
+---
+
+**Models**
+
+ - DTOs
+   - Responsáveis por transferir e converter dados entre diferentes camadas, garantindo compatibilidade entre a API, o banco local e o app.
+ - CMS Models
+   - Representam os dados vindos do Contentful.
+   - Possuem registro automático, definição de queries GraphQL e conversão entre JSON e modelo interno.
+ - DAOs
+   - Gerenciam a persistência local dos dados, oferecendo métodos genéricos no SQLite.
+ - SQLite Models
+   - Definem a estrutura das tabelas e mapeam os objetos e registros do banco.
+ - Protocols
+   - Contratos genéricos que padronizam operações e facilitam a escalabilidade e reuso do código.
+
+-----
+
+**Setup**
+
+- Clone o repositório na sua máquina
+- Entre em sprint3_app
+- Baixe as dependências
+- Rode
+
+```plainText
+cd sprint3_app
+flutter pub get
+flutter run
+```
+
+- Certifique-se de ter baixado o Android Studio para ter o Android SDK
+- Crie uma APK
+
+```plainText
+flutter build apk --profile
+```
+
+-----
+
+
+   
+
+
+
+
