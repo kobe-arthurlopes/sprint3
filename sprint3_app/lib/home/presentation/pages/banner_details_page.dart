@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dto/banner_dto.dart';
-import 'package:sprint3_app/theme/colors.dart';
-import 'package:sprint3_app/components/app_bar_widget.dart';
-import 'package:sprint3_app/components/model_image_widget.dart';
-import 'package:sprint3_app/components/shimmer_widget.dart';
+import 'package:sprint3_app/common/models/dto/banner_dto.dart';
+import 'package:sprint3_app/common/theme/colors.dart';
+import 'package:sprint3_app/common/components/app_bar_widget.dart';
+import 'package:sprint3_app/common/components/model_image_widget.dart';
+import 'package:sprint3_app/common/components/shimmer_widget.dart';
 
 class BannerDetailsPage extends StatelessWidget {
   static const routeId = '/banner_details';

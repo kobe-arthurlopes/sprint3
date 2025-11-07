@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sprint3_app/components/custom_refresh_indicator.dart';
-import 'package:sprint3_app/components/error_widget.dart';
-import 'package:sprint3_app/models/dto/news_source_dto.dart';
+import 'package:sprint3_app/common/components/custom_refresh_indicator.dart';
+import 'package:sprint3_app/common/components/error_widget.dart';
+import 'package:sprint3_app/common/models/dto/news_source_dto.dart';
 import 'package:sprint3_app/news_source_details/data/models/news_source_details_data.dart';
-import 'package:sprint3_app/theme/colors.dart';
+import 'package:sprint3_app/common/theme/colors.dart';
 import 'package:sprint3_app/news_source_details/presentation/view_models/news_source_details_view_model.dart';
-import 'package:sprint3_app/components/articles_list.dart';
-import 'package:sprint3_app/components/app_bar_widget.dart';
+import 'package:sprint3_app/common/components/articles_list.dart';
+import 'package:sprint3_app/common/components/app_bar_widget.dart';
 
 class NewsSourceDetailsPage extends StatefulWidget {
   static const routeId = '/news_source_details';

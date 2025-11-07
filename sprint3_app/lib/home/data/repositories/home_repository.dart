@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:sprint3_app/home/data/data_sources/home_local_data_source.dart';
 import 'package:sprint3_app/home/data/data_sources/home_remote_data_source.dart';
 import 'package:sprint3_app/home/data/models/home_data.dart';
-import 'package:sprint3_app/service/app_cache_manager.dart';
-import 'package:sprint3_app/service/internet_connection.dart';
+import 'package:sprint3_app/common/service/app_cache_manager.dart';
+import 'package:sprint3_app/common/service/internet_connection.dart';
 
 class HomeRepository {
   final HomeLocalDataSource local;

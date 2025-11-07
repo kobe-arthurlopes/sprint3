@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dto/news_source_dto.dart';
-import 'package:sprint3_app/theme/colors.dart';
-import 'package:sprint3_app/components/model_image_widget.dart';
-import 'package:sprint3_app/components/shimmer_widget.dart';
+import 'package:sprint3_app/common/models/dto/news_source_dto.dart';
+import 'package:sprint3_app/common/theme/colors.dart';
+import 'package:sprint3_app/common/components/model_image_widget.dart';
+import 'package:sprint3_app/common/components/shimmer_widget.dart';
 
 class NewsSourceTile extends StatelessWidget {
   final NewsSourceDTO? newsSource;
