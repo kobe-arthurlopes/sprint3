@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprint3_app/models/dto/banner_dto.dart';
+import 'package:sprint3_app/common/models/dto/banner_dto.dart';
 import 'package:sprint3_app/home/presentation/components/banner_tile.dart';
 
 class BannersList extends StatelessWidget {

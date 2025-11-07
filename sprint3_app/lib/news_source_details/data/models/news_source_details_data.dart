@@ -1,4 +1,4 @@
-import 'package:sprint3_app/models/dto/article_dto.dart';
+import 'package:sprint3_app/common/models/dto/article_dto.dart';
 
 class NewsSourceDetailsData {
   List<ArticleDTO> articles;

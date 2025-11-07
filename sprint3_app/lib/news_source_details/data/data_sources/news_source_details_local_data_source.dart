@@ -1,5 +1,5 @@
-import 'package:sprint3_app/models/dao/article_dao.dart';
-import 'package:sprint3_app/models/dto/article_dto.dart';
+import 'package:sprint3_app/common/models/dao/article_dao.dart';
+import 'package:sprint3_app/common/models/dto/article_dto.dart';
 import 'package:sprint3_app/news_source_details/data/models/news_source_details_data.dart';
 
 class NewsSourceDetailsLocalDataSource {

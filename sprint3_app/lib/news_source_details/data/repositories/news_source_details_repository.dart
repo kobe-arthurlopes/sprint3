@@ -1,8 +1,8 @@
 import 'package:sprint3_app/news_source_details/data/data_sources/news_source_details_local_data_source.dart';
 import 'package:sprint3_app/news_source_details/data/data_sources/news_source_details_remote_data_source.dart';
 import 'package:sprint3_app/news_source_details/data/models/news_source_details_data.dart';
-import 'package:sprint3_app/service/app_cache_manager.dart';
-import 'package:sprint3_app/service/internet_connection.dart';
+import 'package:sprint3_app/common/service/app_cache_manager.dart';
+import 'package:sprint3_app/common/service/internet_connection.dart';
 
 class NewsSourceDetailsRepository {
   final NewsSourceDetailsLocalDataSource local;

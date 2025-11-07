@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sprint3_app/components/custom_progress_indicator.dart';
-import 'package:sprint3_app/components/error_widget.dart';
-import 'package:sprint3_app/theme/colors.dart';
+import 'package:sprint3_app/common/components/custom_progress_indicator.dart';
+import 'package:sprint3_app/common/components/error_widget.dart';
+import 'package:sprint3_app/common/theme/colors.dart';
 import 'package:sprint3_app/web_view/presentation/view_models/web_view_model.dart';
-import 'package:sprint3_app/components/app_bar_widget.dart';
+import 'package:sprint3_app/common/components/app_bar_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {

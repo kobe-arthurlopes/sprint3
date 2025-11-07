@@ -1,0 +1,136 @@
+{
+    "status": "ok",
+    "totalResults": 10,
+    "articles": [
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": "Chris Isidore",
+            "title": "The UPS plane that crashed was 34 years old. That’s not surprising",
+            "description": "The UPS freighter that crashed in Louisville was a 34-year old jet. While that’s old for a passenger plane, that’s not so unusual in the world of air cargo.",
+            "url": "https://www.cnn.com/2025/11/05/business/ups-crash-old-jet",
+            "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/ap25309018820621.jpg?c=16x9&q=w_800,c_fill",
+            "publishedAt": "2025-11-05T16:25:26Z",
+            "content": "The UPS freighter that crashed in Louisville was a 34-year old jet. While thats old for a passenger plane, thats not so unusual in the world of air cargo.\r\nThere are no initial indications that the a… [+2932 chars]"
+        },
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": "Louis Leeson",
+            "title": "Russia says new nuclear weapons are of ‘historic significance’ | CNN",
+            "description": "Russia has recently unveiled several new nuclear and nuclear powered weapons that President Vladimir Putin says will be “important for the entire 21st century.” CNN’s senior correspondent Fred Pleitgen breaks down some of their capabilities.",
+            "url": "https://www.cnn.com/2025/11/05/world/video/russia-nuclear-weapons-ldn-digvid",
+            "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/114999-nuclearsubmarinetorpedos-clean-00-01-19-19-still001.jpg?c=16x9&q=w_800,c_fill",
+            "publishedAt": "2025-11-05T16:07:50.181Z",
+            "content": "Russia has recently unveiled several new nuclear and nuclear powered weapons that President Vladimir Putin says will be \"important for the entire 21st century.\" CNN's senior correspondent Fred Pleitg… [+41 chars]"
+        },
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": "Alicia Wallace, Lucy Bayly",
+            "title": "The US economy added 42,000 private-sector jobs last month, more than expected",
+            "description": "The latest — and only — comprehensive look at the health of the US labor market showed Wednesday that the economy added an estimated 42,000 private-sector jobs last month.",
+            "url": "https://www.cnn.com/2025/11/05/economy/us-jobs-private-sector-adp-october",
+            "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2239023922.jpg?c=16x9&q=w_800,c_fill",
+            "publishedAt": "2025-11-05T13:19:39Z",
+            "content": "The latest and only comprehensive look at the health of the US labor market showed Wednesday that the economy added an estimated 42,000 private-sector jobs last month.\r\nPayroll processing company ADP… [+2304 chars]"
+        },
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": "Daniel Lewis",
+            "title": "Dashcam video shows the moment UPS plane crashes in Louisville | CNN",
+            "description": "A UPS freight plane crashed shortly after taking off from Louisville Muhammad Ali International Airport, killing at least seven people. CNN’s Audie Cornish discusses why the plane crashed with transportation analyst Mary Schiavo.",
+            "url": "https://www.cnn.com/2025/11/05/us/video/ups-plane-crash-louisville-schiavo-digvid",
+            "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/plane-20251105121214274.jpg?c=16x9&q=w_800,c_fill",
+            "publishedAt": "2025-11-05T12:39:27.221Z",
+            "content": "A UPS freight plane crashed shortly after taking off from Louisville Muhammad Ali International Airport, killing at least seven people. CNN's Audie Cornish discusses why the plane crashed with transp… [+29 chars]"
+        },
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": "Associated Press",
+            "title": "Popular performer Red Panda makes NBA return, roughly 4 months after breaking wrist in fall",
+            "description": "Red Panda wasn’t on the injured list for very long.",
+            "url": "https://www.cnn.com/2025/11/05/sport/basketball-nba-unicycle-performer-red-panda-returns",
+            "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2245066078.jpg?c=16x9&q=w_800,c_fill",
+            "publishedAt": "2025-11-05T12:00:29Z",
+            "content": "Red Panda wasnt on the injured list for very long.\r\nThe popular halftime performer made her NBA return on Tuesday night in Chicago when the Bulls hosted the Philadelphia 76ers. She broke her left wri… [+713 chars]"
+        },
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": "Nathaniel Meyersohn, Matt Egan",
+            "title": "Detroit is back from the dead. But not everyone is feeling it",
+            "description": "Hudson’s Detroit, the Motor City’s first new skyscraper in nearly half a century, is a symbol of Detroit’s transformation from bankruptcy to boomtown.",
+            "url": "https://www.cnn.com/2025/11/05/business/detroit-bankruptcy-jpmorgan-rocket-mortgage",
+            "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/ap25179142507436.jpg?c=16x9&q=w_800,c_fill",
+            "publishedAt": "2025-11-05T12:00:02Z",
+            "content": "Hudsons Detroit, the Motor Citys first new skyscraper in nearly half a century, is a symbol of Detroits transformation from bankruptcy to boomtown.\r\nThe recently opened $1.4 billion skyscraper on the… [+6598 chars]"
+        },
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": "Cindy Von Quednow",
+            "title": "Closing arguments are set for today in lawsuit filed by Virginia teacher shot by 6-year-old student",
+            "description": "Final arguments will be made on Wednesday in the $40 million lawsuit filed by a former Virginia teacher who was shot by her 6-year-old student in a case that could set a dramatic precedent for who to blame when school shootings occur.",
+            "url": "https://www.cnn.com/2025/11/05/us/teacher-shot-abby-zwerner-lawsui",
+            "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/still-22086756-1806446-still.jpg?c=16x9&q=w_800,c_fill",
+            "publishedAt": "2025-11-05T12:00:01Z",
+            "content": "Final arguments will be made on Wednesday in the $40 million lawsuit filed by a former Virginia teacher who was shot by her 6-year-old student in a case that could set a dramatic precedent for who to… [+3870 chars]"
+        },
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": "Danya Gainor, Michelle Watson, Amanda Musa, Emma Tucker, Alexandra Skores, Pete Muntean, Cindy Von Quednow, Amanda Jackson, Jordan Brown",
+            "title": "At least 7 killed, 11 injured after a UPS plane crashes near the Louisville airport",
+            "description": "A UPS MD-11 plane crashed shortly after take-off near the Louisville, Kentucky, airport, according to preliminary information, a source says.",
+            "url": "https://www.cnn.com/us/live-news/ups-plane-crash-louisville-airport",
+            "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/still-22091599-598817-2899999999-still.jpg?c=16x9&q=w_800,c_fill",
+            "publishedAt": "2025-11-04T23:33:07Z",
+            "content": "Josh Mitcham was boarding for his flight at the Louisville International Airport around 5:15 p.m. when a stay-in-place order was issued on the plane. He could tell whatever had happened wasnt good.\r\n… [+1035 chars]"
+        },
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": "Jamie Gangel, Jeremy Herb, Nicky Robertson",
+            "title": "‘Country over party’: How Dick Cheney helped Liz Cheney stand up to Donald Trump",
+            "description": "One year after Donald Trump’s supporters attacked the US Capitol on January 6, 2021, former Vice President Dick Cheney joined his daughter Wyoming Rep. Liz Cheney on the floor of the House to take a lonely position commemorating the anniversary.",
+            "url": "https://www.cnn.com/2025/11/04/politics/liz-cheney-trump-dick-cheney",
+            "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-630896160.jpg?c=16x9&q=w_800,c_fill",
+            "publishedAt": "2025-11-04T14:19:22Z",
+            "content": "One year after Donald Trumps supporters attacked the US Capitol on January 6, 2021, former Vice President Dick Cheney joined his daughterWyoming Rep. Liz Cheney on the floor of the Houseto takea lone… [+13337 chars]"
+        },
+        {
+            "source": {
+                "id": "cnn",
+                "name": "CNN"
+            },
+            "author": "Amy O’Kruk, Ethan Cohen, Renée Rigdon, Fredreka Schouten",
+            "title": "Tracking states’ unprecedented redistricting efforts",
+            "description": "So far, Republicans have enacted new maps in four states for a potential net gain of four seats. A new map in California could flip five seats for Democrats.",
+            "url": "https://www.cnn.com/politics/state-redistricting-maps-vis",
+            "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/20251024-tracking-redestricting-efforts.jpg?c=16x9&q=w_800,c_fill",
+            "publishedAt": "2025-11-04T10:00:03Z",
+            "content": "California voters will approve redrawing the states congressional map, CNNs Decision Desk projects a move which Democratic leaders hope will help their party win five more seats.\r\nThe map is the firs… [+1797 chars]"
+        }
+    ]
+}

@@ -1,6 +1,6 @@
-import 'package:sprint3_app/models/dto/article_dto.dart';
-import 'package:sprint3_app/models/dto/banner_dto.dart';
-import 'package:sprint3_app/models/dto/news_source_dto.dart';
+import 'package:sprint3_app/common/models/dto/article_dto.dart';
+import 'package:sprint3_app/common/models/dto/banner_dto.dart';
+import 'package:sprint3_app/common/models/dto/news_source_dto.dart';
 
 class HomeData {
   List<NewsSourceDTO> newsSources;

@@ -1,10 +1,10 @@
 import 'package:sprint3_app/home/data/models/home_data.dart';
-import 'package:sprint3_app/models/dao/article_dao.dart';
-import 'package:sprint3_app/models/dao/banner_dao.dart';
-import 'package:sprint3_app/models/dao/news_source_dao.dart';
-import 'package:sprint3_app/models/dto/article_dto.dart';
-import 'package:sprint3_app/models/dto/banner_dto.dart';
-import 'package:sprint3_app/models/dto/news_source_dto.dart';
+import 'package:sprint3_app/common/models/dao/article_dao.dart';
+import 'package:sprint3_app/common/models/dao/banner_dao.dart';
+import 'package:sprint3_app/common/models/dao/news_source_dao.dart';
+import 'package:sprint3_app/common/models/dto/article_dto.dart';
+import 'package:sprint3_app/common/models/dto/banner_dto.dart';
+import 'package:sprint3_app/common/models/dto/news_source_dto.dart';
 
 class HomeLocalDataSource {
   final NewsSourceDAO newsSourceDao;
