@@ -153,7 +153,7 @@ class HomeRepository {
 ```
 
   - Presentation → contém as Pages, ViewModels e lógicas de UI.
-     - Cada ViewModel utiliza ValueNotifier notificar que a UI deve reagir.
+     - Cada ViewModel utiliza ValueNotifier para notificar que a UI deve reagir.
      - As Pages escutam as mudanças e atualizam a UI a partir de um ValueListenableBuilder.
    
 ```plainText
@@ -302,73 +302,9 @@ query {
 <br>
 <br>
 
+- O Content Model do Contentful ficou assim:
+
 <img width="2888" height="650" alt="Screenshot 2025-11-07 at 02 34 54" src="https://github.com/user-attachments/assets/c5acdc25-af72-4c1e-9649-94247d1cf3ba" />
-
-```plainText
-abstract class CmsConnectionProtocol {
-  Future<T> findAll<T extends CmsModelProtocol>();
-  void initClient({
-    required String? accessToken,
-    required String? spaceId,
-    String environment = 'master'
-  });
-}
-
-class CmsConnection implements CmsConnectionProtocol {
-  late final GraphQLClient _client;
-
-  @override
-  void initClient({
-    required String? accessToken, 
-    required String? spaceId,
-    String environment = 'master'
-  }) {
-    if (accessToken == null || spaceId == null) {
-      throw Exception('Missing accessToken or spaceId');
-    }
-
-    final String endpoint =
-        'https://graphql.contentful.com/content/v1/spaces/$spaceId/environments/$environment';
-
-    final HttpLink httpLink = HttpLink(
-      endpoint,
-      defaultHeaders: {'Authorization': 'Bearer $accessToken'},
-    );
-
-    _client = GraphQLClient(link: httpLink, cache: GraphQLCache());
-  }
-
-  @override
-  Future<T> findAll<T extends CmsModelProtocol>() async {
-    final String contentType = CmsModelProtocol.contentTypeOf<T>();
-    final String fieldsQuery = CmsModelProtocol.fieldsQueryOf<T>();
-
-    final String query = '''
-      query {
-        ${contentType}Collection(limit: 1) {
-          items {
-            $fieldsQuery
-          }
-        }
-      }
-    ''';
-
-    final result = await _client.query(QueryOptions(document: gql(query)));
-
-    if (result.hasException) {
-      throw Exception(result.exception.toString());
-    }
-
-    final items = result.data?['${contentType}Collection']?['items'] as List?;
-
-    if (items == null || items.isEmpty) {
-      throw Exception('No $T content found');
-    }
-
-    return CmsModelProtocol.fromJsonOf<T>(items.first);
-  }
-}
-```
 
 - API
   ```plainText
@@ -379,6 +315,7 @@ class CmsConnection implements CmsConnectionProtocol {
   - A API pública utilizada foi a <a href="https://newsapi.org" target="_blank">News API</a>
   - As requisições são feitas utilizando REST
   - É obrigatório o uso de uma chave de API. Ela é salva no Remote Config do Firebase e consumida pelo app.
+  - Os query parameters, além da chave de API, são category ou sources. Os dois não podem ser usados ao mesmo tempo.
  
 ```plainText
 class ApiService implements ApiServiceProtocol {
