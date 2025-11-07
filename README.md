@@ -1,6 +1,8 @@
 ***Nextra***
 
-Aplicativo de notícias que reúne conteúdos das principais fontes em um só lugar. Busca e exibição de informações em tempo real, além de oferecer acesso offline às notícias salvas.
+Aplicativo de notícias que reúne conteúdos das principais fontes em um só lugar. Busca e exibe informações em tempo real, além de oferecer acesso offline às notícias salvas.
+
+------
 
 **Features**:
 
@@ -9,6 +11,8 @@ Aplicativo de notícias que reúne conteúdos das principais fontes em um só lu
 - WebView → abre a notícia completa em uma visualização integrada, acessando a URL original.
 - Persistência (Offline) → mantém acesso às notícias armazenadas localmente via SQLite, mesmo sem conexão.
 - Cache de Imagens → armazena imagens localmente para otimizar carregamento e economizar dados.
+
+------
 
 **Arquitetura e organização do código**:
 
@@ -121,10 +125,6 @@ class HomeRemoteDataSource {
 }
 ```
 
-
-  
-    
-    
   - Os Repositories encapsulam as regras de acesso aos dados.
 
 ```plainText
@@ -151,8 +151,6 @@ class HomeRepository {
 
   Future<void> _cacheImages(HomeData data) async {}
 ```
-
-    
 
   - Presentation → contém as Pages, ViewModels e lógicas de UI.
      - Cada ViewModel utiliza ValueNotifier notificar que a UI deve reagir.
@@ -206,9 +204,6 @@ class _WebViewPageState extends State<WebViewPage> {
 }
 ```
 
-
-   
-
 - Gerenciamento de Dependências
    - O Provider injeta as dependências na inicialização do app (main.dart).
    - São injetados repositórios, view models e outros serviços.
@@ -231,6 +226,7 @@ runApp(
     ),
   );
 ```
+--------
 
 **Detalhes técnicos**
 
@@ -271,10 +267,35 @@ class TokenProvider {
 ```
 
 
+- GraphQL (CMS – Contentful)
+  - O app utiliza o Contentful como CMS, acessando o conteúdo através de queries GraphQL.
+  - A classe CmsConnection monta as queries dinamicamente com base no modelo (CmsModelProtocol), garantindo flexibilidade.
 
-- CMS
-  - Contentful (headless CMS) foi o utilizado.
-  - A comunicação entre o CMS e o app ocorre atráves de GraphQL
+Exemplo de query gerada:
+
+```plainText
+query {
+  newsSourceCollection(limit: 1) {
+    items {
+      name
+      sourceId
+      logo {
+        url
+      }
+      isActive
+    }
+  }
+}
+```
+
+- Descrição:
+  - newsSource é o tipo de conteúdo registrado no CMS.
+  - newsSourceCollection se refere a um conjunto de newsSources
+  - O campo items retorna a lista de fontes de notícias.
+  - Cada item inclui os campos definidos em fieldsQuery() do model (nome, ID, logo, status ativo, etc).
+ 
+<br>
+<br>
 
 <img width="2888" height="650" alt="Screenshot 2025-11-07 at 02 34 54" src="https://github.com/user-attachments/assets/c5acdc25-af72-4c1e-9649-94247d1cf3ba" />
 
@@ -452,28 +473,6 @@ class NewsSourceSqliteModel implements SqliteProtocol<NewsSourceSqliteModel> {
 - GraphQL (CMS – Contentful)
  - O app utiliza o Contentful como CMS, acessando o conteúdo através de queries GraphQL.
  - A classe CmsConnection monta as queries dinamicamente com base no modelo (CmsModelProtocol), garantindo flexibilidade.
-
-Exemplo de query gerada:
-
-```plainText
-query {
-  newsSourceCollection(limit: 1) {
-    items {
-      name
-      sourceId
-      logo {
-        url
-      }
-      isActive
-    }
-  }
-}
-```
-
-- Descrição:
- - newsSourceCollection é o tipo de conteúdo registrado no CMS.
- - O campo items retorna a lista de fontes de notícias.
- - Cada item inclui os campos definidos em fieldsQuery() do model (nome, ID, logo e status ativo).
 
    
 - REST API (NewsAPI)
