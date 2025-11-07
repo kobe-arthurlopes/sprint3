@@ -447,4 +447,153 @@ class NewsSourceSqliteModel implements SqliteProtocol<NewsSourceSqliteModel> {
 
 
 
+**Endpoints e Queries Utilizados**
 
+- GraphQL (CMS – Contentful)
+ - O app utiliza o Contentful como CMS, acessando o conteúdo através de queries GraphQL.
+ - A classe CmsConnection monta as queries dinamicamente com base no modelo (CmsModelProtocol), garantindo flexibilidade.
+
+Exemplo de query gerada:
+
+```plainText
+query {
+  newsSourceCollection(limit: 1) {
+    items {
+      name
+      sourceId
+      logo {
+        url
+      }
+      isActive
+    }
+  }
+}
+```
+
+- Descrição:
+ - newsSourceCollection é o tipo de conteúdo registrado no CMS.
+ - O campo items retorna a lista de fontes de notícias.
+ - Cada item inclui os campos definidos em fieldsQuery() do model (nome, ID, logo e status ativo).
+
+   
+- REST API (NewsAPI)
+ - Para buscar manchetes e notícias atuais, o app consome a NewsAPI, com integração via HTTP GET usando Dio.
+ - Endpoint principal:
+    - GET https://newsapi.org/v2/top-headlines
+ - Parâmetros usados:
+    apiKey	String	Chave de autenticação obrigatória
+    category	String	Categoria opcional de notícias
+    sources String Fonte das notícias puxadas
+   
+Exemplo de chamada:
+
+```plainText
+apiService.fetchResponse(
+  endpoint: 'top-headlines',
+  properties: {
+    'category': 'general',
+  },
+  fromJson: (json) => ArticleResponse.fromJson(json),
+);
+```
+
+Resumo:
+ - GraphQL (CMS): consulta tipos de conteúdo personalizados (ex: fontes de notícia).
+ - REST (API Externa): busca manchetes e notícias em tempo real.
+ - Ambas as integrações convertem os resultados para models internos e armazenam no SQLite.
+
+- SQLite (DaoProtocol)
+ - O DaoProtocol é uma classe genérica que padroniza o acesso ao banco SQLite no app.
+ - Ela define operações básicas (CRUD) para qualquer model que implemente o protocolo SqliteProtocol.
+ - Principais funções:
+
+```plainText
+insert() – Insere ou substitui um registro na tabela.
+fetchAll() – Retorna todos os registros da tabela.
+fetchWhere() – Retorna registros filtrados por uma condição (WHERE).
+deleteWhere() – Deleta registros específicos conforme uma condição.
+deleteAll() – Limpa completamente a tabela.
+```
+```plainText
+abstract class DaoProtocol<T extends SqliteProtocol<T>> {
+  final AppDatabase dbProvider;
+  final T model;
+
+  DaoProtocol({
+    required this.dbProvider, 
+    required this.model,
+  });
+
+  Future<void> insert(T data) async {}
+
+  Future<List<T>> fetchAll() async {}
+
+  Future<List<T>> fetchWhere({
+    required String where,
+    required List<Object?> whereArgs
+  }) async {}
+
+  Future<void> deleteAll() async {}
+}
+```
+
+- Como funciona:
+  - Cada model (ex: BannerSqliteModel) informa:
+   - O nome da tabela (table);
+   - Como converter o objeto para Map (toSqliteMap);
+   - Como reconstruir o objeto a partir de um registro (toSqliteModel).
+   - Assim, o DaoProtocol consegue manipular qualquer tipo de dado sem precisar reescrever código SQL.
+ 
+ ```plainText
+class BannerSqliteModel implements SqliteProtocol<BannerSqliteModel> {
+  final String title;
+  final String subtitle;
+  final String description;
+  final String? logoUrl;
+  final bool isActive;
+
+  const BannerSqliteModel({
+    this.title = 'Untitled',
+    this.subtitle = 'No Subtitle',
+    this.description = 'No description',
+    this.logoUrl,
+    this.isActive = false,
+  });
+
+  @override
+  String get table => 'banners';
+
+  @override
+  String get createTableQuery => '''
+    CREATE TABLE $table (
+      title TEXT PRIMARY KEY,
+      subtitle TEXT NOT NULL,
+      description TEXT NOT NULL,
+      logoUrl TEXT,
+      isActive INTEGER NOT NULL
+    );
+ ''';
+
+  @override
+  Map<String, Object?> toSqliteMap() {
+    return {
+      'title': title,
+      'subtitle': subtitle,
+      'description': description,
+      'logoUrl': logoUrl,
+      'isActive': isActive ? 1 : 0
+    };
+  }
+
+  @override
+  BannerSqliteModel toSqliteModel(Map<String, Object?> map) {
+    return BannerSqliteModel(
+      title: map['title'] as String,
+      subtitle: map['subtitle'] as String,
+      description: map['description'] as String,
+      logoUrl: map['logoUrl'] as String?,
+      isActive: (map['isActive'] as int) == 1,
+    );
+  }
+}
+```
