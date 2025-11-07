@@ -498,6 +498,13 @@ flutter pub get
 flutter run
 ```
 
+- Certifique-se de ter baixado o Android Studio para ter o Android SDK
+- Crie uma APK
+
+```plainText
+flutter build apk --profile
+```
+
 -----
 
 
