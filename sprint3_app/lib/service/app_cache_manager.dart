@@ -29,7 +29,10 @@ class AppCacheManager {
     }
   }
 
-  Future<void> clear() async {
-    await cacheManager.emptyCache();
+  Future<void> clearFiles(List<String?> urls) async {
+    for (final url in urls) {
+      if (url == null) continue;
+      await cacheManager.removeFile(url);
+    }
   }
 }

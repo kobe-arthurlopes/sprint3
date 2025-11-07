@@ -36,7 +36,7 @@ class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
   }
 
   Future<void> _refresh() async {
-
+    await _viewModel.reload();
   }
 
   @override
@@ -50,17 +50,20 @@ class _NewsSourceDetailsPageState extends State<NewsSourceDetailsPage> {
           backgroundColor: AppColors.background,
           appBar: AppBarWidget(title: newsSource.name),
           body: data.errorMessage != null
-              ? CustomErrorWidget(message: data.errorMessage!)
+              ? CustomErrorWidget(
+                message: data.errorMessage!,
+                onRetry: _refresh,
+              )
               : CustomRefreshIndicator(
-                onRefresh: _refresh, 
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ArticlesList(
-                    articles: data.articles,
-                    shouldStartTimeout: data.shouldStartImagesTimeout,
+                  onRefresh: _refresh,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: ArticlesList(
+                      articles: data.articles,
+                      shouldStartTimeout: data.shouldStartImagesTimeout,
+                    ),
                   ),
                 ),
-              ),
         );
       },
     );

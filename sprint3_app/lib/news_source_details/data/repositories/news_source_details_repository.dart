@@ -25,8 +25,7 @@ class NewsSourceDetailsRepository {
       final remoteData = await remote.fetch();
 
       if (!remoteData.isEmpty) {
-        await _persist(remoteData);
-        await _cacheImages(remoteData);
+        _clearAndPersist(remoteData);
       }
 
       return remoteData;
@@ -35,9 +34,14 @@ class NewsSourceDetailsRepository {
     return localData;
   }
 
-  Future<void> clearAll() async {
+  Future<void> _clearAndPersist(NewsSourceDetailsData data) async {
+    Future.wait([clearAll(data), _persist(data), _cacheImages(data)]);
+  }
+
+  Future<void> clearAll(NewsSourceDetailsData data) async {
     await local.deleteAll();
-    await cacheManager.clear();
+    final urls = data.articles.map((element) => element.urlToImage).toList();
+    await cacheManager.clearFiles(urls);
   }
 
   Future<void> _persist(NewsSourceDetailsData data) async {

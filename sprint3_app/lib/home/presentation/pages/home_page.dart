@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _initialize() async {
+    // await _viewModel.clearAll(includingChildren: true);
     await _viewModel.fetch();
   }
 
@@ -49,13 +50,13 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: AppColors.background,
           appBar: AppBarWidget(title: 'News'),
           body: data.isLoading
-                  ? const Center(child: CustomProgressIndicator())
-                  : data.errorMessage != null
-                      ? CustomErrorWidget(
-                        message: data.errorMessage!,
-                        onRetry: _refresh,
-                      )
-                      : _buildMainView(data)
+              ? const Center(child: CustomProgressIndicator())
+              : data.errorMessage != null
+              ? CustomErrorWidget(
+                  message: data.errorMessage!,
+                  onRetry: _refresh,
+                )
+              : _buildMainView(data),
         );
       },
     );
@@ -79,30 +80,30 @@ class _HomePageState extends State<HomePage> {
                 'Top News Sources',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primary
+                  color: AppColors.primary,
                 ),
               ),
             ),
-      
+
             NewsSourcesList(
               newsSources: data.newsSources,
               onTap: (newsSource) async {
                 if (!context.mounted) {
                   return;
                 }
-      
+
                 if (ModalRoute.of(context)?.isCurrent == false) {
                   return;
                 }
-      
+
                 await Navigator.of(context).pushNamed(
                   NewsSourceDetailsPage.routeId,
-                  arguments: newsSource
+                  arguments: newsSource,
                 );
               },
               shouldStartTimeout: data.shouldStartImagesTimeout,
             ),
-      
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -121,18 +122,17 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-      
+
                 BannersList(
                   banners: data.banners,
                   onTap: (banner) {
-                    Navigator.of(context).pushNamed(
-                      BannerDetailsPage.routeId,
-                      arguments: banner,
-                    );
+                    Navigator.of(
+                      context,
+                    ).pushNamed(BannerDetailsPage.routeId, arguments: banner);
                   },
                   shouldStartTimeout: data.shouldStartImagesTimeout,
                 ),
-      
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-      
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: ArticlesList(
@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

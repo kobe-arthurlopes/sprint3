@@ -25,7 +25,9 @@ class HomeRepository {
     if (isEmpty) {
       final remoteData = await remote.fetch();
 
-      await _clearAndPersist(remoteData);
+      if (!remoteData.isEmpty) {
+        await _clearAndPersist(remoteData);
+      } 
 
       return remoteData;
     }
@@ -34,12 +36,27 @@ class HomeRepository {
   }
 
   Future<void> _clearAndPersist(HomeData data) async {
-    await Future.wait([clearAll(), _persist(data), _cacheImages(data)]);
+    await Future.wait([clearAll(data), _persist(data), _cacheImages(data)]);
   }
 
-  Future<void> clearAll({bool includingChildren = false}) async {
+  Future<void> clearAll(HomeData data, {bool includingChildren = false}) async {
     await local.deleteAll(includingChildren: includingChildren);
-    await cacheManager.clear();
+    final urls = getUrls(data);
+    await cacheManager.clearFiles(urls);
+  }
+
+  List<String?> getUrls(HomeData data) {
+    final newsSourceUrls = data.newsSources
+        .map((element) => element.logoUrl)
+        .toList();
+
+    final bannerUrls = data.banners.map((element) => element.logoUrl).toList();
+
+    final articleUrls = data.articles
+        .map((element) => element.urlToImage)
+        .toList();
+
+    return [...newsSourceUrls, ...bannerUrls, ...articleUrls];
   }
 
   Future<void> _persist(HomeData data) async {

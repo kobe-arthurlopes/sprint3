@@ -24,7 +24,7 @@ class NewsSourceDetailsViewModel {
 
   Future<void> _clearAll() async {
     data.value = NewsSourceDetailsData();
-    await repository.clearAll();
+    await repository.clearAll(data.value);
   }
 
   Future<void> reload() async {

@@ -29,10 +29,20 @@ class _ModelImageWidgetState extends State<ModelImageWidget> {
   bool _timeoutReached = false;
   Timer? _timer;
 
+  @override
+  void initState() {
+    super.initState();
+    _startTimeout();
+  }
+
   void _startTimeout() {
     _timer = Timer(widget.timeoutDuration, () {
       if (mounted) {
-        setState(() => _timeoutReached = true);
+        setState(() {
+          _timeoutReached = true;
+          _timer?.cancel();
+          _timer = null;
+        });
       }
     });
   }
@@ -45,12 +55,11 @@ class _ModelImageWidgetState extends State<ModelImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.shouldStartTimeout == true) {
-      _startTimeout();
-    }
- 
-    if (_timeoutReached && (widget.imageUrl == null || widget.imageUrl!.isEmpty)) {
-      return _buildFallbackImage();
+    if (_timeoutReached &&
+        (widget.imageUrl == null || widget.imageUrl!.isEmpty)) {
+      if (widget.shouldStartTimeout) {
+        return _buildFallbackImage();
+      }
     }
 
     return CachedNetworkImage(
