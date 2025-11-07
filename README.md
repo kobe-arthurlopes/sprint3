@@ -1,4 +1,4 @@
-***Nextra***
+***Sprint 3 App***
 
 Aplicativo de notícias que reúne conteúdos das principais fontes em um só lugar. Busca e exibe informações em tempo real, além de oferecer acesso offline às notícias salvas.
 
@@ -16,7 +16,7 @@ Aplicativo de notícias que reúne conteúdos das principais fontes em um só lu
 
 **Arquitetura e organização do código**:
 
-O Nextra utiliza o padrão MVVM, com Provider para injeção de dependências e ValueNotifier para gerenciamento de estado.
+O app utiliza o padrão MVVM, com Provider para injeção de dependências e ValueNotifier para gerenciamento de estado.
 
 ```plaintext
 lib/
@@ -268,6 +268,11 @@ class TokenProvider {
 
 
 - GraphQL (CMS – Contentful)
+  ```plainText
+  Endpoint: https://graphql.contentful.com/content/v1/spaces/$spaceId/environments/$environment
+  Headers: 'Authorization': 'Bearer $accessToken'
+  ```
+
   - O app utiliza o Contentful como CMS, acessando o conteúdo através de queries GraphQL.
   - A classe CmsConnection monta as queries dinamicamente com base no modelo (CmsModelProtocol), garantindo flexibilidade.
 
@@ -366,8 +371,14 @@ class CmsConnection implements CmsConnectionProtocol {
 ```
 
 - API
+  ```plainText
+  Endpoint: https://newsapi.org/v2/top-headlines
+  Query parameters: 'apiKey': $apiKey; 'categories': 'general' ou 'sources': $news_source_id
+  ```
+  
   - A API pública utilizada foi a <a href="https://newsapi.org" target="_blank">News API</a>
   - As requisições são feitas utilizando REST
+  - É obrigatório o uso de uma chave de API. Ela é salva no Remote Config do Firebase e consumida pelo app.
  
 ```plainText
 class ApiService implements ApiServiceProtocol {
@@ -453,18 +464,21 @@ class NewsSourceSqliteModel implements SqliteProtocol<NewsSourceSqliteModel> {
 }
 ```
 
-- Models
-  - DTOs (Data Transfer Objects)
-    - Responsáveis por transferir e converter dados entre diferentes camadas, garantindo compatibilidade entre a API, o banco local e o app.
-  - CMS Models
-    - Representam os dados vindos do Contentful.
-    - Possuem registro automático, definição de queries GraphQL e conversão entre JSON e modelo interno.
-  - DAOs (Data Access Objects)
-    - Gerenciam a persistência local dos dados, oferecendo métodos genéricos no SQLite.
-  - SQLite Models
-    - Definem a estrutura das tabelas e mapeam os objetos e registros do banco.
-  - Protocols
-    - Contratos genéricos que padronizam operações e facilitam a escalabilidade e reuso do código.
+---
+
+**Models**
+
+ - DTOs
+   - Responsáveis por transferir e converter dados entre diferentes camadas, garantindo compatibilidade entre a API, o banco local e o app.
+ - CMS Models
+   - Representam os dados vindos do Contentful.
+   - Possuem registro automático, definição de queries GraphQL e conversão entre JSON e modelo interno.
+ - DAOs
+   - Gerenciam a persistência local dos dados, oferecendo métodos genéricos no SQLite.
+ - SQLite Models
+   - Definem a estrutura das tabelas e mapeam os objetos e registros do banco.
+ - Protocols
+   - Contratos genéricos que padronizam operações e facilitam a escalabilidade e reuso do código.
 
 
 
